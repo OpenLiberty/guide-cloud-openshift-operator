@@ -1,16 +1,16 @@
-- apiVersion: v1
-  kind: BuildConfig
-  metadata:
-    name: "system-bc"
-    labels:
-      build: "system-bc"
-  spec:
-    source:
-      binary: {}
-      type: Binary
-    strategy:
-      type: Docker
-    output:
-      to:
-        kind: ImageStreamTag
-        name: "system-is"
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  name: "system-bc"
+  labels:
+    build: "system-bc"
+spec:
+  source:
+    binary: {}
+    type: Binary
+  strategy:
+    type: Docker
+  output:
+    to:
+      kind: ImageStreamTag
+      name: "system-is"
