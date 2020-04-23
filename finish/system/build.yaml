@@ -2,20 +2,22 @@ apiVersion: v1
 kind: Template
 metadata:
   name: "system-build-template"
+  annotations:
+    description: "test"
+    tags: "test"
 objects:
   - apiVersion: v1
     kind: ImageStream
     metadata:
-      name: "system"
+      name: "test"
       labels:
-        application: "system"
+        application: "test"
   - apiVersion: v1
     kind: BuildConfig
-    apiVersion: build.openshift.io/v1
     metadata:
-      name: "system"
+      name: "test"
       labels:
-        build: "system"
+        build: "test"
     spec:
       source:
         binary: {}
@@ -25,4 +27,4 @@ objects:
       output:
         to:
           kind: ImageStreamTag
-          name: "system:1.0-SNAPSHOT"
+          name: "test:1"
