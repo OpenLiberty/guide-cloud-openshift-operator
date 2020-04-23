@@ -1,0 +1,7 @@
+apiVersion: openliberty.io/v1beta1
+kind: OpenLibertyApplication
+metadata:
+  name: system
+spec:
+  applicationImage: image-registry.openshift-image-registry.svc:5000/guide/system-is:latest
+  pullPolicy: Always
