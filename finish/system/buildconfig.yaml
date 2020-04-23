@@ -13,4 +13,4 @@
     output:
       to:
         kind: ImageStreamTag
-        name: "system:1.0-SNAPSHOT"
+        name: "system-is"
