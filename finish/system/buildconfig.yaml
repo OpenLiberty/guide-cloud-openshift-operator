@@ -13,4 +13,4 @@ spec:
   output:
     to:
       kind: ImageStreamTag
-      name: "system-is"
+      name: "system-is:latest"
