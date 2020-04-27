@@ -1,4 +1,4 @@
-// Copyright (c) 2019, 2020 IBM Corporation and others.
+// Copyright (c) 2020 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -6,7 +6,7 @@
 // Contributors:
 //     IBM Corporation
 //
-:projectid: cloud-openshift
+:projectid: operators-openshift
 :page-layout: guide-multipane
 :page-duration: 45 minutes 
 :page-releasedate: 2019-09-11
