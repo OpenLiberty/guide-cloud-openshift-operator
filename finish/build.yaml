@@ -35,18 +35,18 @@ objects:
           kind: ImageStreamTag
           name: "system-imagestream:1.0-SNAPSHOT"
   - apiVersion: v1
-      kind: BuildConfig
-      metadata:
-        name: "inventory-buildconfig"
-        labels:
-          build: "inventory-buildconfig"
-      spec:
-        source:
-          binary: {}
-          type: Binary
-        strategy:
-          type: Docker
-        output:
-          to:
-            kind: ImageStreamTag
-            name: "inventory-imagestream:1.0-SNAPSHOT"
+    kind: BuildConfig
+    metadata:
+      name: "inventory-buildconfig"
+      labels:
+        build: "inventory-buildconfig"
+    spec:
+      source:
+        binary: {}
+        type: Binary
+      strategy:
+        type: Docker
+      output:
+        to:
+          kind: ImageStreamTag
+          name: "inventory-imagestream:1.0-SNAPSHOT"
