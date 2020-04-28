@@ -1,4 +1,15 @@
-apiVersion: openliberty.io/v1beta1
+apiVersion: v1
+kind: OpenLibertyApplication
+metadata:
+  name: system
+spec:
+  applicationImage: image-registry.openshift-image-registry.svc:5000/guide/system-is:latest
+  pullPolicy: Always
+  env:
+    - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
+      value: "kafka:9092"
+---
+apiVersion: v1
 kind: OpenLibertyApplication
 metadata:
   name: inventory
