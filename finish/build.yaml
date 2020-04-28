@@ -23,7 +23,7 @@ objects:
     metadata:
       name: "system-buildconfig"
       labels:
-        build: "system-buildconfig"
+        build: "system-build"
     spec:
       source:
         binary: {}
@@ -39,7 +39,7 @@ objects:
     metadata:
       name: "inventory-buildconfig"
       labels:
-        build: "inventory-buildconfig"
+        build: "inventory-build"
     spec:
       source:
         binary: {}
