@@ -3,21 +3,21 @@ kind: Template
 metadata:
   name: "system-build-template"
   annotations:
-    description: "test"
-    tags: "test"
+    description: "Build template for the system service"
+    tags: "system"
 objects:
   - apiVersion: v1
     kind: ImageStream
     metadata:
-      name: "test"
+      name: "system-is"
       labels:
-        application: "test"
+        application: "system"
   - apiVersion: v1
     kind: BuildConfig
     metadata:
-      name: "test"
+      name: "system-bc"
       labels:
-        build: "test"
+        build: "system-bc"
     spec:
       source:
         binary: {}
@@ -27,4 +27,4 @@ objects:
       output:
         to:
           kind: ImageStreamTag
-          name: "test:1"
+          name: "system-is:latest"
