@@ -1,0 +1,24 @@
+apiVersion: openliberty.io/v1beta1
+kind: OpenLibertyApplication
+metadata:
+  name: system
+spec:
+  applicationImage: templates/system-imagestream:1.0-SNAPSHOT
+  pullPolicy: Always
+  env:
+    - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
+      value: "kafka:9092"
+---
+apiVersion: openliberty.io/v1beta1
+kind: OpenLibertyApplication
+metadata:
+  name: inventory
+spec:
+  applicationImage: templates/inventory-imagestream:1.0-SNAPSHOT
+  pullPolicy: Always
+  service:
+    port: 9085
+  expose: true
+  env:
+    - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
+      value: "kafka:9092"

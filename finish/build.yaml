@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: "build-template"
+  annotations:
+    description: "Build template for the system and inventory service"
+    tags: "build"
+objects:
+  - apiVersion: v1
+    kind: ImageStream
+    metadata:
+      name: "${APP_NAME}-imagestream"
+      labels:
+        application: "${APP_NAME}"
+  - apiVersion: v1
+    kind: BuildConfig
+    metadata:
+      name: "${APP_NAME}-buildconfig"
+      labels:
+        build: "${APP_NAME}-build"
+    spec:
+      source:
+        binary: {}
+        type: Binary
+      strategy:
+        type: Docker
+      output:
+        to:
+          kind: ImageStreamTag
+          name: "${APP_NAME}-imagestream:1.0-SNAPSHOT"
+parameters:
+- description: The application name [system|inventory]
+  name: APP_NAME
