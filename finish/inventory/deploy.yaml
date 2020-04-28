@@ -9,7 +9,7 @@ spec:
     port: 9085
   expose: true
   route:
-    host: inventory-service.com
+    host: openliberty.inventory.service
   env:
     - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
       value: "kafka:9092"
