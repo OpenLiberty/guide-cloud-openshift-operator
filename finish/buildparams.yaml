@@ -9,21 +9,15 @@ objects:
   - apiVersion: v1
     kind: ImageStream
     metadata:
-      name: "system-imagestream"
+      name: "${APP_NAME}-imagestream"
       labels:
-        application: "system"
-  - apiVersion: v1
-    kind: ImageStream
-    metadata:
-      name: "inventory-imagestream"
-      labels:
-        application: "inventory"
+        application: "${APP_NAME}"
   - apiVersion: v1
     kind: BuildConfig
     metadata:
-      name: "system-buildconfig"
+      name: "${APP_NAME}-buildconfig"
       labels:
-        build: "system-build"
+        build: "${APP_NAME}-build"
     spec:
       source:
         binary: {}
@@ -33,20 +27,7 @@ objects:
       output:
         to:
           kind: ImageStreamTag
-          name: "system:1.0-SNAPSHOT"
-  - apiVersion: v1
-    kind: BuildConfig
-    metadata:
-      name: "inventory-buildconfig"
-      labels:
-        build: "inventory-build"
-    spec:
-      source:
-        binary: {}
-        type: Binary
-      strategy:
-        type: Docker
-      output:
-        to:
-          kind: ImageStreamTag
-          name: "inventory:1.0-SNAPSHOT"
+          name: "${APP_NAME}-imagestream:1.0-SNAPSHOT"
+parameters:
+- description: The application name [system|inventory]
+  name: APP_NAME
