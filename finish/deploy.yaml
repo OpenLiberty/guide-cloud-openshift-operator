@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: openliberty.io/v1beta1
 kind: OpenLibertyApplication
 metadata:
   name: system
@@ -9,7 +9,7 @@ spec:
     - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
       value: "kafka:9092"
 ---
-apiVersion: v1
+apiVersion: openliberty.io/v1beta1
 kind: OpenLibertyApplication
 metadata:
   name: inventory
