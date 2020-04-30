@@ -209,7 +209,7 @@ oc get routes
 
 Then access the `inventory` application by visiting the following URL, ensure that you substitute the appropriate `HOST`:
 
-- http://[HOST]/inventory/systems
+- `http://[HOST]/inventory/systems`
 
 == Scaling up the system application
 
