@@ -10,533 +10,244 @@
 :page-layout: guide-multipane
 :page-duration: 45 minutes 
 :page-releasedate: 2019-09-11
-:page-description: Explore how to deploy microservices to Red Hat OpenShift
+:page-description: Explore how to deploy microservices using the Open Liberty Operator on Red Hat OpenShift
 :page-tags: ['Kubernetes', 'Docker', 'Cloud'] 
 :page-permalink: /guides/{projectid}
-:page-related-guides: ['kubernetes-intro', 'kubernetes-microprofile-config', 'kubernetes-microprofile-health', 'istio-intro'] 
+:page-related-guides: ['cloud-openshift', 'okd']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
-:page-seo-title: Deploying Java microservices to Red Hat OpenShift 
-:page-seo-description: A getting started tutorial with examples on how to deploy Java microservices to a Kubernetes cluster on OpenShift using OpenShift Container Registry (OCR). 
+:page-seo-title: Deploying Java microservices using the Open Liberty Operator on Red Hat OpenShift
+:page-seo-description: A getting started tutorial with examples on how to deploy Java microservices using the Open Liberty Operator on an OpenShift cluster.
 :guide-author: Open Liberty
-= Deploying microservices to OpenShift
+= Deploying microservices using the Open Liberty Operator on OpenShift
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website^].
 
-Explore how to deploy microservices to Red Hat OpenShift. 
-
-:kube: Kubernetes
-:hashtag: #
-:win: WINDOWS
-:mac: MAC
-:linux: LINUX
-:system-api: http://[hostname]:31000/system/properties
-:inventory-api: http://[hostname]:32000/inventory/systems
-
-// =================================================================================================
-// Introduction
-// =================================================================================================
+Explore how to deploy microservices using the Open Liberty Operator on Red Hat OpenShift.
 
 == What you'll learn 
 
-You will learn how to deploy two microservices in Open Liberty containers to an OpenShift cluster.
-
-There are different cloud-based solutions for running your {kube} workloads. 
-With a cloud-based infrastructure, you can focus on developing your microservices without worrying about low-level infrastructure details for deployment. 
-Using a cloud helps you to easily scale and manage your microservices in a high-availability setup.
-
-{kube} is an open source container orchestrator that automates many tasks that are involved in deploying, managing, and scaling containerized applications. 
-If you would like to learn more about Kubernetes, check out the https://openliberty.io/guides/kubernetes-intro.html[Deploying microservices to Kubernetes^] guide.
-
-OpenShift is a Kubernetes-based platform with added functions. It streamlines the DevOps process by providing an intuitive development pipeline. 
-It also provides integration with multiple tools to make the deployment and management of cloud applications easier.
-To learn more about the different platforms that Red Hat OpenShift offers, check out their https://docs.openshift.com[official documentation^]. 
-
-The two microservices you will deploy are called `system` and `inventory`. 
-The `system` microservice returns the JVM system properties of the running container. 
-It also returns the pod’s name in the HTTP header, making replicas easy to distinguish 
-from each other. The `inventory` microservice adds the properties from the `system` microservice 
-to the inventory. This process demonstrates how communication can be established between pods inside a cluster.
-
-// =================================================================================================
-// Prerequisites
-// =================================================================================================
+[Brief intro to OpenShift + the importance of cloud infrastructures]
+[Explanation of Operators and their use cases / how they’re beneficial over standard deployment processes]
+[Brief summary of the guide, what the user will be walked through, the structure of the application]
 
 == Additional prerequisites
 
-Before you begin, the following additional tools need to be installed:
+Before you begin, the following additional tools are needed:
 
-- *Docker:* You need a containerization software for building containers. Kubernetes 
-supports various container types, but you will use Docker in this guide. For installation 
-instructions, refer to the official https://docs.docker.com/install/[Docker documentation^].
+- *OpenShift cluster:* You need admin access and control over the OpenShift cluster you deploy your application to.
+There are various types of clusters and deployments, and this guide uses OpenShift Container Platform 4.3.
 
-- *OpenShift account:* To access a {kube} cluster, you must sign up for a Red Hat OpenShift Online account. There are two options, 
-Starter and Pro. Use the Starter plan, which includes a free trial of the OpenShift platform with limited resources, making it perfect for individual experimentation. The Pro plan includes more resources and has a monthly fee. To sign up, go to the https://manage.openshift.com/register/plan[official website^]. Keep in mind that the creation time depends on resource availability and might take some time.
+- *Docker:* You need a containerization software for building containers. You will use Docker in this guide. For
+installation instructions, refer to the official https://docs.docker.com/install/[Docker documentation^].
 
-- *OpenShift CLI:* You need the OpenShift command-line tool `oc` to interact with your {kube} cluster.
-For installation instructions, refer to the official 
-https://docs.openshift.com/online/starter/cli_reference/openshift_cli/getting-started-cli.html[OpenShift Online documentation^].
-
-To verify that the OpenShift CLI is installed correctly, run the following command:
-
-[role=command]
-```
-oc version
-```
-
-The output will be similar to:
-
-[role="no_copy"]
-----
-oc v3.11.0+0cbc58b
-----
-
-
-// =================================================================================================
-// Getting Started
-// =================================================================================================
+// Getting Started block
 
 [role=command]
 include::{common-includes}/gitclone.adoc[]
 
 // no "try what you'll build" section in this guide since it would be too long due to all setup the user will have to do.
 
-// =================================================================================================
-// Accessing an OpenShift cluster
-// =================================================================================================
+== Installing the Open Liberty Operator
 
-== Accessing an OpenShift cluster
+Before installing any resources, you need a project on your OpenShift cluster. Create a new project named `guide` by
+running the following command:
 
-Before you can deploy your microservices, you must gain access to a cluster on OpenShift.
-
-Creating an OpenShift account automatically grants you access to their multi-tenant, OpenShift cluster. 
-After you have access, you are also given access to their online web console. To login to OpenShift by using the CLI, 
-navigate to the online web console by following the `[username] > Copy Login Command > Display Token > Log in with this token` path.
-
-The command looks like the following example:
-
-[role="no_copy"]
-----
-oc login --token=[your-token] --server=https://api.[region].online-starter.openshift.com:[port]
-----
-
-Create a project by running the following command:
-
-[role=command]
-```
-oc new-project [project-name]
-```
-
-// =================================================================================================
-// Deploying microservices to OpenShift
-// =================================================================================================
-
-== Deploying microservices to OpenShift
-
-In this section, you will learn how to deploy two microservices in Open Liberty containers to a {kube}
-cluster on OpenShift. You will build and containerize the `system` and `inventory` microservices, 
-push them to a container registry, and then deploy them to your {kube} cluster. 
-
-// =================================================================================================
-// Building and containerizing the microservices
-// =================================================================================================
-
-=== Building and containerizing the microservices
-
-The first step of deploying to {kube} is to build your microservices and containerize them.
-
-The starting Java project, which is located in the start directory, is a multi-module Maven project. 
-It is made up of the `system` and `inventory` microservices. Each microservice resides in its own directory,
-`start/system` or `start/inventory`. Both of these directories contain a Dockerfile, which is necessary
-for building the Docker images. See the https://openliberty.io/guides/containerize.html[Containerizing microservices^] 
-guide if you're unfamiliar with Dockerfiles.
-
-If you're familiar with Maven and Docker, you might be tempted to run a Maven build first and then
-use the `.war` file to build a Docker image. The projects are set up so that this process is automated 
-as a part of a single Maven build.
-
-To build these microservices, navigate to the `start` directory and run the following command:
-
-[role=command]
-```
-mvn package
-```
-
-Next, run the `docker build` commands to build container images for your application:
 [role='command']
 ```
-docker build -t system:1.0-SNAPSHOT system/.
-docker build -t inventory:1.0-SNAPSHOT inventory/.
+oc new-project guide
 ```
 
-The `-t` flag in the `docker build` command allows the Docker image to be labeled (tagged) in the `name[:tag]` format. 
-The tag for an image describes the specific image version. If the optional `[:tag]` tag is not specified, the `latest` tag is created by default.
+The Open Liberty Operator can be installed on an OpenShift through the CLI or through the web console.
 
-During the build, you see various Docker messages that describe what images are being downloaded and
-built. When the build finishes, run the following command to list all local Docker images:
+*Installing through the CLI*
 
-[role=command]
-```
-docker images
-```
+To install the Open Liberty Operator through the CLI, follow the instructions from the
+https://github.com/OpenLiberty/open-liberty-operator#operator-installation[official GitHub repository^].
 
-Verify that the `system:1.0-SNAPSHOT` and `inventory:1.0-SNAPSHOT` images are listed among them, for example:
+*Installing through the web console*
 
-[role="no_copy"]
-----
-REPOSITORY                    TAG
-system                        1.0-SNAPSHOT
-inventory                     1.0-SNAPSHOT
-open-liberty                  latest
-----
+To install the Open Liberty Operator through the web console, navigate to the sidebar `Operators > OperatorHub`, and
+search and install the `Open Liberty Operator`.
 
-If you don't see the `system:1.0-SNAPSHOT` and `inventory:1.0-SNAPSHOT` images, check the Maven
-build log for any potential errors.
+[add a snippet getting the project resources and showcasing the operator deployments]
 
-// =================================================================================================
-// Pushing the images to OpenShift's internal registry
-// =================================================================================================
+== Deploying the Kafka service to OpenShift
 
-=== Pushing the images to OpenShift's internal registry
+Apache Kafka is the messaging broker used in this application. The image required to deploy the application is available
+and can be pulled and deployed directly from Docker Hub.
 
-In order to run the microservices on the cluster, you need to push the microservice images into a container image registry. 
-You will use OpenShift's integrated container image registry called OpenShift Container Registry (OCR). 
-After your images are pushed into the registry, you can use them in the pods you create later in the guide.
+To deploy Zookeeper, run the following command:
 
-First, you must authenticate your Docker client to your OCR. Start by running the login command:
-
-[role=command]
-```
-oc registry login
-```
-
-You can store your Docker credentials in a custom external credential store, which is more secure than using a Docker configuration file. 
-If you are using a custom credential store for securing your registry credentials, or if you are unsure where your credentials are stored, use the following command:
-
-include::{common-includes}/os-tabs.adoc[]
-
-[.tab_content.mac_section.linux_section]
---
-[role=command]
-```
-echo $(oc whoami -t) | docker login -u developer --password-stdin $(oc registry info)
-```
---
-
-[.tab_content.windows_section]
---
-Because the Windows command prompt doesn’t support the command substitution that is displayed for Mac and Linux, run the following commands: 
-[role=command]
-```
-oc whoami
-oc whoami -t
-oc registry info
-```
-
-Replace the square brackets in the following `docker login` command with the results from the previous commands:
-[role=command]
-```
-docker login -u [oc whoami] -p [oc whoami -t] [oc registry info]
-```
---
-
-The command authenticates your credentials against the internal registry so that you are able to push and pull images. 
-The registry address will be displayed after you run the `oc registry login` command. It is formatted similar to the following output:
-[role="no_copy"]
-----
-default-route-openshift-image-registry.apps.[region].starter.openshift-online.com
-----
-
-You can also view the registry address by running the following command:
-[role=command]
-```
-oc registry info
-```
-
-Ensure that you are logged in to OpenShift and the registry, and run the following commands to tag your applications:
-
-include::{common-includes}/os-tabs.adoc[]
-
-[.tab_content.mac_section.linux_section]
---
-[role=command]
-```
-docker tag system:1.0-SNAPSHOT $(oc registry info)/$(oc project -q)/system:1.0-SNAPSHOT
-docker tag inventory:1.0-SNAPSHOT $(oc registry info)/$(oc project -q)/inventory:1.0-SNAPSHOT
-```
---
-
-[.tab_content.windows_section]
---
-Run the following commands:   
-[role=command]
-```
-oc registry info
-oc project -q
-```
-
-Replace the square brackets in the following `docker tag` commands with the results from the previous commands:
-[role=command]
-```
-docker tag system:1.0-SNAPSHOT [oc registry info]/[oc project -q]/system:1.0-SNAPSHOT
-docker tag inventory:1.0-SNAPSHOT [oc registry info]/[oc project -q]/inventory:1.0-SNAPSHOT
-```
---
-
-Finally, push your images to the registry:
-
-include::{common-includes}/os-tabs.adoc[]
-
-[.tab_content.mac_section.linux_section]
---
-[role=command]
-```
-docker push $(oc registry info)/$(oc project -q)/system:1.0-SNAPSHOT
-docker push $(oc registry info)/$(oc project -q)/inventory:1.0-SNAPSHOT
-```
---
-
-[.tab_content.windows_section]
---
-Run the following commands:
-[role=command]
-```
-oc registry info
-oc project -q
-```
-
-Replace the square brackets in the following `docker push` commands with the results from the previous commands:
-[role=command]
-```
-docker push [oc registry info]/[oc project -q]/system:1.0-SNAPSHOT
-docker push [oc registry info]/[oc project -q]/inventory:1.0-SNAPSHOT
-```
---
-
-After you push the images, run the following command to list the images that you pushed to the internal OCR:
-[role=command]
-```
-oc get imagestream
-```
-
-Verify that the `system` and `inventory` images are listed among them, for example:
-[role="no_copy"]
-----
-NAME        IMAGE REPOSITORY                                                                                     TAGS           UPDATED
-inventory   default-route-openshift-image-registry.apps.us-west-1.starter.openshift-online.com/guide/inventory   1.0-SNAPSHOT   3 seconds ago
-system      default-route-openshift-image-registry.apps.us-west-1.starter.openshift-online.com/guide/system      1.0-SNAPSHOT   17 seconds ago
-----
-
-// =================================================================================================
-// Deploying the microservices
-// =================================================================================================
-
-=== Deploying the microservices
-
-Now that your container images are built, deploy them by using a Kubernetes object configuration file.
-
-{kube} objects can be configured in a YAML file that contains a description of all your 
-deployments, services, or any other objects that you want to deploy. All objects can 
-also be deleted from the cluster by using the same YAML file that you used to deploy them.
-The [hotspot]`kubernetes.yaml` object configuration file is provided for you. If you are interested 
-in learning more about using and configuring Kubernetes clusters, check out the 
-https://openliberty.io/guides/kubernetes-intro.html[Deploying microservices to Kubernetes^]
-guide.
-
-kubernetes.yaml
-[source, yaml, linenums, role="code_column"]
-----
-include::finish/kubernetes.yaml[]
-----
-
-[role="code_command hotspot", subs="quotes"]
-----
-#Update the `kubernetes.yaml` file.#
-`kubernetes.yaml`
-----
-
-[role="edit_command_text"]
-The [hotspot=systemImage hotspot=inventoryImage]`image` is the name and tag of the container image that you want 
-to use for the container. The image address is the OCR address that you logged in to. Update the system 
-[hotspot=systemImage]`image` and the inventory [hotspot=inventoryImage]`image` fields to include your project name.
-
-Run the following commands to deploy the objects as defined in kubernetes.yaml file:
 [role='command']
 ```
-oc apply -f kubernetes.yaml
+oc new-app bitnami/zookeeper:3 \
+  -e ALLOW_ANONYMOUS_LOGIN=yes
 ```
 
-You see an output similar to the following example:
+The `bitnami/zookeeper:3` parameter indicates the `zookeeper` DockerHub image to pull and deploy.
+The `-e [key]=[value]` flag provides an environment variable to the new app.
 
-[role="no_copy"]
-----
-deployment.apps/system-deployment created
-deployment.apps/inventory-deployment created
-service/system-service created
-service/inventory-service created
-route.route.openshift.io/system-route created
-route.route.openshift.io/inventory-route created
-----
+To deploy Kafka, run the following command:
 
-When the apps are deployed, run the following command to check the status of your pods:
 [role='command']
 ```
-oc get pods
+oc new-app bitnami/kafka:2 \
+  -e KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181 \
+  -e ALLOW_PLAINTEXT_LISTENER=yes \
+  -e KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
 ```
 
-If all the pods are healthy and running, you see an output similar to the following example:
-[source, role="no_copy"]
-----
-NAME                                    READY     STATUS    RESTARTS   AGE
-system-deployment-6bd97d9bf6-4ccds      1/1       Running   0          15s
-inventory-deployment-645767664f-nbtd9   1/1       Running   0          15s
-----
+Run the following to display all the deployed resources associated with the Zookeeper and Kafka applications:
 
-// =================================================================================================
-// Making requests to the microservices
-// =================================================================================================
+[role='command']
+```
+oc get all
+```
 
-== Making requests to the microservices
+== Deploying the system and inventory applications to OpenShift
 
-To access the services and the application, use a route. A route in OpenShift exposes a service at 
-a hostname such as `www.your-web-app.com` so external users can access the application. 
+To deploy the Open Liberty `system` and `inventory` applications, you need to package the applications, build the Docker
+images, push them to the internal OpenShift registry, then deploy the images using the Open Liberty Operator.
 
-kubernetes.yaml
-[source, yaml, linenums, role="code_column"]
-----
-include::finish/kubernetes.yaml[]
-----
+=== Packaging the applications
 
-Both the [hotspot=systemRoute]`system` and [hotspot=inventoryRoute]`inventory` routes are configured in the [hotspot]`kubernetes.yaml` 
-file, and running the `oc apply -f kubernetes.yaml` command exposed both services.
+Ensure that you are in the `start` directory, then run the following commands to package the `system` and `inventory`
+applications:
 
-Your microservices can now be accessed through the hostnames that you can find by running the following command:
+[role='command']
+```
+mvn -pl models clean install
+mvn clean package
+```
+
+=== Building the images
+
+Take a look at the (hotspot)`build.yaml` template which includes two objects. The (hotspot)`image stream` object provides an easy way to
+access the image that will be pushed to the container registry. The (hotspot)`build configuration` object defines the build
+strategy to be used to build your application into an image. Notice that the (hotspot)`APP_NAME` is parameterized so that the same
+template can be used to create the objects for the `system` and `inventory` applications separately.
+
+Run the following commands to create the objects for the `system` and `inventory` applications:
+
+[role='command']
+```
+oc process -f build.yaml -p APP_NAME=system | oc create -f -
+oc process -f build.yaml -p APP_NAME=inventory | oc create -f -
+```
+
+Run the following commands to view the newly created image streams and build configurations:
+
+[role='command']
+```
+oc get imagestreams
+oc get buildconfigs
+```
+
+Ensure that you are in the `start` directory and trigger the builds by running the following commands:
+
+[role='command']
+```
+oc start-build system-buildconfig --from-dir=system/.
+oc start-build inventory-buildconfig --from-dir=inventory/.
+```
+
+The source directories will be uploaded to OpenShift to be built into the Docker images. Run the following command to
+list the builds and track their status:
+
+[role='command']
+```
+oc get builds
+```
+
+Run the following commands to view the build logs:
+
+[role='command']
+```
+oc logs build/system-buildconfig-1
+oc logs build/inventory-buildconfig-1
+```
+
+Once you see the `Push successful` message, run the following command to view the image streams:
+
+[role='command']
+```
+oc get imagestreams
+```
+
+Run the following to get more details on the newly pushed images within the streams:
+
+[role='command']
+```
+oc describe imagestream/inventory-imagestream
+```
+
+You can now deploy the images.
+
+=== Deploying the images
+
+Take a look at the (hotspot)`deploy.yaml` file, which is configured to deploy two `OpenLibertyApplication`
+resources which will be controlled by the Open Liberty Operator. (Add some more explanations about the file
+including port mapping, exposing services through routes, environment variables)
+
+Run the following command to deploy the `system` and `inventory` applications:
+
+[role='command']
+```
+oc apply -f deploy.yaml
+```
+
+== Accessing the inventory application
+
+To access the `inventory` application, run the following command and make note of the `HOST`:
 
 [role='command']
 ```
 oc get routes
 ```
 
-They can also be found in the web console by following the `Networking > Routes > Location` path. 
-Hostnames are in the `inventory-route-[project-name].apps.[region].starter.openshift-online.com` format. Ensure that
-you are in your project, not the `default` project, which is shown in the upper-left corner of the web console.
+Then access the `inventory` application by visiting the following URL, ensure that you substitute the appropriate `HOST`:
 
-To access your microservices, point your browser to the following URLs. Substitute the appropriate hostnames
-for the `system` and `inventory` services:
+- http://[HOST]/inventory/systems
 
-- `http://[system-hostname]/system/properties/`
-- `http://[inventory-hostname]/inventory/systems`
+== Scaling up the system application
 
-In the first URL, you see a result in JSON format with the system properties of the container JVM. The second URL returns an empty list, 
-which is expected because no system properties are stored in the inventory yet.
+The `inventory` application displays the `hostname` and `systemLoad` of all `system` applications that are publishing
+messages to the Kafka broker. Since there is only one running `system` pod, there is only one element in the `inventory`.
+Scaling applications up is easy with Operators, simply update the `deploy.yaml` file with the `replica: n` specification
+(add an update file hotspot)
 
-Point your browser to the `http://[inventory-hostname]/inventory/systems/[system-hostname]` URL. When you to go this URL, the system
-properties that are taken from the `system` service are automatically stored in the inventory. Revisit the 
-`http://[inventory-hostname]/inventory/systems` URL and you see a new entry.
-
-// =================================================================================================
-// Testing the microservices
-// =================================================================================================
-
-== Testing the microservices
-
-pom.xml
-[source, xml, linenums, role='code_column']
-----
-include::finish/inventory/pom.xml[]
-----
-
-A few tests are included for you to test the basic functions of the microservices. 
-If a test failure occurs, then you might have introduced a bug into the code. 
-To run the tests, wait for all pods to be in the ready state before you proceed further. 
-The default properties that are defined in the [hotspot]`pom.xml` file are:
-
-[cols="15, 100", options="header"]
-|===
-| *Property*                                            | *Description*
-| [hotspot=systemIP]`system.ip`                         | IP or hostname of the `system-service` {kube} Service
-| [hotspot=inventoryIP]`inventory.ip`                   | IP or hostname of the `inventory-service` {kube} Service
-|===
-
-Use the following command to run the integration tests against your cluster. Substitute 
-`[region]` and `[project-name]` with the appropriate values:
-
-[role=command]
-```
-mvn verify \
--Dsystem.ip=system-route-[project-name].apps.[region].starter.openshift-online.com  \
--Dinventory.ip=inventory-route-[project-name].apps.[region].starter.openshift-online.com
-```
-
-- The `system.ip` parameter is replaced with the appropriate hostname to access your system microservice.
-- The `inventory.ip` parameter is replaced with the appropriate hostname to access your inventory microservice.
-
-If the tests pass, you see an output for each service similar to the following example:
-
-[source, role="no_copy"]
-----
--------------------------------------------------------
- T E S T S
--------------------------------------------------------
-Running it.io.openliberty.guides.system.SystemEndpointIT
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.673 sec - in it.io.openliberty.guides.system.SystemEndpointIT
-
-Results:
-
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
-----
-
-[source, role="no_copy"]
-----
--------------------------------------------------------
- T E S T S
--------------------------------------------------------
-Running it.io.openliberty.guides.inventory.InventoryEndpointIT
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.222 sec - in it.io.openliberty.guides.inventory.InventoryEndpointIT
-
-Results:
-
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
-----
-
-// =================================================================================================
-// Tearing down the environment
-// =================================================================================================
-
-== Tearing down the environment
-
-When you no longer need your deployed microservices, you can delete the {kube} deployments, services, and routes 
-by running the following command:
+Run the following command to update the resources:
 
 [role='command']
 ```
-oc delete -f kubernetes.yaml
+oc apply -f deploy.yaml
 ```
 
-To delete the pushed images, run the following commands:
+You see the following output:
+
+[role='no_copy']
+```
+openlibertyapplication.openliberty.io/system created
+openlibertyapplication.openliberty.io/inventory unchanged
+```
+
+Notice that only the `system` resource was updated since there was a change in its specification, and that the `inventory`
+resource was left unchanged.
+
+Run the following command to see the newly scaled up `system` pods:
 
 [role='command']
 ```
-oc delete imagestream/inventory
-oc delete imagestream/system
+oc get pods
 ```
 
-Finally, you can delete the project by running the following command:
-
-[role='command']
-```
-oc delete project [project-name]
-```
-
-// =================================================================================================
-// finish
-// =================================================================================================
+Revisit the `inventory` application and you now see five elements.
 
 == Great work! You're done!
 
-You just deployed two microservices running in Open Liberty to OpenShift. You also 
-learned how to use `oc` to deploy your microservices on a {kube} cluster.
+You just deployed two microservices running in Open Liberty to OpenShift using the Open Liberty Operator.
 
 // Multipane
 include::{common-includes}/attribution.adoc[subs="attributes"]
