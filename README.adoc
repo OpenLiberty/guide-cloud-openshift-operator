@@ -28,9 +28,9 @@ Explore how to deploy microservices using the Open Liberty Operator on Red Hat O
 
 == What you'll learn 
 
-[Brief intro to OpenShift + the importance of cloud infrastructures]
-[Explanation of Operators and their use cases / how they’re beneficial over standard deployment processes]
-[Brief summary of the guide, what the user will be walked through, the structure of the application]
+(Brief intro to OpenShift + the importance of cloud infrastructures)
+(Explanation of Operators and their use cases / how they’re beneficial over standard deployment processes)
+(Brief summary of the guide, what the user will be walked through, the structure of the application)
 
 == Additional prerequisites
 
