@@ -6,12 +6,14 @@ metadata:
     description: "Build template for the system and inventory service"
     tags: "build"
 objects:
+    # tag::imageStream[]
   - apiVersion: v1
     kind: ImageStream
     metadata:
       name: "${APP_NAME}-imagestream"
       labels:
         application: "${APP_NAME}"
+    # end::imageStream[]
   - apiVersion: v1
     kind: BuildConfig
     metadata:
@@ -20,7 +22,6 @@ objects:
         build: "${APP_NAME}-build"
     spec:
       source:
-        binary: {}
         type: Binary
       strategy:
         type: Docker
