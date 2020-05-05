@@ -28,18 +28,30 @@ Explore how to deploy microservices using the Open Liberty Operator on Red Hat O
 
 == What you'll learn 
 
-(Brief intro to OpenShift + the importance of cloud infrastructures)
+You will learn how to use the Open Liberty Operator to deploy two microservices to Red Hat OpenShift.
 
-(Explanation of Operators and their use cases / how they’re beneficial over standard deployment processes)
+There are different cloud-based solutions for running your Kubernetes workloads. With a cloud-based infrastructure, you can
+focus on developing your microservices without worrying about low-level infrastructure details for deployment. Using a cloud
+helps you to easily scale and manage your microservices in a high-availability setup.
 
-(Brief summary of the guide, what the user will be walked through, the structure of the application)
+OpenShift is a Kubernetes-based platform with added functions. It streamlines the DevOps process by providing an intuitive
+development pipeline. It also provides integration with multiple tools to make the deployment and management of cloud applications
+easier. To learn more about the different platforms that Red Hat OpenShift offers, check out their
+https://docs.openshift.com/[official documentation^].
+
+(Explain operators)
+
+You will deploy two microservices, `system` and `inventory` to an OpenShift cluster using the Open Liberty Operator.
+The `system` and `inventory` applications will communicate with a Kafka container that you will deploy directly from
+DockerHub. To learn more about the reactive Java application used in this guide and how it works, check out the
+https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reactive Java microservices^] guide.
 
 == Additional prerequisites
 
 Before you begin, the following additional tools are needed:
 
 - *OpenShift cluster:* You need admin access and control over the OpenShift cluster you deploy your application to.
-There are various types of clusters and deployments, and this guide uses OpenShift Container Platform 4.3.
+There are various types of clusters and deployments, this guide uses OpenShift Container Platform 4.3.
 
 - *Docker:* You need a containerization software for building containers. You will use Docker in this guide. For
 installation instructions, refer to the official https://docs.docker.com/install/[Docker documentation^].
@@ -63,22 +75,27 @@ oc new-project guide
 
 The Open Liberty Operator can be installed on an OpenShift through the CLI or through the web console.
 
-*Installing through the CLI*
+*Using the CLI*
 
 To install the Open Liberty Operator through the CLI, follow the instructions from the
 https://github.com/OpenLiberty/open-liberty-operator#operator-installation[official GitHub repository^].
 
-*Installing through the web console*
+*Using the web console*
 
 To install the Open Liberty Operator through the web console, navigate to the sidebar `Operators > OperatorHub`, and
 search and install the `Open Liberty Operator`.
 
-[add a snippet getting the project resources and showcasing the operator deployments]
+Run the following command to view all the supported API resources available through the Open Liberty Operator:
+
+[role='command']
+```
+oc api-resources --api-group=openliberty.io
+```
 
 == Deploying the Kafka service to OpenShift
 
 Apache Kafka is the messaging broker used in this application. The image required to deploy the application is available
-and can be pulled and deployed directly from Docker Hub.
+and can be pulled and deployed directly from DockerHub.
 
 To deploy Zookeeper, run the following command:
 
@@ -89,7 +106,7 @@ oc new-app bitnami/zookeeper:3 \
 ```
 
 The `bitnami/zookeeper:3` parameter indicates the `zookeeper` DockerHub image to pull and deploy.
-The `-e [key]=[value]` flag provides an environment variable to the new app.
+The `-e [key]=[value]` flag provides an environment variable to the newly created app.
 
 To deploy Kafka, run the following command:
 
@@ -110,6 +127,20 @@ oc get all
 
 == Deploying the system and inventory applications to OpenShift
 
+//File 0
+build.yaml
+[source, YAML, linenums, role='code_column']
+----
+include::finish/build.yaml[]
+----
+
+//File 1
+deploy.yaml
+[source, YAML, linenums, role='code_column hide_tags=replicas']
+----
+include::finish/deploy.yaml[]
+----
+
 To deploy the Open Liberty `system` and `inventory` applications, you need to package the applications, build the Docker
 images, push them to the internal OpenShift registry, then deploy the images using the Open Liberty Operator.
 
@@ -124,11 +155,25 @@ mvn -pl models clean install
 mvn clean package
 ```
 
-=== Building the images
+=== Building and pushing the images
 
-Take a look at the (hotspot)`build.yaml` template which includes two objects. The (hotspot)`image stream` object provides an easy way to
-access the image that will be pushed to the container registry. The (hotspot)`build configuration` object defines the build
-strategy to be used to build your application into an image. Notice that the (hotspot)`APP_NAME` is parameterized so that the same
+You can configure OpenShift to build your images from a variety of methods.
+
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Create the `build.yaml` template file.#
+`build.yaml`
+----
+
+The [hotspot file=0]`build.yaml` template includes two objects. The [hotspot=imageStream file=0]`image stream` object provides an abstraction
+from the image in the image registry, allowing you to reference and tag the image. The image registry that is used is
+the internal OpenShift integrated container registry.
+
+The [hotspot=buildConfig file=0]`build configuration` object defines a single
+build definition as well as any triggers to kick start the build. The [hotspot=source file=0]`source` spec defines the build input. In this case,
+the build input are your [hotspot=binary file=0]`binary` (local) files, which will be streamed to OpenShift for the build. The template specifies
+a [hotspot=docker file=0]`Docker` strategy build, which will invoke the `docker build` command, and create a runnable application image
+from the build input. The template is parameterized with the [hotspot=appname file=0]`APP_NAME` parameter so that the same
 template can be used to create the objects for the `system` and `inventory` applications separately.
 
 Run the following commands to create the objects for the `system` and `inventory` applications:
@@ -155,8 +200,8 @@ oc start-build system-buildconfig --from-dir=system/.
 oc start-build inventory-buildconfig --from-dir=inventory/.
 ```
 
-The source directories will be uploaded to OpenShift to be built into the Docker images. Run the following command to
-list the builds and track their status:
+The local `system` and `inventory` directories will be uploaded to OpenShift to be built into the Docker images. Run the
+following command to list the builds and track their status:
 
 [role='command']
 ```
@@ -189,38 +234,103 @@ You can now deploy the images.
 
 === Deploying the images
 
-Take a look at the (hotspot)`deploy.yaml` file, which is configured to deploy two `OpenLibertyApplication`
-resources which will be controlled by the Open Liberty Operator. (Add some more explanations about the file
-including port mapping, exposing services through routes, environment variables)
+You can configure the specifics of the Open Liberty Operator controlled deployment with a YAML configuration file.
 
-Run the following command to deploy the `system` and `inventory` applications:
+[role="code_command hotspot file=1", subs="quotes"]
+----
+#Create the `deploy.yaml` configuration file.#
+`deploy.yaml`
+----
+
+The [hotspot file=1]`deploy.yaml` file is configured to deploy two [hotspot=olapp1 hotspot=olapp2 file=1]`OpenLibertyApplication`
+resources, the [hotspot=system file=1]`system` and [hotspot=inventory file=1]`inventory`, which will be controlled by
+the Open Liberty Operator.
+
+The [hotspot=systemImage file=1]`applicationImage` parameter value is the only necessary parameter, and can be set in the format
+`<project-name>/<image-stream-name>[:tag]`. The [hotspot=system file=1]`system` application is configured to use the
+[hotspot=systemImage file=1]`image` created from the earlier build. The [hotspot=pullPolicy file=1]`pullPolicy` parameter
+specifies whether the application image should be pulled prior to starting up the container. The
+[hotspot=systemEnv file=1]`env` parameter is used to specify environment variables to pass to the container at runtime.
+The necessary environment variables to communicate with [hotspot=systemEnv file=1]Kafka are provided.
+
+The [hotspot=inventory file=1]`inventory` application is configured similarly to the [hotspot=system file=1]`system` application,
+and additionally includes the [hotspot=service file=1]`service` and [hotspot=expose file=1]`expose` parameters. The
+[hotspot=servicePort file=1]`service.port` parameter specifies the port exposed by the container, allowing the application
+to be accessed from outside the container. To access the application from outside of the cluster, it needs to be exposed,
+which is done by setting the [hotspot=expose file=1]`expose` parameter to `true`.
+
+Run the following command to deploy the `system` and `inventory` applications with the previously explained configurations:
 
 [role='command']
 ```
 oc apply -f deploy.yaml
 ```
 
+Run the following command to view your newly created `OpenLibertyApplication` resources:
+
+[role='command']
+```
+oc get OpenLibertyApplications
+```
+
+You can also substitute `OpenLibertyApplications` with the short form `olapps`.
+
+Run the following to view the details of your applications:
+
+[role='command']
+```
+oc describe olapps/system
+oc describe olapps/inventory
+```
+
 == Accessing the inventory application
 
-To access the `inventory` application, run the following command and make note of the `HOST`:
+To access the exposed `inventory` application, run the following command and make note of the `HOST`:
 
 [role='command']
 ```
 oc get routes
 ```
 
-Then access the `inventory` application by visiting the following URL, ensure that you substitute the appropriate `HOST`:
+Visit the `inventory` application by visiting the following URL, ensure that you substitute the appropriate `HOST`:
 
 - `http://[HOST]/inventory/systems`
 
+You see a JSON response like the following example. Your JSON response might not be formatted. The sample output
+was formatted for readability:
+
+[role='no_copy']
+```
+[
+    {
+        "hostname": "system-7cbc47455c-664wh",
+        "systemLoad": 1.15
+    }
+]
+```
+
 == Scaling up the system application
+
+//File 0
+deploy.yaml
+[source, YAML, linenums, role='code_column']
+----
+include::finish/deploy.yaml[]
+----
 
 The `inventory` application displays the `hostname` and `systemLoad` of all `system` applications that are publishing
 messages to the Kafka broker. Since there is only one running `system` pod, there is only one element in the `inventory`.
-Scaling applications up is easy with Operators, simply update the `deploy.yaml` file with the `replica: n` specification
-(add an update file hotspot)
+Scaling applications up is easy with Operators, simply update the `deploy.yaml` file with the `replica: n` parameter.
 
-Run the following command to update the resources:
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Update the `deploy.yaml` configuration file.#
+`deploy.yaml`
+----
+[role="edit_command_text"]
+Add the [hotspot=replicas file=0]`replicas` parameter to the `system` configuration.
+
+Run the following command to update the `system` resource:
 
 [role='command']
 ```
@@ -245,7 +355,7 @@ Run the following command to see the newly scaled up `system` pods:
 oc get pods
 ```
 
-Revisit the `inventory` application and you now see five elements.
+Revisit the `inventory` application and you now see three elements.
 
 == Great work! You're done!
 

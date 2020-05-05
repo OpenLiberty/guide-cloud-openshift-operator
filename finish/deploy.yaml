@@ -1,15 +1,26 @@
+# tag::system[]
 apiVersion: openliberty.io/v1beta1
 kind: OpenLibertyApplication
 metadata:
   name: system
 spec:
+  # tag::systemImage[]
   applicationImage: guide/system-imagestream:1.0-SNAPSHOT
+  # end::systemImage[]
+  # tag::pullPolicy[]
   pullPolicy: Always
-  replicas: 5
+  # end::pullPolicy[]
+  # tag::replicas[]
+  replicas: 3
+  # end::replicas[]
+  # tag::systemEnv[]
   env:
     - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
       value: "kafka:9092"
+  # end::systemEnv[]
+# end::system[]
 ---
+# tag::inventory[]
 apiVersion: openliberty.io/v1beta1
 kind: OpenLibertyApplication
 metadata:
@@ -17,9 +28,16 @@ metadata:
 spec:
   applicationImage: guide/inventory-imagestream:1.0-SNAPSHOT
   pullPolicy: Always
+  # tag::service[]
   service:
+    # tag::servicePort[]
     port: 9085
+    # end::servicePort[]
+  # end::service[]
+  # tag::expose[]
   expose: true
+  # end::expose[]
   env:
     - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
       value: "kafka:9092"
+# end::inventory[]
