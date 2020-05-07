@@ -27,7 +27,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.junit.jupiter.api.Test;
 import org.microshed.testing.SharedContainerConfig;
 import org.microshed.testing.jupiter.MicroShedTest;
-import org.microshed.testing.kafka.KafkaConsumerConfig;
+import org.microshed.testing.kafka.KafkaConsumerClient;
 
 import io.openliberty.guides.models.SystemLoad;
 import io.openliberty.guides.models.SystemLoad.SystemLoadDeserializer;
@@ -41,7 +41,7 @@ public class SystemServiceIT {
     // tag::KafkaConsumer2[]
     // tag::KafkaConsumerConfig[]
     // tag::valueDeserializer[]
-    @KafkaConsumerConfig(valueDeserializer = SystemLoadDeserializer.class,
+    @KafkaConsumerClient(valueDeserializer = SystemLoadDeserializer.class,
     // end::valueDeserializer[]
                          groupId = "system-load-status",
                          // tag::systemLoadTopic[]
