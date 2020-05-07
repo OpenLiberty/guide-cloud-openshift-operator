@@ -6,7 +6,7 @@
 // Contributors:
 //     IBM Corporation
 //
-:projectid: operators-openshift
+:projectid: operator-openshift
 :page-layout: guide-multipane
 :page-duration: 45 minutes 
 :page-releasedate: 2019-09-11
@@ -76,12 +76,10 @@ oc new-project guide
 The Open Liberty Operator can be installed on an OpenShift through the CLI or through the web console.
 
 *Using the CLI*
-
 To install the Open Liberty Operator through the CLI, follow the instructions from the
 https://github.com/OpenLiberty/open-liberty-operator#operator-installation[official GitHub repository^].
 
 *Using the web console*
-
 To install the Open Liberty Operator through the web console, navigate to the sidebar `Operators > OperatorHub`, and
 search and install the `Open Liberty Operator`.
 
