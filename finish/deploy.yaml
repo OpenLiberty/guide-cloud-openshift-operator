@@ -3,6 +3,8 @@ apiVersion: openliberty.io/v1beta1
 kind: OpenLibertyApplication
 metadata:
   name: system
+  labels:
+    name: system
 spec:
   # tag::systemImage[]
   applicationImage: guide/system-imagestream:1.0-SNAPSHOT
@@ -25,6 +27,8 @@ apiVersion: openliberty.io/v1beta1
 kind: OpenLibertyApplication
 metadata:
   name: inventory
+  labels:
+    name: inventory
 spec:
   applicationImage: guide/inventory-imagestream:1.0-SNAPSHOT
   pullPolicy: Always
