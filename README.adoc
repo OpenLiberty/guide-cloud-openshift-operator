@@ -129,14 +129,14 @@ oc get all
 
 //File 0
 build.yaml
-[source, YAML, linenums, role='code_column']
+[source, yaml, linenums, role='code_column']
 ----
 include::finish/build.yaml[]
 ----
 
 //File 1
 deploy.yaml
-[source, YAML, linenums, role='code_column hide_tags=replicas']
+[source, yaml, linenums, role='code_column hide_tags=replicas']
 ----
 include::finish/deploy.yaml[]
 ----
