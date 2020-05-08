@@ -65,6 +65,7 @@ include::{common-includes}/gitclone.adoc[]
 
 == Installing the Open Liberty Operator
 
+Log into your OpenShift cluster, this guide assumes that all subsequent commands will be run from within the cluster.
 Before installing any resources, you need a project on your OpenShift cluster. Create a new project named `guide` by
 running the following command:
 
@@ -92,6 +93,18 @@ Run the following command to view all the supported API resources available thro
 oc api-resources --api-group=openliberty.io
 ```
 
+You see the following output:
+
+[role='no_copy']
+```
+NAME                      SHORTNAMES         APIGROUP         NAMESPACED   KIND
+openlibertyapplications   olapp,olapps       openliberty.io   true         OpenLibertyApplication
+openlibertydumps          oldump,oldumps     openliberty.io   true         OpenLibertyDump
+openlibertytraces         oltrace,oltraces   openliberty.io   true         OpenLibertyTrace
+```
+
+You will be making `OpenLibertyApplication` resources in the upcoming sections.
+
 == Deploying the Kafka service to OpenShift
 
 Apache Kafka is the messaging broker used in this application. The image required to deploy the application is available
@@ -102,6 +115,7 @@ To deploy Zookeeper, run the following command:
 [role='command']
 ```
 oc new-app bitnami/zookeeper:3 \
+  -l name=kafka \
   -e ALLOW_ANONYMOUS_LOGIN=yes
 ```
 
@@ -113,6 +127,7 @@ To deploy Kafka, run the following command:
 [role='command']
 ```
 oc new-app bitnami/kafka:2 \
+  -l name=kafka \
   -e KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181 \
   -e ALLOW_PLAINTEXT_LISTENER=yes \
   -e KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
@@ -122,7 +137,32 @@ Run the following to display all the deployed resources associated with the Zook
 
 [role='command']
 ```
-oc get all
+oc get all -l name=kafka
+```
+
+You see the following output:
+
+[role='no_copy']
+```
+NAME                    READY   STATUS    RESTARTS   AGE
+pod/kafka-1-l9jht       1/1     Running   0          7s
+pod/zookeeper-1-2hq6f   1/1     Running   0          23s
+
+NAME                                DESIRED   CURRENT   READY   AGE
+replicationcontroller/kafka-1       1         1         1       10s
+replicationcontroller/zookeeper-1   1         1         1       26s
+
+NAME                TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                               AGE
+service/kafka       ClusterIP   172.30.189.177   <none>        9092/TCP                              11s
+service/zookeeper   ClusterIP   172.30.193.179   <none>        2181/TCP,2888/TCP,3888/TCP,8080/TCP   28s
+
+NAME                                           REVISION   DESIRED   CURRENT   TRIGGERED BY
+deploymentconfig.apps.openshift.io/kafka       1          1         1         config,image(kafka:2)
+deploymentconfig.apps.openshift.io/zookeeper   1          1         1         config,image(zookeeper:3)
+
+NAME                                       IMAGE REPOSITORY                                                   TAGS   UPDATED
+imagestream.image.openshift.io/kafka       image-registry.openshift-image-registry.svc:5000/guide/kafka       2      10 seconds ago
+imagestream.image.openshift.io/zookeeper   image-registry.openshift-image-registry.svc:5000/guide/zookeeper   3      27 seconds ago
 ```
 
 == Deploying the system and inventory applications to OpenShift
@@ -184,12 +224,33 @@ oc process -f build.yaml -p APP_NAME=system | oc create -f -
 oc process -f build.yaml -p APP_NAME=inventory | oc create -f -
 ```
 
-Run the following commands to view the newly created image streams and build configurations:
+Run the following commands to view the newly created image streams and build configurations for each application:
 
 [role='command']
 ```
-oc get imagestreams
-oc get buildconfigs
+oc get all -l name=system
+oc get all -l name=inventory
+```
+
+You see the following resources:
+
+[role='no_copy']
+```
+NAME                                        READY   STATUS      RESTARTS   AGE
+pod/inventory-buildconfig-1-build           0/1     Completed   0          6m16s
+pod/system-buildconfig-1-build              0/1     Completed   0          10m
+
+NAME                                                   TYPE     FROM     LATEST
+buildconfig.build.openshift.io/inventory-buildconfig   Docker   Binary   1
+buildconfig.build.openshift.io/system-buildconfig      Docker   Binary   1
+
+NAME                                               TYPE     FROM             STATUS     STARTED          DURATION
+build.build.openshift.io/system-buildconfig-1      Docker   Binary@f24cb58   Complete   10 minutes ago   1m7s
+build.build.openshift.io/inventory-buildconfig-1   Docker   Binary@f24cb58   Complete   6 minutes ago    56s
+
+NAME                                                   IMAGE REPOSITORY                                                               TAGS           UPDATED
+imagestream.image.openshift.io/inventory-imagestream   image-registry.openshift-image-registry.svc:5000/guide/inventory-imagestream   1.0-SNAPSHOT   5 minutes ago
+imagestream.image.openshift.io/system-imagestream      image-registry.openshift-image-registry.svc:5000/guide/system-imagestream      1.0-SNAPSHOT   9 minutes ago
 ```
 
 Ensure that you are in the `start` directory and trigger the builds by running the following commands:
@@ -206,6 +267,15 @@ following command to list the builds and track their status:
 [role='command']
 ```
 oc get builds
+```
+
+You see the following output:
+
+[role='command']
+```
+NAME                      TYPE     FROM             STATUS     STARTED
+system-buildconfig-1      Docker   Binary@f24cb58   Running    45 seconds ago
+inventory-buildconfig-1   Docker   Binary@f24cb58   Running    13 seconds ago
 ```
 
 Run the following commands to view the build logs:
@@ -228,6 +298,7 @@ Run the following to get more details on the newly pushed images within the stre
 [role='command']
 ```
 oc describe imagestream/inventory-imagestream
+oc describe imagestream/system-imagestream
 ```
 
 You can now deploy the images.
@@ -355,11 +426,51 @@ Run the following command to see the newly scaled up `system` pods:
 oc get pods
 ```
 
-Revisit the `inventory` application and you now see three elements.
+Revisit the `inventory` application and you now see three elements:
+
+[role='no_copy']
+```
+[
+    {
+        "hostname": "system-5bb7b86fd5-b5plz",
+        "systemLoad": 2.73
+    },
+    {
+        "hostname": "system-5bb7b86fd5-fkd5j",
+        "systemLoad": 2.95
+    },
+    {
+        "hostname": "system-5bb7b86fd5-pgcbf",
+        "systemLoad": 2.73
+    }
+]
+```
+
+== Tearing down the environment
+
+When you no longer need your project, delete it by running the following command:
+
+[role='command']
+```
+oc delete project guide
+```
+
+This will delete all the applications and resources.
 
 == Great work! You're done!
 
 You just deployed two microservices running in Open Liberty to OpenShift using the Open Liberty Operator.
+
+== Related Links
+
+Learn more about MicroProfile Reactive Messaging and how the `system` and `inventory` applications work by checking
+out the https://microshed.org/microshed-testing/[Creating reactive Java microservices^] guide.
+
+Learn how to deploy microservices to an OKD cluster using Minishift by checking out the
+https://openliberty.io/guides/okd.html[Deploying microservices to an OKD cluster using Minishift^] guide.
+
+Learn how to deploy microservices to an OpenShift Online cluster by checking out the
+https://openliberty.io/guides/cloud-openshift.html[Deploying microservices to OpenShift^] guide.
 
 // Multipane
 include::{common-includes}/attribution.adoc[subs="attributes"]
