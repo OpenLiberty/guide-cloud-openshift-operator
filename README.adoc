@@ -272,7 +272,7 @@ oc get builds
 
 You see the following output:
 
-[role='command']
+[role='no_copy']
 ```
 NAME                      TYPE     FROM             STATUS     STARTED
 system-buildconfig-1      Docker   Binary@f24cb58   Running    45 seconds ago
@@ -385,7 +385,7 @@ was formatted for readability:
 
 //File 0
 deploy.yaml
-[source, YAML, linenums, role='code_column']
+[source, yaml, linenums, role='code_column']
 ----
 include::finish/deploy.yaml[]
 ----
