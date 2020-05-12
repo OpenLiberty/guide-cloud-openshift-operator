@@ -298,9 +298,28 @@ Run the following to get more details on the newly pushed images within the stre
 
 [role='command']
 ```
-oc describe imagestream/inventory-imagestream
 oc describe imagestream/system-imagestream
+oc describe imagestream/inventory-imagestream
 ```
+
+The `system-imagestream` output is partially shown:
+
+[role='no_copy']
+```
+Name:			    system-imagestream
+Namespace:		    guide
+Created:		    2 minutes ago
+Labels:			    name=system
+Annotations:		<none>
+Image Repository:	image-registry.openshift-image-registry.svc:5000/guide/system-imagestream
+Image Lookup:		local=false
+Unique Images:		1
+Tags:			    1
+
+...
+```
+
+The `inventory-imagestream` has a similar output and has been omitted.
 
 You can now deploy the images.
 
@@ -354,6 +373,24 @@ Run the following to view the details of your applications:
 oc describe olapps/system
 oc describe olapps/inventory
 ```
+
+The `olapps/system` output is partially shown:
+
+[role='no_copy']
+```
+Name:         system
+Namespace:    guide
+Labels:       app.kubernetes.io/part-of=system
+              name=system
+Annotations:  kubectl.kubernetes.io/last-applied-configuration:
+                {"apiVersion":"openliberty.io/v1beta1","kind":"OpenLibertyApplication","metadata":{"annotations":{},"labels":{"name":"system"},"name":"sys...
+API Version:  openliberty.io/v1beta1
+Kind:         OpenLibertyApplication
+
+...
+```
+
+The `olapps/inventory` has a similar output and has been omitted.
 
 == Accessing the inventory application
 
