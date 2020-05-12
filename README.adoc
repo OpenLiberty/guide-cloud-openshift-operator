@@ -39,7 +39,14 @@ development pipeline. It also provides integration with multiple tools to make t
 easier. To learn more about the different platforms that Red Hat OpenShift offers, check out their
 https://docs.openshift.com/[official documentation^].
 
-(Explain operators)
+The Open Liberty Operator provide a method of deploying and managing Open Liberty applications on OKD or OpenShift clusters.
+Using Custom Resource Definitions (CRDs) the Open Liberty Operator introduces a new object, the OpenLibertyApplication.
+The Operator acts as a custom controller, continuously comparing the current state and the desired state of the Kubernetes
+node and deployed OpenLibertyApplications, and reconciling when necessary. The OpenLibertyApplication is a high-level object,
+which can include regular well-known ‘children’ resources such as Pods, Deployments, Services, ReplicaSets, etc. Since the Open
+Liberty Operator controls the ‘parent’ OpenLibertyApplication resource, the Operator also subsequently controls all ‘children’ resources.
+To learn more about OpenShift Operators, check out their https://www.openshift.com/learn/topics/operators[Operators tech topic article^].
+To learn more about the Open Liberty Operator, check out the https://github.com/OpenLiberty/open-liberty-operator[official documentation].
 
 You will deploy two microservices, `system` and `inventory` to an OpenShift cluster using the Open Liberty Operator.
 The `system` and `inventory` applications will communicate with a Kafka container that you will deploy directly from
