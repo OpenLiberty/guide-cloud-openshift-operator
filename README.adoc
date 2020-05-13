@@ -344,9 +344,9 @@ The [hotspot file=1]`deploy.yaml` file is configured to deploy two [hotspot=olap
 resources, the [hotspot=system file=1]`system` and [hotspot=inventory file=1]`inventory`, which will be controlled by
 the Open Liberty Operator.
 
-The [hotspot=systemImage file=1]`applicationImage` parameter value is the only necessary parameter, and can be set in the format
+The [hotspot=sysImage file=1]`applicationImage` parameter value is the only necessary parameter, and can be set in the format
 `<project-name>/<image-stream-name>[:tag]`. The [hotspot=system file=1]`system` application is configured to use the
-[hotspot=systemImage file=1]`image` created from the earlier build. The [hotspot=pullPolicy file=1]`pullPolicy` parameter
+[hotspot=sysImage file=1]`image` created from the earlier build. The [hotspot=pullPolicy file=1]`pullPolicy` parameter
 specifies whether the application image should be pulled prior to starting up the container. The
 [hotspot=systemEnv file=1]`env` parameter is used to specify environment variables to pass to the container at runtime.
 The necessary environment variables to communicate with [hotspot=systemEnv file=1]Kafka are provided.
