@@ -313,15 +313,15 @@ The `system-imagestream` output is partially shown:
 
 [role='no_copy']
 ```
-Name:			    system-imagestream
-Namespace:		    guide
-Created:		    2 minutes ago
-Labels:			    name=system
-Annotations:		<none>
-Image Repository:	image-registry.openshift-image-registry.svc:5000/guide/system-imagestream
-Image Lookup:		local=false
-Unique Images:		1
-Tags:			    1
+Name:                     system-imagestream
+Namespace:                guide
+Created:                  2 minutes ago
+Labels:                   name=system
+Annotations:              <none>
+Image Repository:         image-registry.openshift-image-registry.svc:5000/guide/system-imagestream
+Image Lookup:             local=false
+Unique Images:            1
+Tags:                     1
 
 ...
 ```
