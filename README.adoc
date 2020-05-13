@@ -413,7 +413,7 @@ You see an output similar to:
 [role='no_copy']
 ```
 NAME        HOST/PORT                                    PATH   SERVICES    PORT       TERMINATION   WILDCARD
-inventory   inventory-guide.apps.poops.os.fyre.ibm.com          inventory   9085-tcp                 None
+inventory   inventory-guide.apps.lights.os.fyre.ibm.com          inventory   9085-tcp                 None
 ```
 
 
@@ -421,7 +421,7 @@ Visit the `inventory` application by visiting the following URL, ensure that you
 
 - `http://[HOST]/inventory/systems`
 
-For example: `http://inventory-guide.apps.poops.os.fyre.ibm.com/inventory/systems`.
+For example: `http://inventory-guide.apps.lights.os.fyre.ibm.com/inventory/systems`.
 
 You see a JSON response like the following example. Your JSON response might not be formatted. The sample output
 was formatted for readability:
