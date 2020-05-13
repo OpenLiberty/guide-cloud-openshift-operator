@@ -421,7 +421,7 @@ Visit the `inventory` application by visiting the following URL, ensure that you
 
 - `http://[HOST]/inventory/systems`
 
-For example: `http://inventory-guide.apps.lights.os.fyre.ibm.com/inventory/systems`.
+For example: `\http://inventory-guide.apps.lights.os.fyre.ibm.com/inventory/systems`.
 
 You see a JSON response like the following example. Your JSON response might not be formatted. The sample output
 was formatted for readability:
