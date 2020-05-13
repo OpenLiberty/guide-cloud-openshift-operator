@@ -12,7 +12,7 @@ objects:
     metadata:
       name: "${APP_NAME}-imagestream"
       labels:
-        application: "${APP_NAME}"
+        name: "${APP_NAME}"
     # end::imageStream[]
     # tag::buildConfig[]
   - apiVersion: v1
@@ -20,7 +20,7 @@ objects:
     metadata:
       name: "${APP_NAME}-buildconfig"
       labels:
-        build: "${APP_NAME}-build"
+        name: "${APP_NAME}"
     spec:
       # tag::source[]
       source:

@@ -1,12 +1,16 @@
 # tag::system[]
 apiVersion: openliberty.io/v1beta1
+# tag::olapp1[]
 kind: OpenLibertyApplication
+# end::olapp1[]
 metadata:
   name: system
+  labels:
+    name: system
 spec:
-  # tag::systemImage[]
+  # tag::sysImage[]
   applicationImage: guide/system-imagestream:1.0-SNAPSHOT
-  # end::systemImage[]
+  # end::sysImage[]
   # tag::pullPolicy[]
   pullPolicy: Always
   # end::pullPolicy[]
@@ -22,9 +26,13 @@ spec:
 ---
 # tag::inventory[]
 apiVersion: openliberty.io/v1beta1
+# tag::olapp2[]
 kind: OpenLibertyApplication
+# end::olapp2[]
 metadata:
   name: inventory
+  labels:
+    name: inventory
 spec:
   applicationImage: guide/inventory-imagestream:1.0-SNAPSHOT
   pullPolicy: Always
