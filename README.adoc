@@ -349,7 +349,7 @@ The [hotspot=sysImage file=1]`applicationImage` parameter value is the only nece
 [hotspot=sysImage file=1]`image` created from the earlier build. The [hotspot=pullPolicy file=1]`pullPolicy` parameter
 specifies whether the application image should be pulled prior to starting up the container. The
 [hotspot=systemEnv file=1]`env` parameter is used to specify environment variables to pass to the container at runtime.
-The necessary environment variables to communicate with [hotspot=systemEnv file=1]Kafka are provided.
+The necessary environment variables to communicate with [hotspot=systemEnv file=1]`Kafka` are provided.
 
 The [hotspot=inventory file=1]`inventory` application is configured similarly to the [hotspot=system file=1]`system` application,
 and additionally includes the [hotspot=service file=1]`service` and [hotspot=expose file=1]`expose` parameters. The
@@ -408,9 +408,20 @@ To access the exposed `inventory` application, run the following command and mak
 oc get routes
 ```
 
+You see an output similar to:
+
+[role='no_copy']
+```
+NAME        HOST/PORT                                    PATH   SERVICES    PORT       TERMINATION   WILDCARD
+inventory   inventory-guide.apps.poops.os.fyre.ibm.com          inventory   9085-tcp                 None
+```
+
+
 Visit the `inventory` application by visiting the following URL, ensure that you substitute the appropriate `HOST`:
 
 - `http://[HOST]/inventory/systems`
+
+For example: `http://inventory-guide.apps.poops.os.fyre.ibm.com/inventory/systems`.
 
 You see a JSON response like the following example. Your JSON response might not be formatted. The sample output
 was formatted for readability:
