@@ -413,7 +413,7 @@ You see an output similar to:
 [role='no_copy']
 ```
 NAME        HOST/PORT                                    PATH   SERVICES    PORT       TERMINATION   WILDCARD
-inventory   inventory-guide.apps.lights.os.fyre.ibm.com          inventory   9085-tcp                 None
+inventory   inventory-guide.apps.lights.os.fyre.ibm.com         inventory   9085-tcp                 None
 ```
 
 
