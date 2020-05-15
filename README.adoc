@@ -26,7 +26,7 @@ NOTE: This repository contains the guide documentation source. To view the guide
 
 Explore how to deploy microservices using the Open Liberty Operator on Red Hat OpenShift.
 
-== What you'll learn 
+== What you will learn 
 
 You will learn how to use the Open Liberty Operator to deploy two microservices to Red Hat OpenShift.
 
