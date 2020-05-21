@@ -17,7 +17,7 @@ oc new-project guide
 
 # Fetch the latest release version of the Open Liberty Operator
 LATEST_VERSION=$(curl -s https://api.github.com/repos/OpenLiberty/open-liberty-operator/releases/latest | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c 2-)
-printf $LATEST_VERSION
+printf "Pulling Open Liberty Operator v"$LATEST_VERSION"\n"
 
 # Installing the OL Operator to the OKD cluster
 oc apply -f https://raw.githubusercontent.com/OpenLiberty/open-liberty-operator/master/deploy/releases/$LATEST_VERSION/openliberty-app-crd.yaml
@@ -42,9 +42,11 @@ oc new-app bitnami/kafka:2 \
   -e ALLOW_PLAINTEXT_LISTENER=yes \
   -e KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
 
+# Creating the templates
 oc process -f build.yaml -p APP_NAME=system | oc create -f -
 oc process -f build.yaml -p APP_NAME=inventory | oc create -f -
 
+# Starting the builds that build and push the app images to OpenShift
 oc start-build system-buildconfig --from-dir=system/.
 oc start-build inventory-buildconfig --from-dir=inventory/.
 
@@ -52,4 +54,13 @@ sleep 30
 
 oc get all
 
+# Uses the OL Operator to deploy the apps
 oc apply -f deploy.yaml
+
+sleep 30
+
+# Pulls the inventory app IP
+INVENTORY_IP=`oc get route inventory -o=jsonpath='{.spec.host}'`
+
+# Visits the endpoint
+curl http://$INVENTORY_IP/inventory/systems
