@@ -7,31 +7,30 @@ set -euxo pipefail
 ##
 ##############################################################################
 
-mvn -pl models install
-mvn package
+mvn -q -pl models install
+mvn -q package
 
-oc project -q
+oc login -u system:admin
+oc new-project guide
 
-docker build -t `oc registry info`/`oc project -q`/system:test system/.
-docker build -t `oc registry info`/`oc project -q`/inventory:test inventory/.
+oc new-app bitnami/zookeeper:3 \
+  -l name=kafka \
+  -e ALLOW_ANONYMOUS_LOGIN=yes
 
-oc apply -f ../scripts/test.yaml
+oc new-app bitnami/kafka:2 \
+  -l name=kafka \
+  -e KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181 \
+  -e ALLOW_PLAINTEXT_LISTENER=yes \
+  -e KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
 
-sleep 60
+oc process -f build.yaml -p APP_NAME=system | oc create -f -
+oc process -f build.yaml -p APP_NAME=inventory | oc create -f -
 
-oc get pods
+oc start-build system-buildconfig --from-dir=system/.
+oc start-build inventory-buildconfig --from-dir=inventory/.
 
-oc describe pods
+sleep 30
 
-oc get routes
+oc get all
 
-SYSTEM_IP=`oc get route system-route -o=jsonpath='{.spec.host}'`
-INVENTORY_IP=`oc get route inventory-route -o=jsonpath='{.spec.host}'`
-
-curl http://$SYSTEM_IP/system/properties
-curl http://$INVENTORY_IP/inventory/systems/system-service
-
-mvn verify -Ddockerfile.skip=true -Dsystem.ip=$SYSTEM_IP -Dinventory.ip=$INVENTORY_IP
-
-oc logs $(oc get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep system)
-oc logs $(oc get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}' | grep inventory)
+oc apply -f deploy.yaml
