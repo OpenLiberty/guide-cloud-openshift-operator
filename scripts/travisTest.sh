@@ -59,8 +59,7 @@ oc apply -f deploy.yaml
 
 sleep 30
 
-oc describe olapp/system
-oc describe olapp/inventory
+oc describe pods
 
 # Pulls the inventory app IP
 INVENTORY_IP=`oc get route inventory -o=jsonpath='{.spec.host}'`
