@@ -59,18 +59,35 @@ oc apply -f deploy.yaml
 
 sleep 30
 
+oc describe olapp/system
+oc describe olapp/inventory
+
 # Pulls the inventory app IP
 INVENTORY_IP=`oc get route inventory -o=jsonpath='{.spec.host}'`
 
-# Visits the endpoint
-curl http://$INVENTORY_IP/inventory/systems
-
+# Checks health of inventory service
 RESPONSE=$(curl -I http://$INVENTORY_IP/inventory/systems 2>&1 | grep HTTP/1.1 | cut -d ' ' -f2)
 
-if [ "RESPONSE" == "200" ]; then
+# Continues test if healthy, exits test with error if not
+if [ "$RESPONSE" = "200" ]; then
   printf "Inventory service is live\n"
 else
   printf "Inventory service is not live\n"
   printf "expected HTTP response 200, received $RESPONSE\n"
+  exit 1
+fi
+
+# Visits the endpoint
+curl http://$INVENTORY_IP/inventory/systems
+
+# Checks if there is only 1 logged system in the inventory
+NUM_OF_SYSTEMS=$(curl http://$INVENTORY_IP/inventory/systems | grep -o -i '"hostname"' | wc -l)
+
+# Continues test if correct, exits test with error if not
+if [ "$NUM_OF_SYSTEMS" = "1" ]; then
+  printf "Inventory service contains 1 entry\n"
+else
+  printf "Inventory service contains the wrong number of entries\n"
+  printf "expected 1 entry, received $NUM_OF_SYSTEMS\n"
   exit 1
 fi
