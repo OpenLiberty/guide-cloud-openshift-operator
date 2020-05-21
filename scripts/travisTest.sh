@@ -52,6 +52,8 @@ oc start-build inventory-buildconfig --from-dir=inventory/.
 
 sleep 30
 
+oc describe builds
+
 oc get all
 
 # Uses the OL Operator to deploy the apps
