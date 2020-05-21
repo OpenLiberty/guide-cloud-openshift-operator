@@ -64,3 +64,13 @@ INVENTORY_IP=`oc get route inventory -o=jsonpath='{.spec.host}'`
 
 # Visits the endpoint
 curl http://$INVENTORY_IP/inventory/systems
+
+RESPONSE=$(curl -I http://$INVENTORY_IP/inventory/systems 2>&1 | grep HTTP/1.1 | cut -d ' ' -f2)
+
+if [ "RESPONSE" == "200" ]; then
+  printf "Inventory service is live\n"
+else
+  printf "Inventory service is not live\n"
+  printf "expected HTTP response 200, received $RESPONSE\n"
+  exit 1
+fi
