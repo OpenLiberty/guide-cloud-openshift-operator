@@ -91,4 +91,3 @@ else
   printf "expected 1 entry, received $NUM_OF_SYSTEMS\n"
   exit 1
 fi
-
