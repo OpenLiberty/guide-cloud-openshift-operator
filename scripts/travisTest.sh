@@ -52,9 +52,8 @@ oc start-build inventory-buildconfig --from-dir=inventory/.
 
 sleep 30
 
-oc describe builds
-
-oc get all
+oc logs build/system-buildconfig-1
+oc logs build/inventory-buildconfig-1
 
 # Uses the OL Operator to deploy the apps
 oc apply -f deploy.yaml
