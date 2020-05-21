@@ -7,9 +7,10 @@ set -euxo pipefail
 ##
 ##############################################################################
 
-mvn -q package
+mvn -pl models install
+mvn package
 
-oc registry login --skip-check=true
+oc project -q
 
 docker build -t `oc registry info`/`oc project -q`/system:test system/.
 docker build -t `oc registry info`/`oc project -q`/inventory:test inventory/.
