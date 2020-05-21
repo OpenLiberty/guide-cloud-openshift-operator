@@ -21,3 +21,5 @@ branches:
   only: 
   - master
   - qa
+  - dev
+  - travis-tests
