@@ -50,8 +50,26 @@ oc process -f build.yaml -p APP_NAME=inventory | oc create -f -
 oc start-build system-buildconfig --from-dir=system/.
 oc start-build inventory-buildconfig --from-dir=inventory/.
 
-# Give the builds time to finish
-sleep 240
+# Initial sleep timer to give builds some time to finish
+sleep 30
+
+# Check status of builds
+TIMEOUT=60
+SYSTEM_BUILD_STATUS=$(oc get build/system-buildconfig-1 -o=jsonpath='{.status.phase}')
+INVENTORY_BUILD_STATUS=$(oc get build/inventory-buildconfig-1 -o=jsonpath='{.status.phase}')
+
+# Loop sleep until builds are complete or timed out
+while [ "$SYSTEM_BUILD_STATUS" = "Running" ] || [ "$INVENTORY_BUILD_STATUS" = "Running" ]
+do
+  if [ "$TIMEOUT" = "0" ]; then
+    printf "Test timed out while waiting for builds to complete";
+    exit 1
+  fi
+  sleep 5;
+  SYSTEM_BUILD_STATUS=$(oc get build/system-buildconfig-1 -o=jsonpath='{.status.phase}');
+  INVENTORY_BUILD_STATUS=$(oc get build/inventory-buildconfig-1 -o=jsonpath='{.status.phase}');
+  ((TIMEOUT--));
+done
 
 oc logs build/system-buildconfig-1
 oc logs build/inventory-buildconfig-1
@@ -66,7 +84,7 @@ sleep 30
 # oc describe pods
 
 # Pulls the inventory app IP
-INVENTORY_IP=`oc get route inventory -o=jsonpath='{.spec.host}'`
+INVENTORY_IP=$(oc get route inventory -o=jsonpath='{.spec.host}')
 
 # Checks health of inventory service by ensuring a 200 response code
 RESPONSE=$(curl -I http://$INVENTORY_IP/inventory/systems 2>&1 | grep HTTP/1.1 | cut -d ' ' -f2)
