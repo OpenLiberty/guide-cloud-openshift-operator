@@ -50,6 +50,7 @@ oc process -f build.yaml -p APP_NAME=inventory | oc create -f -
 oc start-build system-buildconfig --from-dir=system/.
 oc start-build inventory-buildconfig --from-dir=inventory/.
 
+# Give the builds time to finish
 sleep 180
 
 oc logs build/system-buildconfig-1
@@ -58,14 +59,16 @@ oc logs build/inventory-buildconfig-1
 # Uses the OL Operator to deploy the apps
 oc apply -f deploy.yaml
 
+# Gives time for the apps to become READY
 sleep 30
 
-oc describe pods
+# Uncomment this for debugging purposes
+# oc describe pods
 
 # Pulls the inventory app IP
 INVENTORY_IP=`oc get route inventory -o=jsonpath='{.spec.host}'`
 
-# Checks health of inventory service
+# Checks health of inventory service by ensuring a 200 response code
 RESPONSE=$(curl -I http://$INVENTORY_IP/inventory/systems 2>&1 | grep HTTP/1.1 | cut -d ' ' -f2)
 
 # Continues test if healthy, exits test with error if not
@@ -77,7 +80,7 @@ else
   exit 1
 fi
 
-# Visits the endpoint
+# Uncomment this for debugging purposes - Visits the endpoint
 curl http://$INVENTORY_IP/inventory/systems
 
 # Checks if there is only 1 logged system in the inventory
