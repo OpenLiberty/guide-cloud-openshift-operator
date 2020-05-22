@@ -51,7 +51,7 @@ oc start-build system-buildconfig --from-dir=system/.
 oc start-build inventory-buildconfig --from-dir=inventory/.
 
 # Give the builds time to finish
-sleep 180
+sleep 240
 
 oc logs build/system-buildconfig-1
 oc logs build/inventory-buildconfig-1
