@@ -16,7 +16,9 @@ oc login -u system:admin
 oc new-project guide
 
 # Fetch the latest release version of the Open Liberty Operator
-LATEST_VERSION=$(curl -s https://api.github.com/repos/OpenLiberty/open-liberty-operator/releases/latest | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c 2-)
+LATEST_VERSION=$(curl -s https://api.github.com/repos/OpenLiberty/open-liberty-operator/releases/latest \
+  | grep '"tag_name"' \
+  | sed -E 's/.*"([^"]+)".*/\1/' | cut -c 2-)
 printf "Pulling Open Liberty Operator v"$LATEST_VERSION"\n"
 
 # Installing the OL Operator to the OKD cluster
@@ -62,7 +64,7 @@ INVENTORY_BUILD_STATUS=$(oc get build/inventory-buildconfig-1 -o=jsonpath='{.sta
 while [ "$SYSTEM_BUILD_STATUS" = "Running" ] || [ "$INVENTORY_BUILD_STATUS" = "Running" ]
 do
   if [ "$TIMEOUT" = "0" ]; then
-    printf "Test timed out while waiting for builds to complete";
+    printf "Test timed out while waiting for builds to complete\n";
     exit 1
   fi
   sleep 5;
@@ -71,13 +73,18 @@ do
   ((TIMEOUT--));
 done
 
-oc logs build/system-buildconfig-1
-oc logs build/inventory-buildconfig-1
+printf "\n======================\n"
+printf "      BUILDS COMPLETE\n"
+printf "======================\n"
+
+# Uncomment for debugging purposes
+# oc logs build/system-buildconfig-1
+# oc logs build/inventory-buildconfig-1
 
 # Uses the OL Operator to deploy the apps
 oc apply -f deploy.yaml
 
-# Gives time for the apps to become READY
+# Gives time for the apps to become live
 sleep 30
 
 # Uncomment this for debugging purposes
@@ -88,21 +95,44 @@ INVENTORY_IP=$(oc get route inventory -o=jsonpath='{.spec.host}')
 
 # Checks health of inventory service by ensuring a 200 response code
 RESPONSE=$(curl -I http://$INVENTORY_IP/inventory/systems 2>&1 | grep HTTP/1.1 | cut -d ' ' -f2)
+TIMEOUT=30
 
-# Continues test if healthy, exits test with error if not
-if [ "$RESPONSE" = "200" ]; then
-  printf "Inventory service is live\n"
-else
-  printf "Inventory service is not live\n"
-  printf "expected HTTP response 200, received $RESPONSE\n"
-  exit 1
-fi
+# Loop sleep until inventory service is live or timed out
+while [ "$RESPONSE" != "200" ]
+do
+  if [ "$TIMEOUT" = "0" ]; then
+    printf "Test timed out while waiting for inventory service to become live\n";
+    printf "expected HTTP response 200, received $RESPONSE\n"
+    exit 1
+  fi
+  sleep 5;
+  RESPONSE=$(curl -I http://$INVENTORY_IP/inventory/systems 2>&1 | grep HTTP/1.1 | cut -d ' ' -f2)
+  ((TIMEOUT--));
+done
+
+printf "\n======================\n"
+printf "     INVENTORY LIVE\n"
+printf "======================\n"
 
 # Uncomment this for debugging purposes - Visits the endpoint
-curl http://$INVENTORY_IP/inventory/systems
+# curl http://$INVENTORY_IP/inventory/systems
 
 # Checks if there is only 1 logged system in the inventory
 NUM_OF_SYSTEMS=$(curl http://$INVENTORY_IP/inventory/systems | grep -o -i '"hostname"' | wc -l)
+TIMEOUT=30
+
+# Loop sleep until inventory populates or timed out
+while [ "$NUM_OF_SYSTEMS" = "0" ]
+do
+  if [ "$TIMEOUT" = "0" ]; then
+    printf "Test timed out while waiting for inventory service to become populated\n";
+    printf "expected 1 entry, received $NUM_OF_SYSTEMS\n"
+    exit 1
+  fi
+  sleep 5;
+  NUM_OF_SYSTEMS=$(curl http://$INVENTORY_IP/inventory/systems | grep -o -i '"hostname"' | wc -l)
+  ((TIMEOUT--));
+done
 
 # Continues test if correct, exits test with error if not
 if [ "$NUM_OF_SYSTEMS" = "1" ]; then
