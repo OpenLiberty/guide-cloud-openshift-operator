@@ -87,7 +87,10 @@ printf "\n======================  BUILDS COMPLETE  ======================\n"
 oc apply -f deploy.yaml
 
 # Gives time for the apps to become live
-sleep 30
+sleep 60
+
+# Uncomment this for debugging purposes - Visits the endpoint
+curl http://$INVENTORY_IP/inventory/systems
 
 # Uncomment this for debugging purposes
 # oc describe pods
