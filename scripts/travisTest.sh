@@ -73,9 +73,7 @@ do
   ((TIMEOUT--));
 done
 
-printf "\n======================\n"
-printf "      BUILDS COMPLETE\n"
-printf "======================\n"
+printf "\n======================  BUILDS COMPLETE  ======================\n"
 
 # Uncomment for debugging purposes
 # oc logs build/system-buildconfig-1
@@ -110,12 +108,10 @@ do
   ((TIMEOUT--));
 done
 
-printf "\n======================\n"
-printf "     INVENTORY LIVE\n"
-printf "======================\n"
+printf "\n======================  INVENTORY LIVE  ======================\n"
 
 # Uncomment this for debugging purposes - Visits the endpoint
-# curl http://$INVENTORY_IP/inventory/systems
+curl http://$INVENTORY_IP/inventory/systems
 
 # Checks if there is only 1 logged system in the inventory
 NUM_OF_SYSTEMS=$(curl http://$INVENTORY_IP/inventory/systems | grep -o -i '"hostname"' | wc -l)
