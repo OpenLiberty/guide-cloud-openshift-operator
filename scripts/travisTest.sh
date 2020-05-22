@@ -37,12 +37,16 @@ oc new-app bitnami/zookeeper:3 \
   -l name=kafka \
   -e ALLOW_ANONYMOUS_LOGIN=yes
 
+printf "\n======================  ZOOKEEPER DEPLOYED  ======================\n"
+
 # Deploy Kafka straight from DockerHub
 oc new-app bitnami/kafka:2 \
   -l name=kafka \
   -e KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181 \
   -e ALLOW_PLAINTEXT_LISTENER=yes \
   -e KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+
+printf "\n======================  KAFKA DEPLOYED  ======================\n"
 
 # Creating the templates
 oc process -f build.yaml -p APP_NAME=system | oc create -f -
@@ -52,26 +56,14 @@ oc process -f build.yaml -p APP_NAME=inventory | oc create -f -
 oc start-build system-buildconfig --from-dir=system/.
 oc start-build inventory-buildconfig --from-dir=inventory/.
 
-# Initial sleep timer to give builds some time to finish
-sleep 180
+# Waits until the system build completes
+oc get build/system-buildconfig-1 --watch
 
-# Check status of builds
-TIMEOUT=60
-SYSTEM_BUILD_STATUS=$(oc get build/system-buildconfig-1 -o=jsonpath='{.status.phase}')
+# Checks if the inventory build is complete, if not, wait till it is
 INVENTORY_BUILD_STATUS=$(oc get build/inventory-buildconfig-1 -o=jsonpath='{.status.phase}')
-
-# Loop sleep until builds are complete or timed out
-while [ "$SYSTEM_BUILD_STATUS" = "Running" ] || [ "$INVENTORY_BUILD_STATUS" = "Running" ]
-do
-  if [ "$TIMEOUT" = "0" ]; then
-    printf "Test timed out while waiting for builds to complete\n";
-    exit 1
-  fi
-  sleep 5;
-  SYSTEM_BUILD_STATUS=$(oc get build/system-buildconfig-1 -o=jsonpath='{.status.phase}');
-  INVENTORY_BUILD_STATUS=$(oc get build/inventory-buildconfig-1 -o=jsonpath='{.status.phase}');
-  ((TIMEOUT--));
-done
+if [ "$INVENTORY_BUILD_STATUS" = "Running" ]; then
+  oc get build/inventory-buildconfig-1 --watch
+fi
 
 printf "\n======================  BUILDS COMPLETE  ======================\n"
 
