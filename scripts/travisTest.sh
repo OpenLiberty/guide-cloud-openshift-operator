@@ -56,14 +56,26 @@ oc process -f build.yaml -p APP_NAME=inventory | oc create -f -
 oc start-build system-buildconfig --from-dir=system/.
 oc start-build inventory-buildconfig --from-dir=inventory/.
 
-# Waits until the system build completes
-oc get build/system-buildconfig-1 --watch
+# Initial sleep timer to give builds some time to finish
+sleep 180
 
-# Checks if the inventory build is complete, if not, wait till it is
+# Check status of builds
+TIMEOUT=60
+SYSTEM_BUILD_STATUS=$(oc get build/system-buildconfig-1 -o=jsonpath='{.status.phase}')
 INVENTORY_BUILD_STATUS=$(oc get build/inventory-buildconfig-1 -o=jsonpath='{.status.phase}')
-if [ "$INVENTORY_BUILD_STATUS" = "Running" ]; then
-  oc get build/inventory-buildconfig-1 --watch
-fi
+
+# Loop sleep until builds are complete or timed out
+while [ "$SYSTEM_BUILD_STATUS" = "Running" ] || [ "$INVENTORY_BUILD_STATUS" = "Running" ]
+do
+  if [ "$TIMEOUT" = "0" ]; then
+    printf "Test timed out while waiting for builds to complete\n";
+    exit 1
+  fi
+  sleep 5;
+  SYSTEM_BUILD_STATUS=$(oc get build/system-buildconfig-1 -o=jsonpath='{.status.phase}');
+  INVENTORY_BUILD_STATUS=$(oc get build/inventory-buildconfig-1 -o=jsonpath='{.status.phase}');
+  ((TIMEOUT--));
+done
 
 printf "\n======================  BUILDS COMPLETE  ======================\n"
 
