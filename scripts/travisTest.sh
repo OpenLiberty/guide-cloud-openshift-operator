@@ -89,14 +89,14 @@ oc apply -f deploy.yaml
 # Gives time for the apps to become live
 sleep 60
 
-# Uncomment this for debugging purposes - Visits the endpoint
-curl http://$INVENTORY_IP/inventory/systems
-
 # Uncomment this for debugging purposes
 # oc describe pods
 
 # Pulls the inventory app IP
 INVENTORY_IP=$(oc get route inventory -o=jsonpath='{.spec.host}')
+
+# Uncomment this for debugging purposes - Visits the endpoint
+curl http://$INVENTORY_IP/inventory/systems
 
 # Checks health of inventory service by ensuring a 200 response code
 RESPONSE=$(curl -I http://$INVENTORY_IP/inventory/systems 2>&1 | grep HTTP/1.1 | cut -d ' ' -f2)
@@ -145,3 +145,5 @@ else
   printf "expected 1 entry, received $NUM_OF_SYSTEMS\n"
   exit 1
 fi
+
+oc patch olapp/system -p '{"spec":{"replicas":3}}'
