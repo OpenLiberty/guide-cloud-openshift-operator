@@ -53,7 +53,7 @@ oc start-build system-buildconfig --from-dir=system/.
 oc start-build inventory-buildconfig --from-dir=inventory/.
 
 # Initial sleep timer to give builds some time to finish
-sleep 30
+sleep 180
 
 # Check status of builds
 TIMEOUT=60
