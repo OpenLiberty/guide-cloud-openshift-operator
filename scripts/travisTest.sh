@@ -89,9 +89,10 @@ oc apply -f deploy.yaml
 # Gives time for the apps to become live
 sleep 60
 
-# Uncomment these for debugging purposes - shows the logs for the system/inventory olapps
-oc logs $(oc get pods -o custom-columns=POD:.metadata.name --no-headers | grep "system" | head -1)
-oc logs $(oc get pods -o custom-columns=POD:.metadata.name --no-headers | grep "inventory" | head -1)
+# Uncomment these for debugging purposes - shows the logs for the specific pods
+oc logs $(oc get pods -o custom-columns=POD:.metadata.name --no-headers | grep "kafka" | head -1)
+oc logs $(oc get pods -o custom-columns=POD:.metadata.name --no-headers | grep "system" | grep -v "system-build" | head -1)
+oc logs $(oc get pods -o custom-columns=POD:.metadata.name --no-headers | grep "inventory" | grep -v "inventory-build" | head -1)
 
 # Pulls the inventory app IP
 INVENTORY_IP=$(oc get route inventory -o=jsonpath='{.spec.host}')
