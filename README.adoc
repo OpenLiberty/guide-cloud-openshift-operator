@@ -48,7 +48,7 @@ Liberty Operator controls the ‘parent’ OpenLibertyApplication resource, the 
 To learn more about OpenShift Operators, check out their https://www.openshift.com/learn/topics/operators[Operators tech topic article^].
 To learn more about the Open Liberty Operator, check out the https://github.com/OpenLiberty/open-liberty-operator[official documentation].
 
-You will deploy two microservices, `system` and `inventory` to an OpenShift cluster using the Open Liberty Operator.
+You will deploy two microservices, `system` and `inventory`, to an OpenShift cluster using the Open Liberty Operator.
 The `system` and `inventory` applications will communicate with a Kafka container that you will deploy directly from
 DockerHub. To learn more about the reactive Java application used in this guide and how it works, check out the
 https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reactive Java microservices^] guide.
@@ -244,21 +244,19 @@ You see the following resources:
 
 [role='no_copy']
 ```
-NAME                                        READY   STATUS      RESTARTS   AGE
-pod/inventory-buildconfig-1-build           0/1     Completed   0          6m16s
-pod/system-buildconfig-1-build              0/1     Completed   0          10m
+NAME                                                TYPE     FROM     LATEST
+buildconfig.build.openshift.io/system-buildconfig   Docker   Binary   0
+
+NAME                                                IMAGE REPOSITORY                                                            TAGS           UPDATED
+imagestream.image.openshift.io/system-imagestream   image-registry.openshift-image-registry.svc:5000/guide/system-imagestream   1.0-SNAPSHOT   2 days ago
+
+...
 
 NAME                                                   TYPE     FROM     LATEST
-buildconfig.build.openshift.io/inventory-buildconfig   Docker   Binary   1
-buildconfig.build.openshift.io/system-buildconfig      Docker   Binary   1
-
-NAME                                               TYPE     FROM             STATUS     STARTED          DURATION
-build.build.openshift.io/system-buildconfig-1      Docker   Binary@f24cb58   Complete   10 minutes ago   1m7s
-build.build.openshift.io/inventory-buildconfig-1   Docker   Binary@f24cb58   Complete   6 minutes ago    56s
+buildconfig.build.openshift.io/inventory-buildconfig   Docker   Binary   2
 
 NAME                                                   IMAGE REPOSITORY                                                               TAGS           UPDATED
-imagestream.image.openshift.io/inventory-imagestream   image-registry.openshift-image-registry.svc:5000/guide/inventory-imagestream   1.0-SNAPSHOT   5 minutes ago
-imagestream.image.openshift.io/system-imagestream      image-registry.openshift-image-registry.svc:5000/guide/system-imagestream      1.0-SNAPSHOT   9 minutes ago
+imagestream.image.openshift.io/inventory-imagestream   image-registry.openshift-image-registry.svc:5000/guide/inventory-imagestream   1.0-SNAPSHOT   2 days ago
 ```
 
 Ensure that you are in the `start` directory and trigger the builds by running the following commands:
@@ -294,7 +292,8 @@ oc logs build/system-buildconfig-1
 oc logs build/inventory-buildconfig-1
 ```
 
-Once you see the `Push successful` message, run the following command to view the image streams:
+Wait until the build completes. You will know it is complete once you see the `Push successful` message. Run the following
+command to view the image streams:
 
 [role='command']
 ```
@@ -468,7 +467,7 @@ You see the following output:
 
 [role='no_copy']
 ```
-openlibertyapplication.openliberty.io/system created
+openlibertyapplication.openliberty.io/system configured
 openlibertyapplication.openliberty.io/inventory unchanged
 ```
 
