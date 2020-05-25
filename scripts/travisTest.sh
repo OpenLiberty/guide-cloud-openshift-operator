@@ -34,7 +34,7 @@ oc api-resources --api-group=openliberty.io
 
 # Deploy zookeeper straight from DockerHub
 oc new-app bitnami/zookeeper:3 \
-  -l name=kafka \
+  -l name=zookeeper \
   -e ALLOW_ANONYMOUS_LOGIN=yes
 
 printf "\n======================  ZOOKEEPER DEPLOYED  ======================\n"
