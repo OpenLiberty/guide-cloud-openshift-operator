@@ -19,7 +19,6 @@
     </properties>
 
     <dependencies>
-
         <!-- Provided dependencies -->
         <dependency>
             <groupId>jakarta.platform</groupId>
@@ -90,7 +89,6 @@
             <version>1.7.30</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -102,7 +100,6 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.2.3</version>
                 <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
                     <packagingExcludes>pom.xml</packagingExcludes>
                 </configuration>
             </plugin>
