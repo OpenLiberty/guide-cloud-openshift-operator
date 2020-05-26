@@ -290,7 +290,8 @@ system-buildconfig-1      Docker   Binary@f24cb58   Running    45 seconds ago
 inventory-buildconfig-1   Docker   Binary@f24cb58   Running    13 seconds ago
 ```
 
-Run the following commands to view the build logs:
+You may need to wait some time until the build is complete. To check for this, run the following commands to view the
+build logs until the `Push successful` message appears:
 
 [role='command']
 ```
@@ -298,8 +299,7 @@ oc logs build/system-buildconfig-1
 oc logs build/inventory-buildconfig-1
 ```
 
-Wait until the build completes. You will know it is complete once you see the `Push successful` message. Run the following
-command to view the image streams:
+Run the following command to view the image streams:
 
 [role='command']
 ```
