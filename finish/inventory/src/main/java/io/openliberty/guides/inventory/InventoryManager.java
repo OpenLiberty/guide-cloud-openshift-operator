@@ -36,10 +36,8 @@ public class InventoryManager {
 
     public void updateCpuStatus(String hostId, Double systemLoad) {
         Optional<Properties> p = getSystem(hostId);
-        if (p.isPresent()) {
-            if (p.get().getProperty(hostId) == null && hostId != null)
-                p.get().put("systemLoad", systemLoad);
-        }
+        if (p.isPresent() && p.get().getProperty(hostId) == null && hostId != null)
+            p.get().put("systemLoad", systemLoad);
     }
 
     public Optional<Properties> getSystem(String hostId) {

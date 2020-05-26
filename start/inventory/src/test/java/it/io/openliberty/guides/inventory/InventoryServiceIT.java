@@ -19,9 +19,7 @@ import java.util.Properties;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 
-// tag::KafkaProducer[]
 import org.apache.kafka.clients.producer.KafkaProducer;
-// end::KafkaProducer[]
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -40,52 +38,36 @@ import io.openliberty.guides.models.SystemLoad.SystemLoadSerializer;
 @MicroShedTest
 @SharedContainerConfig(AppContainerConfig.class)
 @TestMethodOrder(OrderAnnotation.class)
-// tag::InventoryServiceIT[]
 public class InventoryServiceIT {
 
     @RESTClient
     public static InventoryResource inventoryResource;
 
-    // tag::KafkaProducer2[]
-    // tag::KafkaProducerConfig[]
     @KafkaProducerClient(valueSerializer = SystemLoadSerializer.class)
-    // end::KafkaProducerConfig[]
     public static KafkaProducer<String, SystemLoad> cpuProducer;
-    // end::KafkaProducer2[]
 
     @AfterAll
     public static void cleanup() {
         inventoryResource.resetSystems();
     }
 
-    // tag::testCpuUsage[]
     @Test
     public void testCpuUsage() throws InterruptedException {
         SystemLoad sl = new SystemLoad("localhost", 1.1);
-        // tag::systemLoadTopic[]
         cpuProducer.send(new ProducerRecord<String, SystemLoad>("systemLoadTopic", sl));
-        // end::systemLoadTopic[]
         Thread.sleep(5000);
         Response response = inventoryResource.getSystems();
         List<Properties> systems =
                 response.readEntity(new GenericType<List<Properties>>() {});
-        // tag::assert[]
         Assertions.assertEquals(200, response.getStatus(),
                 "Response should be 200");
         Assertions.assertEquals(systems.size(), 1);
-        // end::assert[]
         for (Properties system : systems) {
-            // tag::assert2[]
             Assertions.assertEquals(sl.hostId, system.get("hostname"),
                     "HostId not match!");
-            // end::assert2[]
             BigDecimal cpuLoad = (BigDecimal) system.get("systemLoad");
-            // tag::assert3[]
             Assertions.assertEquals(sl.loadAverage, cpuLoad.doubleValue(),
                     "CPU load doesn't match!");
-            // end::assert3[]
         }
     }
-    // end::testCpuUsage[]
 }
-// end::InventoryServiceIT[]

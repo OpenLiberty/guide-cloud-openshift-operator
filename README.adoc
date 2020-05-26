@@ -9,7 +9,7 @@
 :projectid: operator-openshift
 :page-layout: guide-multipane
 :page-duration: 45 minutes 
-:page-releasedate: 2019-09-11
+:page-releasedate: 2020-09-11
 :page-description: Explore how to deploy microservices using the Open Liberty Operator on Red Hat OpenShift
 :page-tags: ['Kubernetes', 'Docker', 'Cloud'] 
 :page-permalink: /guides/{projectid}
@@ -32,23 +32,24 @@ You will learn how to use the Open Liberty Operator to deploy two microservices 
 
 There are different cloud-based solutions for running your Kubernetes workloads. With a cloud-based infrastructure, you can
 focus on developing your microservices without worrying about low-level infrastructure details for deployment. Using a cloud
-helps you to easily scale and manage your microservices in a high-availability setup.
+orchestrator helps you to easily scale and manage your microservices in a high-availability setup.
 
 OpenShift is a Kubernetes-based platform with added functions. It streamlines the DevOps process by providing an intuitive
 development pipeline. It also provides integration with multiple tools to make the deployment and management of cloud applications
 easier. To learn more about the different platforms that Red Hat OpenShift offers, check out their
 https://docs.openshift.com/[official documentation^].
 
-The Open Liberty Operator provide a method of deploying and managing Open Liberty applications on OKD or OpenShift clusters.
-Using Custom Resource Definitions (CRDs) the Open Liberty Operator introduces a new object, the OpenLibertyApplication.
-The Operator acts as a custom controller, continuously comparing the current state and the desired state of the Kubernetes
-node and deployed OpenLibertyApplications, and reconciling when necessary. The OpenLibertyApplication is a high-level object,
-which can include regular well-known ‘children’ resources such as Pods, Deployments, Services, ReplicaSets, etc. Since the Open
-Liberty Operator controls the ‘parent’ OpenLibertyApplication resource, the Operator also subsequently controls all ‘children’ resources.
-To learn more about OpenShift Operators, check out their https://www.openshift.com/learn/topics/operators[Operators tech topic article^].
-To learn more about the Open Liberty Operator, check out the https://github.com/OpenLiberty/open-liberty-operator[official documentation].
+The Open Liberty Operator provides a method of deploying and managing Open Liberty applications on OKD or OpenShift clusters.
+Using Custom Resource Definitions (CRDs) the Open Liberty Operator introduces a new object, the `OpenLibertyApplication`.
+The OpenLibertyApplication is a high-level object, which can include regular well-known ‘children’ resources such as Pods,
+Deployments, Services, etc. Since the Open Liberty Operator controls the ‘parent’ OpenLibertyApplication resource, the
+Operator also subsequently controls all ‘children’ resources. The Operator acts as a custom controller by continuously
+comparing the current state and the desired state of the Kubernetes node and deployed OpenLibertyApplications, and
+reconciling when necessary. To learn more about OpenShift Operators, check out their
+https://www.openshift.com/learn/topics/operators[Operators tech topic article^]. To learn more about the Open Liberty
+Operator, check out the https://github.com/OpenLiberty/open-liberty-operator[official documentation].
 
-You will deploy two microservices, `system` and `inventory` to an OpenShift cluster using the Open Liberty Operator.
+You will deploy two microservices, `system` and `inventory`, to an OpenShift cluster using the Open Liberty Operator.
 The `system` and `inventory` applications will communicate with a Kafka container that you will deploy directly from
 DockerHub. To learn more about the reactive Java application used in this guide and how it works, check out the
 https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reactive Java microservices^] guide.
@@ -69,11 +70,13 @@ installation instructions, refer to the official https://docs.docker.com/install
 [role=command]
 include::{common-includes}/gitclone.adoc[]
 
+Note that the above command MUST be run inside your OpenShift cluster; this guide assumes that all subsequent
+commands will be run from within the cluster.
+
 // no "try what you'll build" section in this guide since it would be too long due to all setup the user will have to do.
 
 == Installing the Open Liberty Operator
 
-Log into your OpenShift cluster, this guide assumes that all subsequent commands will be run from within the cluster.
 Before installing any resources, you need a project on your OpenShift cluster. Create a new project named `guide` by
 running the following command:
 
@@ -87,7 +90,8 @@ The Open Liberty Operator can be installed on an OpenShift through the CLI or th
 *Using the CLI*
 
 To install the Open Liberty Operator through the CLI, follow the instructions from the
-https://github.com/OpenLiberty/open-liberty-operator#operator-installation[official GitHub repository^].
+https://github.com/OpenLiberty/open-liberty-operator#operator-installation[official GitHub repository^], with a few notes.
+First, replace any use of `kubectl` with `oc`. In addition, the namespace to install and watch from should be `guide`.
 
 *Using the web console*
 
@@ -116,7 +120,8 @@ You will be making `OpenLibertyApplication` resources in the upcoming sections.
 == Deploying the Kafka service to OpenShift
 
 Apache Kafka is the messaging broker used in this application. The image required to deploy the application is available
-and can be pulled and deployed directly from DockerHub.
+and can be pulled and deployed directly from DockerHub. Kafka relies on Zookeeper to keep track of Kafka configuration
+and clusters, and the Zookeeper image is also on DockerHub.
 
 To deploy Zookeeper, run the following command:
 
@@ -190,11 +195,11 @@ include::finish/deploy.yaml[]
 ----
 
 To deploy the Open Liberty `system` and `inventory` applications, you need to package the applications, build the Docker
-images, push them to the internal OpenShift registry, then deploy the images using the Open Liberty Operator.
+images, push them to the internal OpenShift registry, and then deploy the images using the Open Liberty Operator.
 
 === Packaging the applications
 
-Ensure that you are in the `start` directory, then run the following commands to package the `system` and `inventory`
+Navigate to the `start` directory, then run the following commands to package the `system` and `inventory`
 applications:
 
 [role='command']
@@ -205,7 +210,7 @@ mvn clean package
 
 === Building and pushing the images
 
-You can configure OpenShift to build your images from a variety of methods.
+You can configure OpenShift to build your images from various methods.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -219,10 +224,12 @@ the internal OpenShift integrated container registry.
 
 The [hotspot=buildConfig file=0]`build configuration` object defines a single
 build definition as well as any triggers to kick start the build. The [hotspot=source file=0]`source` spec defines the build input. In this case,
-the build input are your [hotspot=binary file=0]`binary` (local) files, which will be streamed to OpenShift for the build. The template specifies
+the build inputs are your [hotspot=binary file=0]`binary` (local) files, which will be streamed to OpenShift for the build. The template specifies
 a [hotspot=docker file=0]`Docker` strategy build, which will invoke the `docker build` command, and create a runnable application image
 from the build input. The template is parameterized with the [hotspot=appname file=0]`APP_NAME` parameter so that the same
 template can be used to create the objects for the `system` and `inventory` applications separately.
+
+include::{common-includes}/ol-kernel-docker-pull.adoc[]
 
 Run the following commands to create the objects for the `system` and `inventory` applications:
 
@@ -232,7 +239,7 @@ oc process -f build.yaml -p APP_NAME=system | oc create -f -
 oc process -f build.yaml -p APP_NAME=inventory | oc create -f -
 ```
 
-Run the following commands to view the newly created image streams and build configurations for each application:
+Next, run the following commands to view the newly created image streams and build configurations for each application:
 
 [role='command']
 ```
@@ -244,21 +251,19 @@ You see the following resources:
 
 [role='no_copy']
 ```
-NAME                                        READY   STATUS      RESTARTS   AGE
-pod/inventory-buildconfig-1-build           0/1     Completed   0          6m16s
-pod/system-buildconfig-1-build              0/1     Completed   0          10m
+NAME                                                TYPE     FROM     LATEST
+buildconfig.build.openshift.io/system-buildconfig   Docker   Binary   0
+
+NAME                                                IMAGE REPOSITORY                                                            TAGS           UPDATED
+imagestream.image.openshift.io/system-imagestream   image-registry.openshift-image-registry.svc:5000/guide/system-imagestream   1.0-SNAPSHOT   2 days ago
+
+...
 
 NAME                                                   TYPE     FROM     LATEST
-buildconfig.build.openshift.io/inventory-buildconfig   Docker   Binary   1
-buildconfig.build.openshift.io/system-buildconfig      Docker   Binary   1
-
-NAME                                               TYPE     FROM             STATUS     STARTED          DURATION
-build.build.openshift.io/system-buildconfig-1      Docker   Binary@f24cb58   Complete   10 minutes ago   1m7s
-build.build.openshift.io/inventory-buildconfig-1   Docker   Binary@f24cb58   Complete   6 minutes ago    56s
+buildconfig.build.openshift.io/inventory-buildconfig   Docker   Binary   2
 
 NAME                                                   IMAGE REPOSITORY                                                               TAGS           UPDATED
-imagestream.image.openshift.io/inventory-imagestream   image-registry.openshift-image-registry.svc:5000/guide/inventory-imagestream   1.0-SNAPSHOT   5 minutes ago
-imagestream.image.openshift.io/system-imagestream      image-registry.openshift-image-registry.svc:5000/guide/system-imagestream      1.0-SNAPSHOT   9 minutes ago
+imagestream.image.openshift.io/inventory-imagestream   image-registry.openshift-image-registry.svc:5000/guide/inventory-imagestream   1.0-SNAPSHOT   2 days ago
 ```
 
 Ensure that you are in the `start` directory and trigger the builds by running the following commands:
@@ -286,7 +291,8 @@ system-buildconfig-1      Docker   Binary@f24cb58   Running    45 seconds ago
 inventory-buildconfig-1   Docker   Binary@f24cb58   Running    13 seconds ago
 ```
 
-Run the following commands to view the build logs:
+You may need to wait some time until the build is complete. To check for this, run the following commands to view the
+build logs until the `Push successful` message appears:
 
 [role='command']
 ```
@@ -294,7 +300,7 @@ oc logs build/system-buildconfig-1
 oc logs build/inventory-buildconfig-1
 ```
 
-Once you see the `Push successful` message, run the following command to view the image streams:
+Run the following command to view the image streams:
 
 [role='command']
 ```
@@ -364,7 +370,7 @@ Run the following command to deploy the `system` and `inventory` applications wi
 oc apply -f deploy.yaml
 ```
 
-Run the following command to view your newly created `OpenLibertyApplication` resources:
+Next, run the following command to view your newly created `OpenLibertyApplication` resources:
 
 [role='command']
 ```
@@ -417,7 +423,7 @@ inventory   inventory-guide.apps.lights.os.fyre.ibm.com         inventory   9085
 ```
 
 
-Visit the `inventory` application by visiting the following URL, ensure that you substitute the appropriate `HOST`:
+Visit the `inventory` application by visiting the following URL. Ensure that you substitute the appropriate `HOST`:
 
 - `http://[HOST]/inventory/systems`
 
@@ -447,7 +453,7 @@ include::finish/deploy.yaml[]
 
 The `inventory` application displays the `hostname` and `systemLoad` of all `system` applications that are publishing
 messages to the Kafka broker. Since there is only one running `system` pod, there is only one element in the `inventory`.
-Scaling applications up is easy with Operators, simply update the `deploy.yaml` file with the `replica: n` parameter.
+Scaling applications up is easy with Operators. Simply update the `deploy.yaml` file with the `replica: n` parameter.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -468,7 +474,7 @@ You see the following output:
 
 [role='no_copy']
 ```
-openlibertyapplication.openliberty.io/system created
+openlibertyapplication.openliberty.io/system configured
 openlibertyapplication.openliberty.io/inventory unchanged
 ```
 
@@ -504,7 +510,7 @@ Revisit the `inventory` application and you now see three elements:
 
 == Tearing down the environment
 
-When you no longer need your project, delete it by running the following command:
+When you no longer need your project, switch to another project and delete the project `guide` by running the following command:
 
 [role='command']
 ```
