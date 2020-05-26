@@ -90,7 +90,8 @@ The Open Liberty Operator can be installed on an OpenShift through the CLI or th
 *Using the CLI*
 
 To install the Open Liberty Operator through the CLI, follow the instructions from the
-https://github.com/OpenLiberty/open-liberty-operator#operator-installation[official GitHub repository^].
+https://github.com/OpenLiberty/open-liberty-operator#operator-installation[official GitHub repository^], with a few notes.
+First, replace any use of `kubectl` with `oc`. In addition, the namespace to install and watch from should be `guide`.
 
 *Using the web console*
 
