@@ -1,4 +1,5 @@
 target/
+openshift.local.clusterup/
 .idea/
 .DS_Store
 *.iml
