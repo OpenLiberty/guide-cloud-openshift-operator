@@ -3,10 +3,10 @@ services:
   - docker
 before_script:
   - unset _JAVA_OPTIONS # Prevents issues such as formatting the test outputs
-  - sudo mount --make-rshared /
   - chmod +x scripts/travisTest.sh
   - cd finish/
-script: ../scripts/travisTest.sh
+script: 
+  - ../scripts/travisTest.sh
 branches:
   only: 
   - master
