@@ -362,7 +362,8 @@ The [hotspot=inventory file=1]`inventory` application is configured similarly to
 and additionally includes the [hotspot=service file=1]`service` and [hotspot=expose file=1]`expose` parameters. The
 [hotspot=servicePort file=1]`service.port` parameter specifies the port exposed by the container, allowing the application
 to be accessed from outside the container. To access the application from outside of the cluster, it needs to be exposed,
-which is done by setting the [hotspot=expose file=1]`expose` parameter to `true`.
+which is done by setting the [hotspot=expose file=1]`expose` parameter to `true`, which will let the operator create and
+configure a route automatically for external access to your application.
 
 Run the following command to deploy the `system` and `inventory` applications with the previously explained configurations:
 
@@ -454,7 +455,8 @@ include::finish/deploy.yaml[]
 
 The `inventory` application displays the `hostname` and `systemLoad` of all `system` applications that are publishing
 messages to the Kafka broker. Since there is only one running `system` pod, there is only one element in the `inventory`.
-Scaling applications up is easy with Operators. Simply update the `deploy.yaml` file with the `replica: n` parameter.
+Scaling applications up is easy with Operators. Simply update the `deploy.yaml` file with the `replica: n` parameter with
+`n` being the number of instances.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
