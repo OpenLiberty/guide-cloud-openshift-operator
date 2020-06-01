@@ -120,8 +120,8 @@ You will be making `OpenLibertyApplication` resources in the upcoming sections.
 == Deploying the Kafka service to OpenShift
 
 Apache Kafka is the messaging broker used in this application. The image required to deploy the application is available
-and can be pulled and deployed directly from DockerHub. Kafka relies on Zookeeper to keep track of Kafka configuration
-and clusters, and the Zookeeper image is also on DockerHub.
+and can be pulled and deployed directly from Docker Hub. Kafka relies on Zookeeper to keep track of Kafka configuration
+and clusters, and the Zookeeper image is also on Docker Hub.
 
 To deploy Zookeeper, run the following command:
 
@@ -132,7 +132,7 @@ oc new-app bitnami/zookeeper:3 \
   -e ALLOW_ANONYMOUS_LOGIN=yes
 ```
 
-The `bitnami/zookeeper:3` parameter indicates the `zookeeper` DockerHub image to pull and deploy.
+The `bitnami/zookeeper:3` parameter indicates the `zookeeper` Docker Hub image to pull and deploy.
 The `-e [key]=[value]` flag provides an environment variable to the newly created app.
 
 To deploy Kafka, run the following command:
@@ -352,7 +352,7 @@ the Open Liberty Operator.
 
 The [hotspot=sysImage file=1]`applicationImage` parameter value is the only necessary parameter, and can be set in the format
 `<project-name>/<image-stream-name>[:tag]`. The parameter can also point to an image hosted on an external registry such as
-DockerHub. The [hotspot=system file=1]`system` application is configured to use the
+Docker Hub. The [hotspot=system file=1]`system` application is configured to use the
 [hotspot=sysImage file=1]`image` created from the earlier build. The [hotspot=pullPolicy file=1]`pullPolicy` parameter
 specifies whether the application image should be pulled prior to starting up the container. The
 [hotspot=systemEnv file=1]`env` parameter is used to specify environment variables to pass to the container at runtime.
