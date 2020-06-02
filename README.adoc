@@ -39,15 +39,15 @@ development pipeline. It also provides integration with multiple tools to make t
 easier. To learn more about the different platforms that Red Hat OpenShift offers, check out their
 https://docs.openshift.com/[official documentation^].
 
-The Open Liberty Operator provides a method of deploying and managing Open Liberty applications on OKD or OpenShift clusters.
-Using Custom Resource Definitions (CRDs) the Open Liberty Operator introduces a new object, the `OpenLibertyApplication`.
-The OpenLibertyApplication is a high-level object, which can include regular well-known ‘children’ resources such as Pods,
-Deployments, Services, etc. Since the Open Liberty Operator controls the ‘parent’ OpenLibertyApplication resource, the
-Operator also subsequently controls all ‘children’ resources. The Operator acts as a custom controller by continuously
-comparing the current state and the desired state of the Kubernetes node and deployed OpenLibertyApplications, and
-reconciling when necessary. To learn more about OpenShift Operators, check out their
-https://www.openshift.com/learn/topics/operators[Operators tech topic article^]. To learn more about the Open Liberty
-Operator, check out the https://github.com/OpenLiberty/open-liberty-operator[official documentation].
+The Open Liberty Operator provides a method of deploying and managing Open Liberty applications on OKD or OpenShift clusters. 
+The Open Liberty Operator introduces new Custom Resource Definitions (CRDs) including the `OpenLibertyApplication`. The 
+`OpenLibertyApplication` CRD defines a set of configurations for deploying a Liberty-based application including the application 
+image, number of instances, storage settings etc. The Open Liberty Operator watches resources of the `OpenLibertyApplication` 
+type and creates various Kubernetes resources such as `Deployments`, `Services`, `Routes` etc depending on the configurations. 
+The Operator then continuously compares the current state of the resources created and the desired state of application 
+deployment defined in an `OpenLibertyApplication` custom resource and reconciling when necessary. To learn more about OpenShift 
+Operators, check out their https://www.openshift.com/learn/topics/operators[Operators tech topic article^]. To learn more about 
+the Open Liberty Operator, check out the https://github.com/OpenLiberty/open-liberty-operator[official documentation].
 
 You will deploy two microservices, `system` and `inventory`, to an OpenShift cluster using the Open Liberty Operator.
 The `system` and `inventory` applications will communicate with a Kafka container that you will deploy directly from
@@ -120,8 +120,8 @@ You will be making `OpenLibertyApplication` resources in the upcoming sections.
 == Deploying the Kafka service to OpenShift
 
 Apache Kafka is the messaging broker used in this application. The image required to deploy the application is available
-and can be pulled and deployed directly from DockerHub. Kafka relies on Zookeeper to keep track of Kafka configuration
-and clusters, and the Zookeeper image is also on DockerHub.
+and can be pulled and deployed directly from Docker Hub. Kafka relies on Zookeeper to keep track of Kafka configuration
+and clusters, and the Zookeeper image is also on Docker Hub.
 
 To deploy Zookeeper, run the following command:
 
@@ -132,7 +132,7 @@ oc new-app bitnami/zookeeper:3 \
   -e ALLOW_ANONYMOUS_LOGIN=yes
 ```
 
-The `bitnami/zookeeper:3` parameter indicates the `zookeeper` DockerHub image to pull and deploy.
+The `bitnami/zookeeper:3` parameter indicates the `zookeeper` Docker Hub image to pull and deploy.
 The `-e [key]=[value]` flag provides an environment variable to the newly created app.
 
 To deploy Kafka, run the following command:
@@ -351,9 +351,11 @@ resources, the [hotspot=system file=1]`system` and [hotspot=inventory file=1]`in
 the Open Liberty Operator.
 
 The [hotspot=sysImage file=1]`applicationImage` parameter value is the only necessary parameter, and can be set in the format
-`<project-name>/<image-stream-name>[:tag]`. The [hotspot=system file=1]`system` application is configured to use the
-[hotspot=sysImage file=1]`image` created from the earlier build. The [hotspot=pullPolicy file=1]`pullPolicy` parameter
-specifies whether the application image should be pulled prior to starting up the container. The
+`<project-name>/<image-stream-name>[:tag]`. The parameter can also point to an image hosted on an external registry such as
+Docker Hub. The [hotspot=system file=1]`system` application is configured to use the
+[hotspot=sysImage file=1]`image` created from the earlier build. The operator defaults to automatically redeploying the
+applications when it detects a new image pushed into the `ImageStream`, if you are using an external image, you can define
+the pull policy by using a `pullPolicy` configuration parameter. The
 [hotspot=systemEnv file=1]`env` parameter is used to specify environment variables to pass to the container at runtime.
 The necessary environment variables to communicate with [hotspot=systemEnv file=1]`Kafka` are provided.
 
@@ -361,7 +363,8 @@ The [hotspot=inventory file=1]`inventory` application is configured similarly to
 and additionally includes the [hotspot=service file=1]`service` and [hotspot=expose file=1]`expose` parameters. The
 [hotspot=servicePort file=1]`service.port` parameter specifies the port exposed by the container, allowing the application
 to be accessed from outside the container. To access the application from outside of the cluster, it needs to be exposed,
-which is done by setting the [hotspot=expose file=1]`expose` parameter to `true`.
+which is done by setting the [hotspot=expose file=1]`expose` parameter to `true`. Doing so will let the operator create and
+configure a route automatically for external access to your application.
 
 Run the following command to deploy the `system` and `inventory` applications with the previously explained configurations:
 
@@ -453,7 +456,8 @@ include::finish/deploy.yaml[]
 
 The `inventory` application displays the `hostname` and `systemLoad` of all `system` applications that are publishing
 messages to the Kafka broker. Since there is only one running `system` pod, there is only one element in the `inventory`.
-Scaling applications up is easy with Operators. Simply update the `deploy.yaml` file with the `replica: n` parameter.
+Scaling applications up is easy with Operators. Simply update the `deploy.yaml` file with the `replica: n` parameter with
+`n` being the number of instances.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
