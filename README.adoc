@@ -353,8 +353,9 @@ the Open Liberty Operator.
 The [hotspot=sysImage file=1]`applicationImage` parameter value is the only necessary parameter, and can be set in the format
 `<project-name>/<image-stream-name>[:tag]`. The parameter can also point to an image hosted on an external registry such as
 Docker Hub. The [hotspot=system file=1]`system` application is configured to use the
-[hotspot=sysImage file=1]`image` created from the earlier build. The [hotspot=pullPolicy file=1]`pullPolicy` parameter
-specifies whether the application image should be pulled prior to starting up the container. The
+[hotspot=sysImage file=1]`image` created from the earlier build. The operator defaults to automatically redeploying the
+applications when it detects a new image pushed into the `ImageStream`, if you are using an external image, you can define
+the pull policy by using a `pullPolicy` configuration parameter. The
 [hotspot=systemEnv file=1]`env` parameter is used to specify environment variables to pass to the container at runtime.
 The necessary environment variables to communicate with [hotspot=systemEnv file=1]`Kafka` are provided.
 

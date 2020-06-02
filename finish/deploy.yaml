@@ -11,9 +11,6 @@ spec:
   # tag::sysImage[]
   applicationImage: guide/system-imagestream:1.0-SNAPSHOT
   # end::sysImage[]
-  # tag::pullPolicy[]
-  pullPolicy: Always
-  # end::pullPolicy[]
   # tag::replicas[]
   replicas: 3
   # end::replicas[]
@@ -35,7 +32,6 @@ metadata:
     name: inventory
 spec:
   applicationImage: guide/inventory-imagestream:1.0-SNAPSHOT
-  pullPolicy: Always
   # tag::service[]
   service:
     # tag::servicePort[]
