@@ -133,7 +133,7 @@ To deploy Zookeeper, run the following command:
 [role='command']
 ```
 oc new-app bitnami/zookeeper:3 \
-  -l name=zookeeper \
+  -l name=kafka \
   -e ALLOW_ANONYMOUS_LOGIN=yes
 ```
 
