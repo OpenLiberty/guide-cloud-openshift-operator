@@ -60,7 +60,9 @@ Before you begin, the following additional tools are needed:
 
 - *OpenShift cluster:* You need admin access and control over the OpenShift cluster you deploy your application to.
 There are various types of deployments, check out the official https://www.openshift.com/products[Red Hat website^]
-for all the options. This guide was written and tested using OpenShift Container Platform 4.3.
+for all the options. This guide was written and tested using OpenShift Container Platform 4.3. Ensure you are using version
+4.x, since the Dockerfiles used in this guide uses the `--chown` flag, which is incompatible with the older versions of
+Docker included in pre 4.x versions.
 
 - *Docker:* You need a containerization software for building containers. You will use Docker in this guide. For
 installation instructions, refer to the official https://docs.docker.com/install/[Docker documentation^].
