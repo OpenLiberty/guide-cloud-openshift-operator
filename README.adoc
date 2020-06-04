@@ -488,7 +488,7 @@ openlibertyapplication.openliberty.io/inventory unchanged
 Notice that only the `system` resource was updated since there was a change in its specification, and that the `inventory`
 resource was left unchanged.
 
-Run the following command to see the newly scaled up `system` pods:
+Wait a few minutes for everything to get ready, then run the following command to see the newly scaled up `system` pods:
 
 [role='command']
 ```
