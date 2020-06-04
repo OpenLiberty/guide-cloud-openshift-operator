@@ -8,7 +8,7 @@
 //
 :projectid: operator-openshift
 :page-layout: guide-multipane
-:page-duration: 45 minutes 
+:page-duration: 20 minutes
 :page-releasedate: 2020-09-11
 :page-description: Explore how to deploy microservices using the Open Liberty Operator on Red Hat OpenShift
 :page-tags: ['Kubernetes', 'Docker', 'Cloud'] 
