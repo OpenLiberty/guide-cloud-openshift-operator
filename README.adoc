@@ -17,7 +17,7 @@
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
 :page-seo-title: Deploying Java microservices using the Open Liberty Operator on Red Hat OpenShift
-:page-seo-description: A getting started tutorial with examples on how to deploy Java microservices using the Open Liberty Operator on an OpenShift cluster.
+:page-seo-description: A getting started tutorial with examples on how to deploy Java microservices using the Kubernetes Operator for Open Liberty on a Red Hat OpenShift cluster.
 :guide-author: Open Liberty
 = Deploying microservices using the Open Liberty Operator on OpenShift
 
