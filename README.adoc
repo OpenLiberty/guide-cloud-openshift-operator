@@ -46,7 +46,7 @@ The Open Liberty Operator introduces new Custom Resource Definitions (CRDs) incl
 image, number of instances, storage settings etc. The Open Liberty Operator watches resources of the `OpenLibertyApplication` 
 type and creates various Kubernetes resources such as `Deployments`, `Services`, `Routes` etc depending on the configurations. 
 The Operator then continuously compares the current state of the resources created and the desired state of application 
-deployment defined in an `OpenLibertyApplication` custom resource and reconciling when necessary. To learn more about OpenShift 
+deployment defined in an `OpenLibertyApplication` custom resource and reconciles them when necessary. To learn more about OpenShift
 Operators, check out their https://www.openshift.com/learn/topics/operators[Operators tech topic article^]. To learn more about 
 the Open Liberty Operator, check out the https://github.com/OpenLiberty/open-liberty-operator[official documentation].
 
