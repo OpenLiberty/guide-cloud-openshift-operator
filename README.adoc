@@ -39,7 +39,8 @@ development pipeline. It also provides integration with multiple tools to make t
 easier. To learn more about the different platforms that Red Hat OpenShift offers, check out their
 https://docs.openshift.com/[official documentation^].
 
-The Open Liberty Operator provides a method of deploying and managing Open Liberty applications on OKD or OpenShift clusters. 
+The Open Liberty Operator provides a method of deploying and managing Open Liberty applications on OpenShift or OKD
+(the community distribution of OpenShift) clusters.
 The Open Liberty Operator introduces new Custom Resource Definitions (CRDs) including the `OpenLibertyApplication`. The 
 `OpenLibertyApplication` CRD defines a set of configurations for deploying a Liberty-based application including the application 
 image, number of instances, storage settings etc. The Open Liberty Operator watches resources of the `OpenLibertyApplication` 
