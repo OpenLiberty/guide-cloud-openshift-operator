@@ -30,25 +30,22 @@ Explore how to deploy microservices using the Open Liberty Operator on Red Hat O
 
 You will learn how to use the Open Liberty Operator to deploy two microservices to Red Hat OpenShift.
 
-There are different cloud-based solutions for running your Kubernetes workloads. With a cloud-based infrastructure, you can
-focus on developing your microservices without worrying about low-level infrastructure details for deployment. Using a cloud
-orchestrator helps you to easily scale and manage your microservices in a high-availability setup.
-
-OpenShift is a Kubernetes-based platform with added functions. It streamlines the DevOps process by providing an intuitive
-development pipeline. It also provides integration with multiple tools to make the deployment and management of cloud applications
-easier. To learn more about the different platforms that Red Hat OpenShift offers, check out their
-https://docs.openshift.com/[official documentation^].
+https://www.openshift.com/[OpenShift^] is a Kubernetes-based platform with added functions. It streamlines the DevOps
+process by providing an intuitive development pipeline. It also provides integration with multiple tools to make the
+deployment and management of cloud applications easier.
 
 The Open Liberty Operator provides a method of deploying and managing Open Liberty applications on OpenShift or OKD
-(the community distribution of OpenShift) clusters.
-The Open Liberty Operator introduces new Custom Resource Definitions (CRDs) including the `OpenLibertyApplication`. The 
-`OpenLibertyApplication` CRD defines a set of configurations for deploying a Liberty-based application including the application 
-image, number of instances, storage settings etc. The Open Liberty Operator watches resources of the `OpenLibertyApplication` 
-type and creates various Kubernetes resources such as `Deployments`, `Services`, `Routes` etc depending on the configurations. 
+(the community distribution of OpenShift) clusters. The Open Liberty Operator introduces new
+https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Custom Resource Definitions (CRDs)^]
+including the `OpenLibertyApplication`. The `OpenLibertyApplication` CRD defines a set of configurations for
+deploying a Liberty-based application including the application image, number of instances, and storage settings.
+
+The https://github.com/OpenLiberty/open-liberty-operator[Open Liberty Operator^] watches resources of the
+`OpenLibertyApplication` type and creates various Kubernetes resources including `Deployments`, `Services`, and `Routes`,
+depending on the configurations.
 The Operator then continuously compares the current state of the resources created and the desired state of application 
 deployment defined in an `OpenLibertyApplication` custom resource and reconciles them when necessary. To learn more about OpenShift
-Operators, check out their https://www.openshift.com/learn/topics/operators[Operators tech topic article^]. To learn more about 
-the Open Liberty Operator, check out the https://github.com/OpenLiberty/open-liberty-operator[official documentation].
+Operators, check out their https://www.openshift.com/learn/topics/operators[Operators tech topic article^].
 
 You will deploy two microservices, `system` and `inventory`, to an OpenShift cluster using the Open Liberty Operator.
 The `system` and `inventory` applications will communicate with a Kafka container that you will deploy directly from
@@ -60,21 +57,22 @@ https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reac
 Before you begin, the following additional tools are needed:
 
 - *OpenShift cluster:* You need admin access and control over the OpenShift cluster you deploy your application to.
-There are various types of deployments, check out the official https://www.openshift.com/products[Red Hat website^]
-for all the options. This guide was written and tested using OpenShift Container Platform 4.3. Ensure you are using version
-4.x, since the Dockerfiles used in this guide uses the `--chown` flag, which is incompatible with the older versions of
-Docker included in pre 4.x versions.
+There are various types of deployments, check out the official https://www.openshift.com/try[Red Hat website^]
+for all the options, including free versions for you to try. The simplest option is gaining temporary free access to
+OpenShift Online, their cloud offering. This guide was written and tested using OpenShift Container Platform 4.3. Ensure
+you are using version 4.x, since the Dockerfiles used in this guide uses the `--chown` flag, which is incompatible with
+the older versions of Docker included in pre 4.x versions.
 
 - *Docker:* You need a containerization software for building containers. You will use Docker in this guide. For
 installation instructions, refer to the official https://docs.docker.com/install/[Docker documentation^].
+
+*The following commands MUST be run inside your OpenShift cluster; this guide assumes that all subsequent
+commands will be run from within the cluster.*
 
 // Getting Started block
 
 [role=command]
 include::{common-includes}/gitclone.adoc[]
-
-Note that the above command MUST be run inside your OpenShift cluster; this guide assumes that all subsequent
-commands will be run from within the cluster.
 
 // no "try what you'll build" section in this guide since it would be too long due to all setup the user will have to do.
 
@@ -111,7 +109,7 @@ Run the following command to view all the supported API resources available thro
 oc api-resources --api-group=openliberty.io
 ```
 
-You see the following output:
+You see the following output which shows the CRDs installed by the Operator for use:
 
 [role='no_copy']
 ```
@@ -121,7 +119,7 @@ openlibertydumps          oldump,oldumps     openliberty.io   true         OpenL
 openlibertytraces         oltrace,oltraces   openliberty.io   true         OpenLibertyTrace
 ```
 
-You will be making `OpenLibertyApplication` resources in the upcoming sections.
+You will be making use of the `OpenLibertyApplication` resources in the upcoming sections.
 
 == Deploying the Kafka service to OpenShift
 
