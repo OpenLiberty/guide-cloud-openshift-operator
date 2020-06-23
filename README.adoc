@@ -28,24 +28,18 @@ Explore how to deploy microservices using the Open Liberty Operator on Red Hat O
 
 == What you'll learn 
 
-You will learn how to use the Open Liberty Operator to deploy two microservices to Red Hat OpenShift.
+You will learn how to use the Open Liberty Operator to deploy two microservices in Open Liberty containers to Red Hat OpenShift.
 
 https://www.openshift.com/[OpenShift^] is a Kubernetes-based platform with added functions. It streamlines the DevOps
 process by providing an intuitive development pipeline. It also provides integration with multiple tools to make the
 deployment and management of cloud applications easier.
 
-The Open Liberty Operator provides a method of deploying and managing Open Liberty applications on OpenShift or OKD
-(the community distribution of OpenShift) clusters. The Open Liberty Operator introduces new
-https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Custom Resource Definitions (CRDs)^]
-including the `OpenLibertyApplication`. The `OpenLibertyApplication` CRD defines a set of configurations for
-deploying a Liberty-based application including the application image, number of instances, and storage settings.
-
-The https://github.com/OpenLiberty/open-liberty-operator[Open Liberty Operator^] watches resources of the
-`OpenLibertyApplication` type and creates various Kubernetes resources including `Deployments`, `Services`, and `Routes`,
-depending on the configurations.
-The Operator then continuously compares the current state of the resources created and the desired state of application 
-deployment defined in an `OpenLibertyApplication` custom resource and reconciles them when necessary. To learn more about OpenShift
-Operators, check out their https://www.openshift.com/learn/topics/operators[Operators tech topic article^].
+The https://github.com/OpenLiberty/open-liberty-operator[Open Liberty Operator^] provides a method of deploying and
+managing Open Liberty applications on OpenShift or OKD (the community distribution of OpenShift) clusters. The Open
+Liberty Operator watches Open Liberty resources and creates various Kubernetes resources including `Deployments`,
+`Services`, and `Routes`, depending on the configurations. The Operator then continuously compares the current state of
+the resources created and the desired state of application deployment and reconciles them when necessary. To learn more
+about OpenShift Operators, check out their https://www.openshift.com/learn/topics/operators[Operators tech topic article^].
 
 You will deploy two microservices, `system` and `inventory`, to an OpenShift cluster using the Open Liberty Operator.
 The `system` and `inventory` applications will communicate with a Kafka container that you will deploy directly from
@@ -88,18 +82,7 @@ running the following command:
 oc new-project guide
 ```
 
-The Open Liberty Operator can be installed on OpenShift through the CLI or through the web console.
-
-*Using the CLI*
-
-To install the Open Liberty Operator through the CLI, follow the instructions from the
-https://github.com/OpenLiberty/open-liberty-operator/blob/master/doc/user-guide.adoc#operator-installation[official GitHub repository^],
-with a few notes. First, replace any use of `kubectl` with `oc`. In addition, the namespace to install and watch from
-should be `guide`.
-
-*Using the web console*
-
-To install the Open Liberty Operator through the web console, navigate to the sidebar `Operators > OperatorHub`, and
+To install the Open Liberty Operator, navigate to the the web console, then to the sidebar `Operators > OperatorHub`, and
 search and install the `Open Liberty Operator`.
 
 Run the following command to view all the supported API resources available through the Open Liberty Operator:
@@ -109,7 +92,7 @@ Run the following command to view all the supported API resources available thro
 oc api-resources --api-group=openliberty.io
 ```
 
-You see the following output which shows the CRDs installed by the Operator for use:
+You see the following output which shows the custom resource definitions installed by the Operator for use:
 
 [role='no_copy']
 ```
@@ -119,7 +102,12 @@ openlibertydumps          oldump,oldumps     openliberty.io   true         OpenL
 openlibertytraces         oltrace,oltraces   openliberty.io   true         OpenLibertyTrace
 ```
 
-You will be making use of the `OpenLibertyApplication` resources in the upcoming sections.
+The Open Liberty Operator introduces new
+https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[Custom Resource Definitions (CRDs)^]
+including the `OpenLibertyApplication`. The `OpenLibertyApplication` CRD defines a set of configurations for
+deploying a Liberty-based application including the application image, number of instances, and storage settings.
+
+You will be making use of the `OpenLibertyApplication` resource in the upcoming sections.
 
 == Deploying the system and inventory applications to OpenShift
 
