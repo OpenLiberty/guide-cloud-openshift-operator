@@ -60,6 +60,7 @@ public class SystemServiceIT {
                 cpuConsumer.poll(Duration.ofMillis(30 * 1000));
         // end::poll[]
         System.out.println("Polled " + records.count() + " records from Kafka:");
+        assertTrue(records.count() > 0, "No records processed");
 
         for (ConsumerRecord<String, SystemLoad> record : records) {
             SystemLoad sl = record.value();
