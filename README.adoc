@@ -19,7 +19,7 @@
 :page-seo-title: Deploying Java microservices to Red Hat OpenShift using the Open Liberty Operator
 :page-seo-description: A getting started tutorial with examples on how to deploy Java microservices on a Red Hat OpenShift cluster using the Kubernetes Operator for Open Liberty
 :guide-author: Open Liberty
-= Deploying microservices to OpenShift using the Open Liberty Operator
+= Deploying microservices to OpenShift using the Kubernetes Operator
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website^].
