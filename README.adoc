@@ -425,7 +425,7 @@ inventory   inventory-guide.apps.lights.os.fyre.ibm.com         inventory   9085
 Visit the `inventory` application by going to the following URL. Make sure to substitute the appropriate `HOST`:
 `http://[HOST]/inventory/systems`
 
-For example, `inventory-guide.apps.lights.os.fyre.ibm.com` is the HOST in the
+For example, `inventory-guide.apps.lights.os.fyre.ibm.com` is the `HOST` in the
 `\http://inventory-guide.apps.lights.os.fyre.ibm.com/inventory/systems` URL.
 
 You see a JSON response similar to the following example, but your JSON response might not be formatted. The sample output
