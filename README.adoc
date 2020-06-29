@@ -6,29 +6,29 @@
 // Contributors:
 //     IBM Corporation
 //
-:projectid: operator-openshift
+:projectid: cloud-openshift-operator
 :page-layout: guide-multipane
 :page-duration: 20 minutes
 :page-releasedate: 2020-07-11
-:page-description: Explore how to deploy microservices using the Open Liberty Operator on Red Hat OpenShift
+:page-description: Explore how to deploy microservices to Red Hat OpenShift by using the Open Liberty Operator
 :page-tags: ['Kubernetes', 'Docker', 'Cloud'] 
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['cloud-openshift', 'okd']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
-:page-seo-title: Deploying Java microservices using the Open Liberty Operator on Red Hat OpenShift
-:page-seo-description: A getting started tutorial with examples on how to deploy Java microservices using the Kubernetes Operator for Open Liberty on a Red Hat OpenShift cluster.
+:page-seo-title: Deploying Java microservices to Red Hat OpenShift using the Open Liberty Operator
+:page-seo-description: A getting started tutorial with examples on how to deploy Java microservices on a Red Hat OpenShift cluster using the Kubernetes Operator for Open Liberty
 :guide-author: Open Liberty
-= Deploying microservices using the Open Liberty Operator on OpenShift
+= Deploying microservices to OpenShift using the Open Liberty Operator
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website^].
 
-Explore how to deploy microservices by using the Open Liberty Operator on Red Hat OpenShift.
+Explore how to deploy microservices to Red Hat OpenShift by using the Open Liberty Operator.
 
 == What you'll learn 
 
-You will learn how to use the Open Liberty Operator to deploy two microservices in Open Liberty containers to Red Hat OpenShift.
+You will learn how to deploy two microservices in Open Liberty containers to Red Hat OpenShift using the Open Liberty Operator.
 
 https://www.openshift.com/[OpenShift^] is a Kubernetes-based platform with added functions. It streamlines the DevOps
 process by providing an intuitive development pipeline. It also provides integration with multiple tools to make the
