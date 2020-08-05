@@ -17,17 +17,22 @@ import java.lang.management.OperatingSystemMXBean;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 
+import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 import org.reactivestreams.Publisher;
 
+import io.openliberty.guides.models.PropertyMessage;
 import io.openliberty.guides.models.SystemLoad;
 import io.reactivex.rxjava3.core.Flowable;
 
 @ApplicationScoped
 public class SystemService {
+    
+    private static Logger logger = Logger.getLogger(SystemService.class.getName());
 
     private static final OperatingSystemMXBean osMean = 
             ManagementFactory.getOperatingSystemMXBean();
@@ -44,15 +49,25 @@ public class SystemService {
         return hostname;
     }
 
-    // tag::systemLoad[]
-    // tag::Outgoing[]
     @Outgoing("systemLoad")
-    // end::Outgoing[]
     public Publisher<SystemLoad> sendSystemLoad() {
         return Flowable.interval(15, TimeUnit.SECONDS)
                 .map((interval -> new SystemLoad(getHostname(),
                         osMean.getSystemLoadAverage())));
     }
-    // end::systemLoad[]
-    
+
+    @Incoming("propertyRequest")
+    @Outgoing("propertyResponse")
+    public PropertyMessage sendProperty(String propertyName) {
+        logger.info("sendProperty: " + propertyName);
+        String propertyValue = System.getProperty(propertyName);
+        if (propertyValue == null) {
+            logger.warning(propertyName + " is not System property.");
+            return null;
+        }
+        return new PropertyMessage(getHostname(), 
+                    propertyName, 
+                    System.getProperty(propertyName, "unknown"));
+    }
+
 }

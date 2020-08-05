@@ -38,11 +38,13 @@ The https://github.com/OpenLiberty/open-liberty-operator[Open Liberty Operator^]
 managing Open Liberty applications on OpenShift or OKD, which is the community distribution of OpenShift, clusters. The Open
 Liberty Operator watches Open Liberty resources and creates various Kubernetes resources, including `Deployments`,
 `Services`, and `Routes`, depending on the configurations. The Operator then continuously compares the current state of
-the resources and the desired state of application deployment and reconciles them when necessary. To learn more
-about OpenShift Operators, check out this https://www.openshift.com/learn/topics/operators[Operators tech topic article^].
+the resources and the desired state of application deployment and reconciles them when necessary. Operators provide an
+easy way to automate the management and robust updating of applications, abstracting some of the details around cloud
+application management.
+To learn more about OpenShift Operators, check out this https://www.openshift.com/learn/topics/operators[Operators tech topic article^].
 
 You will deploy two microservices, `system` and `inventory`, to an OpenShift cluster using the Open Liberty Operator.
-The `system` and `inventory` applications will communicate with a Kafka container that you will deploy directly from
+The `system` and `inventory` microservices will communicate with a Kafka container that you will deploy directly from
 Docker Hub. To learn more about the reactive Java application that is used in this guide and how it works, check out the
 https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reactive Java microservices^] guide.
 
