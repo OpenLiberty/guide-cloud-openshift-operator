@@ -16,8 +16,34 @@ spec:
   # end::replicas[]
   # tag::systemEnv[]
   env:
-    - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
-      value: "kafka:9092"
+    - name: KAFKA_SECRET_CA_CRT
+      valueFrom:
+        secretKeyRef:
+          name: kafka-producer-binding
+          key: KAFKA_SECRET_CA_CRT
+    - name: KAFKAUSER_SECRET_USER_CRT
+      valueFrom:
+        secretKeyRef:
+          name: kafka-producer-binding
+          key: KAFKAUSER_SECRET_USER_CRT
+    - name: KAFKAUSER_SECRET_USER_KEY
+      valueFrom:
+        secretKeyRef:
+          name: kafka-producer-binding
+          key: KAFKAUSER_SECRET_USER_KEY
+    - name: BOOTSTRAP_SERVERS
+      valueFrom:
+        secretKeyRef:
+          name: kafka-producer-binding
+          key: BOOTSTRAP_SERVERS
+    - name: TOPIC
+      value: systemloadtopic
+    - name: NUMBER_OF_KEYS
+      value: "3"
+    - name: DELAY_MS
+      value: "1000"
+    - name: MESSAGE_COUNT
+      value: "1000000"
   # end::systemEnv[]
 # end::system[]
 ---
@@ -42,6 +68,32 @@ spec:
   expose: true
   # end::expose[]
   env:
-    - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
-      value: "kafka:9092"
+    - name: KAFKA_SECRET_CA_CRT
+      valueFrom:
+        secretKeyRef:
+          name: kafka-consumer-binding
+          key: KAFKA_SECRET_CA_CRT
+    - name: KAFKAUSER_SECRET_USER_CRT
+      valueFrom:
+        secretKeyRef:
+          name: kafka-consumer-binding
+          key: KAFKAUSER_SECRET_USER_CRT
+    - name: KAFKAUSER_SECRET_USER_KEY
+      valueFrom:
+        secretKeyRef:
+          name: kafka-consumer-binding
+          key: KAFKAUSER_SECRET_USER_KEY
+    - name: BOOTSTRAP_SERVERS
+      valueFrom:
+        secretKeyRef:
+          name: kafka-consumer-binding
+          key: BOOTSTRAP_SERVERS
+    - name: TOPIC
+      value: systemloadtopic
+    - name: GROUP_ID
+      value: system-load-status
+    - name: LOG_LEVEL
+      value: "INFO"
+    - name: MESSAGE_COUNT
+      value: "1000000"
 # end::inventory[]
