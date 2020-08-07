@@ -48,10 +48,12 @@ spec:
   expose: true
   # end::expose[]
   env:
+    - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
+      value: "kafka-cluster-kafka-bootstrap.guide.svc:9092"
     - name: TOPIC
-      value: systemloadtopic
+      value: "systemloadtopic"
     - name: GROUP_ID
-      value: system-load-status
+      value: "system-load-status"
     - name: LOG_LEVEL
       value: "INFO"
     - name: MESSAGE_COUNT
