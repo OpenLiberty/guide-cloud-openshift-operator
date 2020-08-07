@@ -16,6 +16,8 @@ spec:
   # end::replicas[]
   # tag::systemEnv[]
   env:
+    - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
+      value: kafka-cluster-kafka-bootstrap.guide.svc:9092
     - name: TOPIC
       value: systemloadtopic
     - name: NUMBER_OF_KEYS
