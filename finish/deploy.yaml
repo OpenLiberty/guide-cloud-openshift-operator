@@ -41,4 +41,7 @@ spec:
   # tag::expose[]
   expose: true
   # end::expose[]
+  env:
+    - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
+      value: kafka-cluster-kafka-bootstrap.guide.svc:9092
 # end::inventory[]
