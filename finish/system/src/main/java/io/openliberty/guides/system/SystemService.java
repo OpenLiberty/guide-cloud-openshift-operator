@@ -32,11 +32,12 @@ public class SystemService {
     private static String hostname = System.getenv("MY_POD_NAME");;
 
     private static String getHostname() {
+        System.out.println("hostname = " + hostname);
         if (hostname == null) {
             try {
-                return InetAddress.getLocalHost().getHostName();
+                hostname = InetAddress.getLocalHost().getHostName();
             } catch (UnknownHostException e) {
-                return System.getenv("HOSTNAME");
+                hostname = System.getenv("HOSTNAME");
             }
         }
         return hostname;
