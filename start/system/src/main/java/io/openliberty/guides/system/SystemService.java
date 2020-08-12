@@ -36,14 +36,14 @@ public class SystemService {
 
     private static final OperatingSystemMXBean osMean = 
             ManagementFactory.getOperatingSystemMXBean();
-    private static String hostname = System.getenv("MY_POD_NAME");
+    private static String hostname = null;
 
     private static String getHostname() {
         if (hostname == null) {
             try {
-                return InetAddress.getLocalHost().getHostName();
+                hostname = InetAddress.getLocalHost().getHostName();
             } catch (UnknownHostException e) {
-                return System.getenv("HOSTNAME");
+                hostname = System.getenv("HOSTNAME");
             }
         }
         return hostname;
