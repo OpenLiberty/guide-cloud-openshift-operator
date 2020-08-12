@@ -29,10 +29,9 @@ public class SystemService {
 
     private static final OperatingSystemMXBean osMean = 
             ManagementFactory.getOperatingSystemMXBean();
-    private static String hostname = System.getenv("MY_POD_NAME");;
+    private static String hostname = null;
 
     private static String getHostname() {
-        System.out.println("hostname = " + hostname);
         if (hostname == null) {
             try {
                 hostname = InetAddress.getLocalHost().getHostName();
