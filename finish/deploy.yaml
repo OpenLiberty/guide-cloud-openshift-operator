@@ -16,6 +16,10 @@ spec:
   # end::replicas[]
   # tag::systemEnv[]
   env:
+    - name: MY_POD_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: metadata.name
     - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
       value: kafka-cluster-kafka-bootstrap.guide.svc:9092
   # end::systemEnv[]
