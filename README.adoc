@@ -10,59 +10,58 @@
 :page-layout: guide-multipane
 :page-duration: 20 minutes
 :page-releasedate: 2020-07-11
-:page-description: Explore how to deploy microservices to Red Hat OpenShift by using the Open Liberty Operator.
+:page-description: Explore how to deploy an application to Red Hat OpenShift using Kubernetes Operators.
 :page-tags: ['Kubernetes', 'Docker', 'Cloud'] 
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['cloud-openshift', 'okd']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :source-highlighter: prettify
-:page-seo-title: Deploying Java microservices to Red Hat OpenShift using the Open Liberty Operator
-:page-seo-description: A getting started tutorial with examples on how to deploy Java microservices on a Red Hat OpenShift cluster using the Kubernetes Operator for Open Liberty.
+:page-seo-title: Deploying an application to Red Hat OpenShift using Kubernetes Operators
+:page-seo-description: A getting started guide with examples on how to deploy an application on a Red Hat OpenShift cluster using Kubernetes Operators.
 :guide-author: Open Liberty
-= Deploying microservices to OpenShift using the Kubernetes Operator
+= Deploying an application to OpenShift using Kubernetes Operators
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website^].
 
-Explore how to deploy microservices to Red Hat OpenShift by using the Open Liberty Operator.
+Explore how to deploy an application to Red Hat OpenShift using Kubernetes Operators.
 
 == What you'll learn 
 
-You will learn how to deploy two microservices in Open Liberty containers to Red Hat OpenShift using the Open Liberty Operator.
+You will learn how to deploy an application to Red Hat OpenShift using Kubernetes Operators.
 
 https://www.openshift.com/[OpenShift^] is a Kubernetes-based platform with added functions. It streamlines the DevOps
 process by providing an intuitive development pipeline. It also provides integration with multiple tools to make the
 deployment and management of cloud applications easier.
 
-The https://github.com/OpenLiberty/open-liberty-operator[Open Liberty Operator^] provides a method of deploying and
-managing Open Liberty applications on OpenShift or OKD, which is the community distribution of OpenShift, clusters. The Open
-Liberty Operator watches Open Liberty resources and creates various Kubernetes resources, including `Deployments`,
-`Services`, and `Routes`, depending on the configurations. The Operator then continuously compares the current state of
-the resources and the desired state of application deployment and reconciles them when necessary. Operators provide an
-easy way to automate the management and robust updating of applications, abstracting some of the details around cloud
-application management.
-To learn more about OpenShift Operators, check out this https://www.openshift.com/learn/topics/operators[Operators tech topic article^].
-
-You will deploy two microservices, `system` and `inventory`, to an OpenShift cluster using the Open Liberty Operator.
-The `system` and `inventory` microservices will communicate with a Kafka container that you will deploy directly from
-Docker Hub. To learn more about the reactive Java application that is used in this guide and how it works, check out the
+The application in this guide consists of two microservices, `system` and `inventory`. Every 15 seconds, the `system`
+microservice calculates and publishes events that contain its current average system load. The `inventory` microservice
+subscribes to that information so that it can keep an updated list of all the systems and their current system loads.
+The current inventory of systems can be accessed via the `/systems` REST endpoint. You will deploy the two Open Liberty
+microservices using the Open Liberty Operator, and deploy Kafka using the Strimzi Operator.
+You can learn more about how the reactive Java services used in this guide work by checking out the
 https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reactive Java microservices^] guide.
+Please refer to the figure below for a diagram of the application used in this guide.
+
+image::reactive-messaging-system-inventory-rest.png[Reactive system inventory,align="center"]
+
+The https://github.com/OpenLiberty/open-liberty-operator[Open Liberty Operator^] provides a method of packaging,
+deploying, and managing Open Liberty applications on Kubernetes-based clusters. The Open Liberty Operator watches Open
+Liberty resources and creates various Kubernetes resources, including `Deployments`, `Services`, and `Routes`, depending
+on the configurations. The Operator then continuously compares the current state of the resources and the desired state
+of application deployment and reconciles them when necessary. Operators provide an easy way to automate the management
+and robust updating of applications, abstracting some of the details around cloud application management.
+To learn more about OpenShift Operators, check out this https://www.openshift.com/learn/topics/operators[Operators tech topic article^].
 
 == Additional prerequisites
 
 Before you begin, you need the following tools:
 
 - *OpenShift cluster*: You need admin access and control over the OpenShift cluster that you deploy your application to.
-There are various types of deployments, including free versions for you to try. Check out the official
-https://www.openshift.com/try[Red Hat website^] for all the options. The simplest option is to gain temporary free access to
-OpenShift Online, Red Hat's cloud offering. This guide was written and tested with OpenShift Container Platform 4.3. Ensure
-you are using version 4.x because the Dockerfiles used in this guide use the `--chown` flag, which is incompatible with
-older versions of Docker.
+Check the next section `Accessing an OpenShift cluster` for recommendations and details.
 
 - *Docker*: You need a containerization software for building containers. You will use Docker in this guide. For
 installation instructions, refer to the official https://docs.docker.com/install/[Docker documentation^].
-
-*Make sure to run all commands in this guide from inside your OpenShift cluster.*
 
 // Getting Started block
 
@@ -71,9 +70,15 @@ include::{common-includes}/gitclone.adoc[]
 
 // no "try what you'll build" section in this guide since it would be too long due to all setup the user will have to do.
 
-== Installing the Open Liberty Operator
+== Accessing an OpenShift cluster
 
-Ensure you are logged in to your cluster as an administrator.
+Before you can deploy your microservices, you must gain access to a cluster on OpenShift.
+
+There are various OpenShift offerings. You can use their https://www.openshift.com/try[online sandbox^], which provides
+free access to an OpenShift cluster for 60 minutes, gain access to an OpenShift cluster hosted on
+https://www.openshift.com/products/openshift-ibm-cloud[IBM cloud^], or check out their other offerings
+https://www.openshift.com/products[here^]. Once you have access to a cluster, make sure you are logged in to the cluster
+as a cluster administrator before proceeding with the guide.
 
 Before you install any resources, you need a project on your OpenShift cluster. Create a project named `guide` by
 running the following command:
@@ -83,8 +88,10 @@ running the following command:
 oc new-project guide
 ```
 
-To install the Open Liberty Operator, navigate to the web console, then to *Operators > OperatorHub* on the sidebar.
-Search for and install the *Open Liberty Operator*.
+== Installing the Operators
+
+To install the two Operators, navigate to the web console, then to *Operators > OperatorHub* on the sidebar.
+Search for and install the *Open Liberty Operator* and the *Strimzi Operator*.
 
 Run the following command to view all the supported API resources available through the Open Liberty Operator:
 
@@ -110,6 +117,47 @@ deploying an Open Liberty-based application, including the application image, nu
 
 You will be using the `OpenLibertyApplication` resource in the upcoming sections.
 
+== Deploying the Kafka service to OpenShift
+
+//File 0
+kafka.yaml
+[source, yaml, linenums, role='code_column']
+----
+include::finish/kafka.yaml[]
+----
+
+Apache Kafka is the messaging broker that's used in this application. The Strimzi Operator simplifies the deployment
+and management of Kafka clusters. To learn more about Strimzi, visit their https://strimzi.io/[official website^].
+
+You can configure the specifics of the Strimzi Operator-controlled Kafka deployment with a YAML configuration file.
+
+Ensure that you are in the `start` directory.
+
+[role="code_command hotspot file=0", subs="quotes"]
+----
+#Create the `kafka.yaml` configuration file.#
+`kafka.yaml`
+----
+
+The Kafka cluster configuration is based on the
+https://github.com/strimzi/strimzi-kafka-operator/blob/master/examples/kafka/kafka-ephemeral-single.yaml[Strimzi Kafka ephemeral single example^].
+For more information about the Kafka configuration file, check out the
+https://strimzi.io/docs/operators/master/using.html#assembly-deployment-configuration-kafka-str[official Strimzi documentation^]
+
+Run the following command to deploy Kafka using the newly created configuration file:
+
+[role='command']
+```
+oc apply -f kafka.yaml
+```
+
+Run the following command to view the details of the deployment:
+
+[role='command']
+```
+oc get kafka/kafka-cluster
+```
+
 == Deploying the system and inventory applications to OpenShift
 
 //File 0
@@ -131,7 +179,7 @@ images. Then, you need to push the images to the internal OpenShift registry and
 
 === Packaging the applications
 
-Navigate to the `start` directory and run the following commands to package the `system` and `inventory`
+Ensure that you are in the `start` directory and run the following commands to package the `system` and `inventory`
 applications:
 
 [role='command']
@@ -289,7 +337,14 @@ Docker Hub. The [hotspot=system file=1]`system` application is configured to use
 applications when it detects a new image was pushed into the `ImageStream`. If you are using an external image, you can define
 the pull policy by using a `pullPolicy` configuration parameter. The
 [hotspot=systemEnv file=1]`env` parameter is used to specify environment variables that are passed to the container at runtime.
-The necessary environment variables to communicate with [hotspot=systemEnv file=1]`Kafka` are provided.
+You need to specify the bootstrap address required to communicate with the deployed Kafka cluster as an environment variable.
+Update the [hotspot=bootstrap hotspot=bootstrapInv file=1]`value` of the bootstrap address variable to the required values. You can find the
+bootstrap address by running the following command:
+
+[role='command']
+```
+oc get kafka kafka-cluster -o=jsonpath='{.status.listeners[?(@.type=="plain")].bootstrapServers}{"\n"}'
+```
 
 The [hotspot=inventory file=1]`inventory` application is configured similarly to the [hotspot=system file=1]`system`
 application. Additionally, the `inventory` application includes the [hotspot=service file=1]`service` and
@@ -339,72 +394,6 @@ Kind:         OpenLibertyApplication
 ```
 
 You'll get a similar output for `olapps/inventory`.
-
-The `system` and `inventory` applications are not yet functional because they depend on Kafka, which is deployed in the
-next section.
-
-== Deploying the Kafka service to OpenShift
-
-Apache Kafka is the messaging broker that's used in this application. The image required to deploy the application is available
-and can be pulled and deployed directly from Docker Hub. Kafka relies on Zookeeper to manage Kafka configuration
-and clusters, and the Zookeeper image is also on Docker Hub.
-
-To deploy Zookeeper, run the following command:
-
-[role='command']
-```
-oc new-app bitnami/zookeeper:3 \
-  -l name=kafka \
-  -e ALLOW_ANONYMOUS_LOGIN=yes
-```
-
-The `bitnami/zookeeper:3` parameter indicates which `zookeeper` Docker Hub image to pull and deploy.
-The `-e [key]=[value]` flag provides an environment variable to the newly created application.
-
-To deploy Kafka, run the following command:
-
-[role='command']
-```
-oc new-app bitnami/kafka:2 \
-  -l name=kafka \
-  -e KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181 \
-  -e ALLOW_PLAINTEXT_LISTENER=yes \
-  -e KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
-```
-
-Run the following command to display all the deployed resources that are associated with the Zookeeper and Kafka applications:
-
-[role='command']
-```
-oc get all -l name=kafka
-```
-
-You see the following output:
-
-[role='no_copy']
-```
-NAME                    READY   STATUS    RESTARTS   AGE
-pod/kafka-1-l9jht       1/1     Running   0          7s
-pod/zookeeper-1-2hq6f   1/1     Running   0          23s
-
-NAME                                DESIRED   CURRENT   READY   AGE
-replicationcontroller/kafka-1       1         1         1       10s
-replicationcontroller/zookeeper-1   1         1         1       26s
-
-NAME                TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                               AGE
-service/kafka       ClusterIP   172.30.189.177   <none>        9092/TCP                              11s
-service/zookeeper   ClusterIP   172.30.193.179   <none>        2181/TCP,2888/TCP,3888/TCP,8080/TCP   28s
-
-NAME                                           REVISION   DESIRED   CURRENT   TRIGGERED BY
-deploymentconfig.apps.openshift.io/kafka       1          1         1         config,image(kafka:2)
-deploymentconfig.apps.openshift.io/zookeeper   1          1         1         config,image(zookeeper:3)
-
-NAME                                       IMAGE REPOSITORY                                                   TAGS   UPDATED
-imagestream.image.openshift.io/kafka       image-registry.openshift-image-registry.svc:5000/guide/kafka       2      10 seconds ago
-imagestream.image.openshift.io/zookeeper   image-registry.openshift-image-registry.svc:5000/guide/zookeeper   3      27 seconds ago
-```
-
-Give the cluster a few minutes for all applications to start and connect with one another.
 
 == Accessing the inventory application
 
