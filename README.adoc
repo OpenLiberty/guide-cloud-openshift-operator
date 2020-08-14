@@ -9,12 +9,13 @@
 :projectid: cloud-openshift-operator
 :page-layout: guide-multipane
 :page-duration: 20 minutes
-:page-releasedate: 2020-07-11
+:page-releasedate: 2020-08-31
 :page-description: Explore how to deploy an application to Red Hat OpenShift using Kubernetes Operators.
 :page-tags: ['Kubernetes', 'Docker', 'Cloud'] 
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['cloud-openshift', 'okd']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:imagesdir: /img/guide/{projectid}
 :source-highlighter: prettify
 :page-seo-title: Deploying an application to Red Hat OpenShift using Kubernetes Operators
 :page-seo-description: A getting started guide with examples on how to deploy an application on a Red Hat OpenShift cluster using Kubernetes Operators.
