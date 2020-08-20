@@ -335,6 +335,7 @@ applications when it detects a new image was pushed into the `ImageStream`. If y
 the pull policy by using a `pullPolicy` configuration parameter. The
 [hotspot=systemEnv file=1]`env` parameter is used to specify environment variables that are passed to the container at runtime.
 You need to specify the bootstrap address required to communicate with the deployed Kafka cluster as an environment variable.
+
 Update the [hotspot=bootstrap hotspot=bootstrapInv file=1]`value` of the bootstrap address variable to the required values. You can find the
 bootstrap address by running the following command:
 
