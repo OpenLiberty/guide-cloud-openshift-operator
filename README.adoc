@@ -53,14 +53,7 @@ of application deployment and reconciles them when necessary. Operators provide 
 and robust updating of applications, abstracting some of the details around cloud application management.
 To learn more about OpenShift Operators, check out this https://www.openshift.com/learn/topics/operators[Operators tech topic article^].
 
-// Getting Started block
-
-[role=command]
-include::{common-includes}/gitclone.adoc[]
-
-// no "try what you'll build" section in this guide since it would be too long due to all setup the user will have to do.
-
-== Accessing an OpenShift cluster
+== Additional Prerequisites
 
 Before you can deploy your microservices, you must gain access to a cluster on OpenShift.
 
@@ -68,8 +61,7 @@ There are various OpenShift offerings. You can use their https://learn.openshift
 free access to an OpenShift cluster for 60 minutes, gain access to an OpenShift cluster hosted on
 https://www.openshift.com/products/openshift-ibm-cloud[IBM cloud^], or check out their other offerings
 https://www.openshift.com/products[here^]. Once you have access to a cluster, make sure you are logged in to the cluster
-as a cluster administrator before proceeding with the guide, you do not need to log in if you are using the playground
-as it is logged in for you.
+as a cluster administrator before proceeding with the guide.
 
 Before you install any resources, you need a project on your OpenShift cluster. Create a project named `guide` by
 running the following command:
@@ -78,6 +70,13 @@ running the following command:
 ```
 oc new-project guide
 ```
+
+// Getting Started block
+
+[role=command]
+include::{common-includes}/gitclone.adoc[]
+
+// no "try what you'll build" section in this guide since it would be too long due to all setup the user will have to do.
 
 == Installing the Operators
 
