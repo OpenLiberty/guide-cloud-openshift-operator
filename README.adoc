@@ -293,7 +293,7 @@ The [hotspot=inventory file=1]`inventory` application is configured similarly to
 application. Additionally, the `inventory` application includes the [hotspot=service file=1]`service` and
 [hotspot=expose file=1]`expose` parameters. The [hotspot=servicePort file=1]`service.port` parameter specifies which port
 is exposed by the container, allowing the application to be accessed from outside the container. To access the application
-from outside of the cluster, it must be exposed, by setting the [hotspot=expose file=1]`expose` parameter to `true`.
+from outside of the cluster, it must be exposed by setting the [hotspot=expose file=1]`expose` parameter to `true`.
 Exposing the application lets the Operator automatically create and configure routes for external access to your application.
 
 Run the following command to deploy the `system` and `inventory` applications with the previously explained configurations:
