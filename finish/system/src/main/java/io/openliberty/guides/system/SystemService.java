@@ -42,15 +42,11 @@ public class SystemService {
         return hostname;
     }
 
-    // tag::systemLoad[]
-    // tag::Outgoing[]
     @Outgoing("systemLoad")
-    // end::Outgoing[]
     public Publisher<SystemLoad> sendSystemLoad() {
         return Flowable.interval(15, TimeUnit.SECONDS)
                 .map((interval -> new SystemLoad(getHostname(),
                         osMean.getSystemLoadAverage())));
     }
-    // end::systemLoad[]
-    
+
 }
