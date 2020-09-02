@@ -12,19 +12,17 @@
 // end::copyright[]
 package io.openliberty.guides.system;
 
+import io.openliberty.guides.models.SystemLoad;
+import io.reactivex.rxjava3.core.Flowable;
+import org.eclipse.microprofile.reactive.messaging.Outgoing;
+import org.reactivestreams.Publisher;
+
+import javax.enterprise.context.ApplicationScoped;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
-
-import javax.enterprise.context.ApplicationScoped;
-
-import org.eclipse.microprofile.reactive.messaging.Outgoing;
-import org.reactivestreams.Publisher;
-
-import io.openliberty.guides.models.SystemLoad;
-import io.reactivex.rxjava3.core.Flowable;
 
 @ApplicationScoped
 public class SystemService {
@@ -36,9 +34,9 @@ public class SystemService {
     private static String getHostname() {
         if (hostname == null) {
             try {
-                return InetAddress.getLocalHost().getHostName();
+                hostname = InetAddress.getLocalHost().getHostName();
             } catch (UnknownHostException e) {
-                return System.getenv("HOSTNAME");
+                hostname = System.getenv("HOSTNAME");
             }
         }
         return hostname;
