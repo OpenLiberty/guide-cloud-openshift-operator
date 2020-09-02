@@ -17,7 +17,9 @@ spec:
   # tag::systemEnv[]
   env:
     - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
-      value: "kafka:9092"
+      # tag::bootstrap[]
+      value: [kafka-bootstrap-address]
+      # end::bootstrap[]
   # end::systemEnv[]
 # end::system[]
 ---
@@ -43,5 +45,7 @@ spec:
   # end::expose[]
   env:
     - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
-      value: "kafka:9092"
+      # tag::bootstrapInv[]
+      value: [kafka-bootstrap-address]
+      # end::bootstrapInv[]
 # end::inventory[]
