@@ -55,7 +55,7 @@ of application deployment and reconciles them when necessary. Operators provide 
 and robust updating of applications, abstracting some of the details around cloud application management.
 To learn more about OpenShift Operators, check out this https://www.openshift.com/learn/topics/operators[Operators tech topic article^].
 
-== Additional Prerequisites
+== Additional prerequisites
 
 Before you can deploy your microservices, you must gain access to a cluster on OpenShift.
 
@@ -217,7 +217,7 @@ The image registry used is the integrated internal OpenShift Container Registry.
 The [hotspot=buildConfig file=0]`build configuration` object defines a single
 build definition and any triggers that kickstart the build. The [hotspot=source file=0]`source` spec defines the build input. In this case,
 the build inputs are your [hotspot=binary file=0]`binary` (local) files, which are streamed to OpenShift for the build.
-The uploaded files needs to include the packaged `WAR` application files, which is why you needed to run the Maven commands. The template specifies
+The uploaded files need to include the packaged `WAR` application files, which is why you needed to run the Maven commands. The template specifies
 a [hotspot=docker file=0]`Docker` strategy build, which invokes the `docker build` command, and creates a runnable application image
 from the build input. The template is parameterized with the [hotspot=appname file=0]`APP_NAME` parameter so that the same
 template can be used to create the objects for the `system` and `inventory` applications separately.
