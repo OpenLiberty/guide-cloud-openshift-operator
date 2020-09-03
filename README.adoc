@@ -209,9 +209,10 @@ Create a build template to configure how to build your images.
 `build.yaml`
 ----
 
-The [hotspot file=0]`build.yaml` template includes two objects. The [hotspot=imageStream file=0]`image stream` object provides an abstraction
-from the image in the image registry, allowing you to reference and tag the image. The image registry that is used is
-the integrated internal OpenShift Container Registry.
+The [hotspot file=0]`build.yaml` template includes two objects. 
+The [hotspot=imageStream file=0]`image stream` object provides an abstraction from the image in the image registry. 
+This allows you to reference and tag the image. 
+The image registry used is the integrated internal OpenShift Container Registry.
 
 The [hotspot=buildConfig file=0]`build configuration` object defines a single
 build definition and any triggers that kickstart the build. The [hotspot=source file=0]`source` spec defines the build input. In this case,
