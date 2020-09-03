@@ -39,11 +39,11 @@ deployment and management of cloud applications easier.
 The application in this guide consists of two microservices, `system` and `inventory`. Every 15 seconds, the `system`
 microservice calculates and publishes events that contain its current average system load. The `inventory` microservice
 subscribes to that information so that it can keep an updated list of all the systems and their current system loads.
-The current inventory of systems can be accessed via the `/systems` REST endpoint. You will deploy the two Open Liberty
-microservices using the Open Liberty Operator, and deploy Kafka using the Strimzi Operator.
+The current inventory of systems can be accessed via the `/systems` REST endpoint. 
+You will deploy the two Open Liberty microservices by using the Open Liberty Operator, and deploy Kafka using the Strimzi Operator.
 You can learn more about how the reactive Java services used in this guide work by checking out the
 https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reactive Java microservices^] guide.
-Please refer to the figure below for a diagram of the application used in this guide.
+Refer to the figure below for a diagram of the application used in this guide.
 
 image::reactive-messaging-system-inventory-rest.png[Reactive system inventory,align="center"]
 
@@ -137,7 +137,7 @@ kafka.yaml
 include::finish/kafka.yaml[]
 ----
 
-Apache Kafka is the messaging broker that's used in this application. The Strimzi Operator simplifies the deployment
+Apache Kafka is the messaging broker used in this application. The Strimzi Operator simplifies the deployment
 and management of Kafka clusters. To learn more about Strimzi, visit their https://strimzi.io/[official website^].
 
 You can configure the specifics of the Strimzi Operator-controlled Kafka deployment with a YAML configuration file.
@@ -155,7 +155,7 @@ https://github.com/strimzi/strimzi-kafka-operator/blob/master/examples/kafka/kaf
 For more information about the Kafka configuration file, check out the
 https://strimzi.io/docs/operators/master/using.html#assembly-deployment-configuration-kafka-str[official Strimzi documentation^]
 
-Run the following command to deploy Kafka using the newly created configuration file:
+Run the following command to deploy Kafka by using the newly created configuration file:
 
 [role='command']
 ```
