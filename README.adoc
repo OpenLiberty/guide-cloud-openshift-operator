@@ -10,26 +10,27 @@
 :page-layout: guide-multipane
 :page-duration: 30 minutes
 :page-releasedate: 2020-07-11
-:page-description: Explore how to deploy an application to Red Hat OpenShift using Kubernetes Operators.
+:page-description: Explore how to deploy an application to Red Hat OpenShift by using Kubernetes Operators.
 :page-tags: ['Kubernetes', 'Docker', 'Cloud'] 
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['cloud-openshift', 'okd']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :imagesdir: /img/guide/{projectid}
 :source-highlighter: prettify
-:page-seo-title: Deploying an application to Red Hat OpenShift using Kubernetes Operators
-:page-seo-description: A getting started guide with examples on how to deploy an application on a Red Hat OpenShift cluster using Kubernetes Operators.
+:page-seo-title: Deploying an application to Red Hat OpenShift by using Kubernetes Operators
+:page-seo-description: A getting started guide with examples on how to deploy an application on a Red Hat OpenShift cluster by using Kubernetes Operators.
 :guide-author: Open Liberty
-= Deploying an application to OpenShift using Kubernetes Operators
+
+= Deploying an application to OpenShift by using Kubernetes Operators
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website^].
 
-Explore how to deploy an application to Red Hat OpenShift using Kubernetes Operators.
+Explore how to deploy an application to Red Hat OpenShift by using Kubernetes Operators.
 
 == What you'll learn 
 
-You will learn how to deploy an application to Red Hat OpenShift using Kubernetes Operators.
+You will learn how to deploy an application to Red Hat OpenShift by using Kubernetes Operators.
 
 https://www.openshift.com/[OpenShift^] is a Kubernetes-based platform with added functions. It streamlines the DevOps
 process by providing an intuitive development pipeline. It also provides integration with multiple tools to make the
@@ -523,7 +524,7 @@ This command deletes all the applications and resources.
 
 == Great work! You're done!
 
-You just deployed two microservices running in Open Liberty to OpenShift using the Open Liberty Operator.
+You just deployed two microservices running in Open Liberty to OpenShift by using the Open Liberty Operator.
 
 == Related Links
 
