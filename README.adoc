@@ -10,26 +10,27 @@
 :page-layout: guide-multipane
 :page-duration: 30 minutes
 :page-releasedate: 2020-07-11
-:page-description: Explore how to deploy an application to Red Hat OpenShift using Kubernetes Operators.
+:page-description: Explore how to deploy an application to Red Hat OpenShift by using Kubernetes Operators.
 :page-tags: ['Kubernetes', 'Docker', 'Cloud'] 
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['cloud-openshift', 'okd']
 :common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
 :imagesdir: /img/guide/{projectid}
 :source-highlighter: prettify
-:page-seo-title: Deploying an application to Red Hat OpenShift using Kubernetes Operators
-:page-seo-description: A getting started guide with examples on how to deploy an application on a Red Hat OpenShift cluster using Kubernetes Operators.
+:page-seo-title: Deploying an application to Red Hat OpenShift by using Kubernetes Operators
+:page-seo-description: A getting started guide with examples on how to deploy an application on a Red Hat OpenShift cluster by using Kubernetes Operators.
 :guide-author: Open Liberty
-= Deploying an application to OpenShift using Kubernetes Operators
+
+= Deploying an application to OpenShift by using Kubernetes Operators
 
 [.hidden]
 NOTE: This repository contains the guide documentation source. To view the guide in published form, view it on the https://openliberty.io/guides/{projectid}.html[Open Liberty website^].
 
-Explore how to deploy an application to Red Hat OpenShift using Kubernetes Operators.
+Explore how to deploy an application to Red Hat OpenShift by using Kubernetes Operators.
 
 == What you'll learn 
 
-You will learn how to deploy an application to Red Hat OpenShift using Kubernetes Operators.
+You will learn how to deploy an application to Red Hat OpenShift by using Kubernetes Operators.
 
 https://www.openshift.com/[OpenShift^] is a Kubernetes-based platform with added functions. It streamlines the DevOps
 process by providing an intuitive development pipeline. It also provides integration with multiple tools to make the
@@ -38,11 +39,11 @@ deployment and management of cloud applications easier.
 The application in this guide consists of two microservices, `system` and `inventory`. Every 15 seconds, the `system`
 microservice calculates and publishes events that contain its current average system load. The `inventory` microservice
 subscribes to that information so that it can keep an updated list of all the systems and their current system loads.
-The current inventory of systems can be accessed via the `/systems` REST endpoint. You will deploy the two Open Liberty
-microservices using the Open Liberty Operator, and deploy Kafka using the Strimzi Operator.
+The current inventory of systems can be accessed via the `/systems` REST endpoint. 
+You will deploy the two Open Liberty microservices by using the Open Liberty Operator, and deploy Kafka using the Strimzi Operator.
 You can learn more about how the reactive Java services used in this guide work by checking out the
 https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reactive Java microservices^] guide.
-Please refer to the figure below for a diagram of the application used in this guide.
+Refer to the figure below for a diagram of the application used in this guide.
 
 image::reactive-messaging-system-inventory-rest.png[Reactive system inventory,align="center"]
 
@@ -54,7 +55,7 @@ of application deployment and reconciles them when necessary. Operators provide 
 and robust updating of applications, abstracting some of the details around cloud application management.
 To learn more about OpenShift Operators, check out this https://www.openshift.com/learn/topics/operators[Operators tech topic article^].
 
-== Additional Prerequisites
+== Additional prerequisites
 
 Before you can deploy your microservices, you must gain access to a cluster on OpenShift.
 
@@ -136,7 +137,7 @@ kafka.yaml
 include::finish/kafka.yaml[]
 ----
 
-Apache Kafka is the messaging broker that's used in this application. The Strimzi Operator simplifies the deployment
+Apache Kafka is the messaging broker used in this application. The Strimzi Operator simplifies the deployment
 and management of Kafka clusters. To learn more about Strimzi, visit their https://strimzi.io/[official website^].
 
 You can configure the specifics of the Strimzi Operator-controlled Kafka deployment with a YAML configuration file.
@@ -154,7 +155,7 @@ https://github.com/strimzi/strimzi-kafka-operator/blob/master/examples/kafka/kaf
 For more information about the Kafka configuration file, check out the
 https://strimzi.io/docs/operators/master/using.html#assembly-deployment-configuration-kafka-str[official Strimzi documentation^]
 
-Run the following command to deploy Kafka using the newly created configuration file:
+Run the following command to deploy Kafka by using the newly created configuration file:
 
 [role='command']
 ```
@@ -208,14 +209,15 @@ Create a build template to configure how to build your images.
 `build.yaml`
 ----
 
-The [hotspot file=0]`build.yaml` template includes two objects. The [hotspot=imageStream file=0]`image stream` object provides an abstraction
-from the image in the image registry, allowing you to reference and tag the image. The image registry that is used is
-the integrated internal OpenShift Container Registry.
+The [hotspot file=0]`build.yaml` template includes two objects. 
+The [hotspot=imageStream file=0]`image stream` object provides an abstraction from the image in the image registry. 
+This allows you to reference and tag the image. 
+The image registry used is the integrated internal OpenShift Container Registry.
 
 The [hotspot=buildConfig file=0]`build configuration` object defines a single
 build definition and any triggers that kickstart the build. The [hotspot=source file=0]`source` spec defines the build input. In this case,
 the build inputs are your [hotspot=binary file=0]`binary` (local) files, which are streamed to OpenShift for the build.
-The uploaded files needs to include the packaged `WAR` application files, which is why you needed to run the Maven commands. The template specifies
+The uploaded files need to include the packaged `WAR` application files, which is why you needed to run the Maven commands. The template specifies
 a [hotspot=docker file=0]`Docker` strategy build, which invokes the `docker build` command, and creates a runnable application image
 from the build input. The template is parameterized with the [hotspot=appname file=0]`APP_NAME` parameter so that the same
 template can be used to create the objects for the `system` and `inventory` applications separately.
@@ -360,7 +362,7 @@ The [hotspot=inventory file=1]`inventory` application is configured similarly to
 application. Additionally, the `inventory` application includes the [hotspot=service file=1]`service` and
 [hotspot=expose file=1]`expose` parameters. The [hotspot=servicePort file=1]`service.port` parameter specifies which port
 is exposed by the container, allowing the application to be accessed from outside the container. To access the application
-from outside of the cluster, it must be exposed, by setting the [hotspot=expose file=1]`expose` parameter to `true`.
+from outside of the cluster, it must be exposed by setting the [hotspot=expose file=1]`expose` parameter to `true`.
 Exposing the application lets the Operator automatically create and configure routes for external access to your application.
 
 Run the following command to deploy the `system` and `inventory` applications with the previously explained configurations:
@@ -523,7 +525,7 @@ This command deletes all the applications and resources.
 
 == Great work! You're done!
 
-You just deployed two microservices running in Open Liberty to OpenShift using the Open Liberty Operator.
+You just deployed two microservices running in Open Liberty to OpenShift by using the Open Liberty Operator.
 
 == Related Links
 
