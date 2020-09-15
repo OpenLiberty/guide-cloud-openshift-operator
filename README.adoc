@@ -57,13 +57,28 @@ To learn more about OpenShift Operators, check out this https://www.openshift.co
 
 == Additional prerequisites
 
-Before you can deploy your microservices, you must gain access to a cluster on OpenShift.
+Before you can deploy your microservices, you must gain access to a cluster on OpenShift and have an OpenShift client installed. 
 
-There are various OpenShift offerings. You can use their https://learn.openshift.com/playgrounds/openshift44[online playground^], which provides
+There are various OpenShift offerings. You can use the https://learn.openshift.com/playgrounds/openshift44[online playground^], which provides
 free access to an OpenShift cluster for 60 minutes, gain access to an OpenShift cluster hosted on
 https://www.openshift.com/products/openshift-ibm-cloud[IBM cloud^], or check out their other offerings
 https://www.openshift.com/products[here^]. Once you have access to a cluster, make sure you are logged in to the cluster
 as a cluster administrator before proceeding with the guide.
+Ensure you are logged in by running the following command:
+
+[role='command']
+```
+oc version
+```
+
+You should see output similar to the following:
+
+[role='no_copy']
+```
+Client Version: 4.3.13
+Server Version: 4.3.13
+Kubernetes Version: v1.16.2
+```
 
 Before you install any resources, you need a project on your OpenShift cluster. Create a project named `guide` by
 running the following command:
@@ -104,7 +119,7 @@ Run the following command to view all the supported API resources available thro
 oc api-resources --api-group=openliberty.io
 ```
 
-You see the following output, which shows the custom resource definitions (CRDs) that are installed by the Operator for use:
+You see the following output, which shows the custom resource definitions (CRDs) that are installed by the Open Liberty Operator for use:
 
 [role='no_copy']
 ```
@@ -116,8 +131,10 @@ openlibertytraces         oltrace,oltraces   openliberty.io   true         OpenL
 
 The Open Liberty Operator introduces new
 https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[CRDs^],
-including the `OpenLibertyApplication`. The `OpenLibertyApplication` CRD defines a set of configurations for
+including the `OpenLibertyApplication`. 
+The `OpenLibertyApplication` CRD defines a set of configurations for
 deploying an Open Liberty-based application, including the application image, number of instances, and storage settings.
+The Open Liberty Operator watches changes to instances of the OpenLibertyApplication and creates Kubernetes resources based on the config defined in the CRD instance.
 
 You will be using the `OpenLibertyApplication` resource in the upcoming sections.
 
@@ -128,7 +145,28 @@ Run the following command to view all the supported API resources available thro
 oc api-resources --api-group=kafka.strimzi.io
 ```
 
-== Deploying the Kafka service to OpenShift
+You see the following output, which shows the CRDs that are installed by the Strimzi Operator for use:
+
+[role='no_copy']
+```
+NAME                 SHORTNAMES   APIGROUP           NAMESPACED   KIND
+kafkabridges         kb           kafka.strimzi.io   true         KafkaBridge
+kafkaconnectors      kctr         kafka.strimzi.io   true         KafkaConnector
+kafkaconnects        kc           kafka.strimzi.io   true         KafkaConnect
+kafkaconnects2is     kcs2i        kafka.strimzi.io   true         KafkaConnectS2I
+kafkamirrormaker2s   kmm2         kafka.strimzi.io   true         KafkaMirrorMaker2
+kafkamirrormakers    kmm          kafka.strimzi.io   true         KafkaMirrorMaker
+kafkarebalances      kr           kafka.strimzi.io   true         KafkaRebalance
+kafkas               k            kafka.strimzi.io   true         Kafka
+kafkatopics          kt           kafka.strimzi.io   true         KafkaTopic
+kafkausers           ku           kafka.strimzi.io   true         KafkaUser
+```
+
+You can also confirm the installation of the operators from the web console.
+Navigate to the OperatorHub.
+From the categories on the left you can filter to only see installed operators. 
+
+== Deploying the Kafka cluster to OpenShift
 
 //File 0
 kafka.yaml
@@ -166,7 +204,16 @@ Run the following command to view the details of the deployment:
 
 [role='command']
 ```
-oc get kafka/kafka-cluster
+oc get kafka/kafka-cluster -o yaml
+```
+
+In the `status` section under `conditions` you will see a report similar to the following if the cluster is ready.
+
+[role='command']
+```
+  - lastTransitionTime: 2020-09-02T19:27:00+0000
+    status: "True"
+    type: Ready
 ```
 
 == Deploying the system and inventory applications to OpenShift
@@ -341,13 +388,13 @@ The [hotspot file=1]`deploy.yaml` file is configured to deploy two [hotspot=olap
 resources, [hotspot=system file=1]`system` and [hotspot=inventory file=1]`inventory`, which will be controlled by
 the Open Liberty Operator.
 
-The [hotspot=sysImage file=1]`applicationImage` parameter value is the only necessary parameter, and can be set by using the
-`<project-name>/<image-stream-name>[:tag]` format. The parameter can also point to an image hosted on an external registry, such as
-Docker Hub. The [hotspot=system file=1]`system` application is configured to use the
-[hotspot=sysImage file=1]`image` created from the earlier build. By default, the operator automatically redeploys
-applications when it detects a new image was pushed into the `ImageStream`. If you are using an external image, you can define
-the pull policy by using a `pullPolicy` configuration parameter. The
-[hotspot=systemEnv file=1]`env` parameter is used to specify environment variables that are passed to the container at runtime.
+The `applicationImage` parameter defines what container image should be deployed as part of the `OpenLibertyApplication`. 
+This parameter should follow the <project-name>/<image-stream-name>[:tag] format.
+The parameter can also point to an image hosted on an external registry, such as Docker Hub. 
+The [hotspot=system file=1]`system` application is configured to use the [hotspot=sysImage file=1]`image` created from the earlier build. 
+
+One of the benefits of using `ImageStream` is that the operator redeploys the application when it detects a new image is pushed into the `ImageStream`.
+The [hotspot=systemEnv file=1]`env` parameter is used to specify environment variables that are passed to the container at runtime.
 You need to specify the bootstrap address required to communicate with the deployed Kafka cluster as an environment variable.
 
 Update the [hotspot=bootstrap hotspot=bootstrapInv file=1]`value` of the bootstrap address variable to the required values. You can find the
@@ -380,6 +427,14 @@ oc get OpenLibertyApplications
 ```
 
 You can also substitute `OpenLibertyApplications` with the short form `olapps`.
+The output will be similar to the following:
+
+[role='no_copy']
+```
+NAME        IMAGE                                      EXPOSED   RECONCILED   AGE
+inventory   guide/inventory-imagestream:1.0-SNAPSHOT   true      True         10s
+system      guide/system-imagestream:1.0-SNAPSHOT                True         10s
+```
 
 Run the following commands to view details of your applications:
 
