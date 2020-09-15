@@ -35,6 +35,7 @@ You will learn how to deploy an application to Red Hat OpenShift by using Kubern
 https://www.openshift.com/[OpenShift^] is a Kubernetes-based platform with added functions. It streamlines the DevOps
 process by providing an intuitive development pipeline. It also provides integration with multiple tools to make the
 deployment and management of cloud applications easier.
+You can learn more about using OpenShift by checking out the https://openliberty.io/guides/cloud-openshift.html[Deploying microservices to OpenShift^] guide.
 
 The application in this guide consists of two microservices, `system` and `inventory`. Every 15 seconds, the `system`
 microservice calculates and publishes events that contain its current average system load. The `inventory` microservice
