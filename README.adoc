@@ -436,6 +436,7 @@ inventory   guide/inventory-imagestream:1.0-SNAPSHOT   true      True         10
 system      guide/system-imagestream:1.0-SNAPSHOT                True         10s
 ```
 
+The `RECONCILED` state being `True` indicates that the operator was able to successfully process the `OpenLibertyApplications` instances. 
 Run the following commands to view details of your applications:
 
 [role='command']
