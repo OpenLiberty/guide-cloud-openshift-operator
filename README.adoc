@@ -211,9 +211,9 @@ In the `status` section under `conditions` you will see a report similar to the 
 
 [role='command']
 ```
-  - lastTransitionTime: 2020-09-02T19:27:00+0000
-    status: "True"
-    type: Ready
+- lastTransitionTime: 2020-09-02T19:27:00+0000
+  status: "True"
+  type: Ready
 ```
 
 == Deploying the system and inventory applications to OpenShift
@@ -389,7 +389,7 @@ resources, [hotspot=system file=1]`system` and [hotspot=inventory file=1]`invent
 the Open Liberty Operator.
 
 The `applicationImage` parameter defines what container image should be deployed as part of the `OpenLibertyApplication`. 
-This parameter should follow the <project-name>/<image-stream-name>[:tag] format.
+This parameter should follow the `<project-name>/<image-stream-name>[:tag]` format.
 The parameter can also point to an image hosted on an external registry, such as Docker Hub. 
 The [hotspot=system file=1]`system` application is configured to use the [hotspot=sysImage file=1]`image` created from the earlier build. 
 
