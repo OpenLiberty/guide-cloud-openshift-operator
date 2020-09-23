@@ -12,4 +12,5 @@ mvn -q -pl models install
 mvn -q package
 
 # Verifies that the system/inventory apps are functional
-mvn verify
+mvn -pl system verify
+mvn -pl inventory verify
