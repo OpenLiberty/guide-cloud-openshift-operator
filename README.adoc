@@ -42,6 +42,7 @@ microservice calculates and publishes events that contain its current average sy
 subscribes to that information so that it can keep an updated list of all the systems and their current system loads.
 The current inventory of systems can be accessed via the `/systems` REST endpoint. 
 You will deploy the two Open Liberty microservices by using the Open Liberty Operator, and deploy Kafka using the Strimzi Operator.
+To learn more about Strimzi, visit their https://strimzi.io/[official website^].
 You can learn more about how the reactive Java services used in this guide work by checking out the
 https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reactive Java microservices^] guide.
 Refer to the figure below for a diagram of the application used in this guide.
@@ -89,6 +90,15 @@ running the following command:
 oc new-project guide
 ```
 
+Ensure that you are working within the project `guide` by running the following command:
+
+[role='command']
+```
+oc projects
+```
+
+You should see an asterisk (*) beside the project `guide`. 
+
 // Getting Started block
 
 == Getting started
@@ -112,6 +122,7 @@ The `finish` directory contains the finished project that you will build.
 
 To install the two Operators, navigate to the web console, then to *Operators > OperatorHub* on the sidebar.
 Search for and install the *Open Liberty Operator* and the *Strimzi Operator*.
+When installing the Operators, ensure they are installed into the `guide` namespace. 
 
 Run the following command to view all the supported API resources available through the Open Liberty Operator:
 
@@ -177,7 +188,7 @@ include::finish/kafka.yaml[]
 ----
 
 Apache Kafka is the messaging broker used in this application. The Strimzi Operator simplifies the deployment
-and management of Kafka clusters. To learn more about Strimzi, visit their https://strimzi.io/[official website^].
+and management of Kafka clusters. 
 
 You can configure the specifics of the Strimzi Operator-controlled Kafka deployment with a YAML configuration file.
 
@@ -189,7 +200,7 @@ Ensure that you are in the `start` directory.
 `kafka.yaml`
 ----
 
-The Kafka cluster configuration is based on the
+The provided Kafka cluster configuration is based on the
 https://github.com/strimzi/strimzi-kafka-operator/blob/master/examples/kafka/kafka-ephemeral-single.yaml[Strimzi Kafka ephemeral single example^].
 For more information about the Kafka configuration file, check out the
 https://strimzi.io/docs/operators/master/using.html#assembly-deployment-configuration-kafka-str[official Strimzi documentation^]
