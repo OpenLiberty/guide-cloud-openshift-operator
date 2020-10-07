@@ -16,6 +16,10 @@ spec:
   # end::replicas[]
   # tag::systemEnv[]
   env:
+    - name: WLP_LOGGING_MESSAGE_FORMAT
+      value: "json"
+    - name: WLP_LOGGING_MESSAGE_SOURCE
+      value: "message,trace,accessLog,ffdc,audit"
     - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
       # tag::bootstrap[]
       value: [kafka-bootstrap-address]
@@ -44,6 +48,10 @@ spec:
   expose: true
   # end::expose[]
   env:
+    - name: WLP_LOGGING_MESSAGE_FORMAT
+      value: "json"
+    - name: WLP_LOGGING_MESSAGE_SOURCE
+      value: "message,trace,accessLog,ffdc,audit"
     - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
       # tag::bootstrapInv[]
       value: [kafka-bootstrap-address]
