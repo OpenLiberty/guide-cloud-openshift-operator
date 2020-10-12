@@ -178,7 +178,7 @@ kafkausers           ku           kafka.strimzi.io   true         KafkaUser
 
 You can also confirm the installation of the operators from the web console.
 Navigate to the OperatorHub.
-From the categories on the left, you can filter to see installed operators. 
+From the categories on the left, you can filter to see only installed operators. 
 
 == Deploying the Kafka cluster to OpenShift
 
