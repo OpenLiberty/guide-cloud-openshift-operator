@@ -189,7 +189,7 @@ kafka.yaml
 include::finish/kafka.yaml[]
 ----
 
-Apache Kafka is the messaging broker that ius used in this application. The Strimzi Operator simplifies the deployment
+Apache Kafka is the messaging broker that is used in this application. The Strimzi Operator simplifies the deployment
 and management of Kafka clusters. 
 
 You can configure the specifics of the Strimzi Operator-controlled Kafka deployment with a YAML configuration file.
