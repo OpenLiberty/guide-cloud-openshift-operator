@@ -145,7 +145,7 @@ openlibertydumps          oldump,oldumps     openliberty.io   true         OpenL
 openlibertytraces         oltrace,oltraces   openliberty.io   true         OpenLibertyTrace
 ```
 
-The Open Liberty Operator introduces newCRDs,including the `OpenLibertyApplication` CRD. 
+The Open Liberty Operator introduces new CRDs,including the `OpenLibertyApplication` CRD. 
 The `OpenLibertyApplication` CRD defines a set of configurations for
 deploying an Open Liberty-based application, including the application image, number of instances, and storage settings.
 The Open Liberty Operator watches for changes to instances of the OpenLibertyApplication CRD and creates Kubernetes resources that are based on the configuration that is defined in the CRD instance.
