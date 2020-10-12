@@ -37,17 +37,6 @@ process by providing an intuitive development pipeline. It also provides integra
 deployment and management of cloud applications easier.
 You can learn more about using OpenShift by checking out the https://openliberty.io/guides/cloud-openshift.html[Deploying microservices to OpenShift^] guide.
 
-The application in this guide consists of two microservices, `system` and `inventory`. Every 15 seconds, the `system`
-microservice calculates and publishes events that contain its current average system load. The `inventory` microservice
-subscribes to that information so that it can keep an updated list of all the systems and their current system loads.
-The current inventory of systems can be accessed via the `/systems` REST endpoint. 
-You will deploy the two Open Liberty microservices by using the Open Liberty Operator, and deploy Kafka using the Strimzi Operator.
-To learn more about Strimzi, visit their https://strimzi.io/[official website^].
-You can learn more about how the reactive Java services used in this guide work by checking out the
-https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reactive Java microservices^] guide.
-Refer to the figure below for a diagram of the application used in this guide.
-
-image::reactive-messaging-system-inventory-rest.png[Reactive system inventory,align="center"]
 
 The https://github.com/OpenLiberty/open-liberty-operator[Open Liberty Operator^] provides a method of packaging,
 deploying, and managing Open Liberty applications on Kubernetes-based clusters. The Open Liberty Operator watches Open
@@ -57,16 +46,31 @@ of application deployment and reconciles them when necessary. Operators provide 
 and robust updating of applications, abstracting some of the details around cloud application management.
 To learn more about OpenShift Operators, check out this https://www.openshift.com/learn/topics/operators[Operators tech topic article^].
 
+The application in this guide consists of two microservices, `system` and `inventory`. Every 15 seconds, the `system`
+microservice calculates and publishes events that contain its current average system load. The `inventory` microservice
+subscribes to that information so that it can keep an updated list of all the systems and their current system loads.
+The current inventory of systems can be accessed via the `/systems` REST endpoint. 
+You will deploy the two Open Liberty microservices by using the Open Liberty Operator, and deploy Kafka using the Strimzi Operator.
+To learn more about Strimzi, visit their https://strimzi.io/[official website^].
+You can learn more about how the reactive Java services used in this guide work by checking out the
+https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reactive Java microservices^] guide.
+
+The following figure shows the application that you deploy, which consists of two microservices, `system` and `inventory`, connected by a message broker:
+
+image::reactive-messaging-system-inventory-rest.png[Reactive system inventory,align="center"]
+
+
 == Additional prerequisites
 
 Before you can deploy your microservices, you must gain access to a cluster on OpenShift and have an OpenShift client installed. 
 
 There are various OpenShift offerings. You can use the https://learn.openshift.com/playgrounds/openshift44[online playground^], which provides
-free access to an OpenShift cluster for 60 minutes, gain access to an OpenShift cluster hosted on
+free access to an OpenShift cluster for 60 minutes. Alternatively, you can gain access to an OpenShift cluster that is hosted on
 https://www.openshift.com/products/openshift-ibm-cloud[IBM cloud^], or check out their other offerings
-https://www.openshift.com/products[here^]. Once you have access to a cluster, make sure you are logged in to the cluster
-as a cluster administrator before proceeding with the guide.
-Ensure you are logged in by running the following command:
+https://www.openshift.com/products[from Openshift^]. 
+
+After you get access to a cluster, make sure you are logged in to the cluster
+as a cluster administrator by running the following command:
 
 [role='command']
 ```
@@ -82,7 +86,7 @@ Server Version: 4.3.13
 Kubernetes Version: v1.16.2
 ```
 
-Before you install any resources, you need a project on your OpenShift cluster. Create a project named `guide` by
+Before you install any resources, you need to create a project on your OpenShift cluster. Create a project named `guide` by
 running the following command:
 
 [role='command']
@@ -97,7 +101,7 @@ Ensure that you are working within the project `guide` by running the following 
 oc projects
 ```
 
-You should see an asterisk (*) beside the project `guide`. 
+If you are working within the `project` guide, you'll see an asterisk (*) beside the project `guide` in the list of projects. 
 
 // Getting Started block
 
@@ -124,14 +128,14 @@ To install the two Operators, navigate to the web console, then to *Operators > 
 Search for and install the *Open Liberty Operator* and the *Strimzi Operator*.
 When installing the Operators, ensure they are installed into the `guide` namespace. 
 
-Run the following command to view all the supported API resources available through the Open Liberty Operator:
+Run the following command to view all the supported API resources that are available through the Open Liberty Operator:
 
 [role='command']
 ```
 oc api-resources --api-group=openliberty.io
 ```
 
-You see the following output, which shows the custom resource definitions (CRDs) that are installed by the Open Liberty Operator for use:
+Look for the following output, which shows the https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[custom resource definitions^] (CRDs) that are installed by the Open Liberty Operator:
 
 [role='no_copy']
 ```
@@ -141,23 +145,21 @@ openlibertydumps          oldump,oldumps     openliberty.io   true         OpenL
 openlibertytraces         oltrace,oltraces   openliberty.io   true         OpenLibertyTrace
 ```
 
-The Open Liberty Operator introduces new
-https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[CRDs^],
-including the `OpenLibertyApplication`. 
+The Open Liberty Operator introduces newCRDs,including the `OpenLibertyApplication` CRD. 
 The `OpenLibertyApplication` CRD defines a set of configurations for
 deploying an Open Liberty-based application, including the application image, number of instances, and storage settings.
-The Open Liberty Operator watches changes to instances of the OpenLibertyApplication and creates Kubernetes resources based on the config defined in the CRD instance.
+The Open Liberty Operator watches for changes to instances of the OpenLibertyApplication CRD and creates Kubernetes resources that are based on the configuration that is defined in the CRD instance.
 
-You will be using the `OpenLibertyApplication` resource in the upcoming sections.
+You can use the `OpenLibertyApplication` resource in the upcoming sections.
 
-Run the following command to view all the supported API resources available through the Strimzi Operator:
+Run the following command to view all the supported API resources that are available through the Strimzi Operator:
 
 [role='command']
 ```
 oc api-resources --api-group=kafka.strimzi.io
 ```
 
-You see the following output, which shows the CRDs that are installed by the Strimzi Operator for use:
+Look for the following output, which shows the CRDs that are installed by the Strimzi Operator:
 
 [role='no_copy']
 ```
@@ -176,7 +178,7 @@ kafkausers           ku           kafka.strimzi.io   true         KafkaUser
 
 You can also confirm the installation of the operators from the web console.
 Navigate to the OperatorHub.
-From the categories on the left you can filter to only see installed operators. 
+From the categories on the left, you can filter to see installed operators. 
 
 == Deploying the Kafka cluster to OpenShift
 
@@ -187,7 +189,7 @@ kafka.yaml
 include::finish/kafka.yaml[]
 ----
 
-Apache Kafka is the messaging broker used in this application. The Strimzi Operator simplifies the deployment
+Apache Kafka is the messaging broker that ius used in this application. The Strimzi Operator simplifies the deployment
 and management of Kafka clusters. 
 
 You can configure the specifics of the Strimzi Operator-controlled Kafka deployment with a YAML configuration file.
@@ -219,7 +221,7 @@ Run the following command to view the details of the deployment:
 oc get kafka/kafka-cluster -o yaml
 ```
 
-In the `status` section under `conditions` you will see a report similar to the following if the cluster is ready.
+In the `status` section under `conditions` you can see a report similar to the following example, if the cluster is ready:
 
 [role='command']
 ```
@@ -278,8 +280,8 @@ build definition and any triggers that kickstart the build. The [hotspot=source 
 the build inputs are your [hotspot=binary file=0]`binary` (local) files, which are streamed to OpenShift for the build.
 The uploaded files need to include the packaged `WAR` application files, which is why you needed to run the Maven commands. The template specifies
 a [hotspot=docker file=0]`Docker` strategy build, which invokes the `docker build` command, and creates a runnable application image
-from the build input. The template is parameterized with the [hotspot=appname file=0]`APP_NAME` parameter so that the same
-template can be used to create the objects for the `system` and `inventory` applications separately.
+from the build input. The template is parameterized with the [hotspot=appname file=0]`APP_NAME` parameter so that you can use the same
+template to create the objects for the `system` and `inventory` applications separately.
 
 Run the following commands to create the objects for the `system` and `inventory` applications:
 
@@ -297,7 +299,7 @@ oc get all -l name=system
 oc get all -l name=inventory
 ```
 
-You see the following resources:
+Look for the following resources:
 
 [role='no_copy']
 ```
@@ -332,7 +334,7 @@ following command to list the builds and track their status:
 oc get builds
 ```
 
-You see the following output:
+Look for the output similar to the following example:
 
 [role='no_copy']
 ```
@@ -365,7 +367,7 @@ oc describe imagestream/system-imagestream
 oc describe imagestream/inventory-imagestream
 ```
 
-This example partially shows the `system-imagestream` output:
+The following example shows part of the `system-imagestream` output:
 
 [role='no_copy']
 ```
@@ -381,8 +383,7 @@ Tags:                     1
 
 ...
 ```
-
-You'll get a similar output for the `inventory-imagestream`.
+Look for similar output for `inventory-imagestream`.
 
 Now you're ready to deploy the images.
 
@@ -397,11 +398,11 @@ You can configure the specifics of the Open Liberty Operator-controlled deployme
 ----
 
 The [hotspot file=1]`deploy.yaml` file is configured to deploy two [hotspot=olapp1 hotspot=olapp2 file=1]`OpenLibertyApplication`
-resources, [hotspot=system file=1]`system` and [hotspot=inventory file=1]`inventory`, which will be controlled by
+resources, [hotspot=system file=1]`system` and [hotspot=inventory file=1]`inventory`, which are controlled by
 the Open Liberty Operator.
 
-The `applicationImage` parameter defines what container image should be deployed as part of the `OpenLibertyApplication`. 
-This parameter should follow the `<project-name>/<image-stream-name>[:tag]` format.
+The `applicationImage` parameter defines what container image is deployed as part of the `OpenLibertyApplication` CRD. 
+This parameter follows the `<project-name>/<image-stream-name>[:tag]` format.
 The parameter can also point to an image hosted on an external registry, such as Docker Hub. 
 The [hotspot=system file=1]`system` application is configured to use the [hotspot=sysImage file=1]`image` created from the earlier build. 
 
@@ -431,15 +432,16 @@ Run the following command to deploy the `system` and `inventory` applications wi
 oc apply -f deploy.yaml
 ```
 
-Next, run the following command to view your newly created `OpenLibertyApplication` resources:
+Next, run the following command to view your newly created `OpenLibertyApplications` resources:
 
 [role='command']
 ```
 oc get OpenLibertyApplications
 ```
 
-You can also substitute `OpenLibertyApplications` with the short form `olapps`.
-The output will be similar to the following:
+You can also replace `OpenLibertyApplications` with the shortname `olapps`.
+
+Look for output that is similar to the following example:
 
 [role='no_copy']
 ```
@@ -448,7 +450,7 @@ inventory   guide/inventory-imagestream:1.0-SNAPSHOT   true      True         10
 system      guide/system-imagestream:1.0-SNAPSHOT                True         10s
 ```
 
-The `RECONCILED` state being `True` indicates that the operator was able to successfully process the `OpenLibertyApplications` instances. 
+A `RECONCILED` state value of `True` indicates that the operator was able to successfully process the `OpenLibertyApplications` instances. 
 Run the following commands to view details of your applications:
 
 [role='command']
@@ -457,7 +459,7 @@ oc describe olapps/system
 oc describe olapps/inventory
 ```
 
-This example partially shows the `olapps/system` output:
+This example shows part of the `olapps/system` output:
 
 [role='no_copy']
 ```
@@ -473,7 +475,7 @@ Kind:         OpenLibertyApplication
 ...
 ```
 
-You'll get a similar output for `olapps/inventory`.
+Look for a similar output for `olapps/inventory`.
 
 == Accessing the inventory application
 
@@ -484,7 +486,7 @@ To access the exposed `inventory` application, run the following command and mak
 oc get routes
 ```
 
-You see an output similar to:
+Look for an output that is similar to the following example:
 
 [role='no_copy']
 ```
@@ -493,15 +495,14 @@ inventory   inventory-guide.apps.lights.os.fyre.ibm.com         inventory   9085
 ```
 
 
-Visit the `inventory` application by going to the following URL. Make sure to substitute the appropriate `HOST`:
+Visit the `inventory` application by going to the following URL: 
 `http://[HOST]/inventory/systems`
 
-For example, using the resulting output from the command above, `inventory-guide.apps.lights.os.fyre.ibm.com` is the `HOST`.
-The `HOST` is substituted in the URL, resulting in the following:
+Make sure to substitute the appropriate `HOST` value. For example, using the resulting output from the command above, `inventory-guide.apps.lights.os.fyre.ibm.com` is the `HOST`.
+The `HOST` is substituted in the URL, as shown in the following example:
 `\http://inventory-guide.apps.lights.os.fyre.ibm.com/inventory/systems`.
 
-You see a JSON response similar to the following example, but your JSON response might not be formatted. The sample output
-was formatted for readability:
+Look a JSON response that is similar to the following example: 
 
 [role='no_copy']
 ```
@@ -512,6 +513,7 @@ was formatted for readability:
     }
 ]
 ```
+This sample output was formatted for readability. Your output might not be formatted.
 
 == Scaling up the system application
 
