@@ -38,27 +38,27 @@ deployment and management of cloud applications easier.
 You can learn more about using OpenShift by checking out the https://openliberty.io/guides/cloud-openshift.html[Deploying microservices to OpenShift^] guide.
 
 
-The https://github.com/OpenLiberty/open-liberty-operator[Open Liberty Operator^] provides a method of packaging,
-deploying, and managing Open Liberty applications on Kubernetes-based clusters. The Open Liberty Operator watches Open
-Liberty resources and creates various Kubernetes resources, including `Deployments`, `Services`, and `Routes`, depending
-on the configurations. The Operator then continuously compares the current state of the resources and the desired state
-of application deployment and reconciles them when necessary. Operators provide an easy way to automate the management
-and robust updating of applications, abstracting some of the details around cloud application management.
-To learn more about OpenShift Operators, check out this https://www.openshift.com/learn/topics/operators[Operators tech topic article^].
+https://kubernetes.io/docs/concepts/extend-kubernetes/operator/#operators-in-kubernetes[Kubernetes operators] provide an easy way to automate the management and updating of applications by abstracting away some of the details of cloud application management.
+To learn more about operators, check out this https://www.openshift.com/learn/topics/operators[Operators tech topic article^]. 
 
 The application in this guide consists of two microservices, `system` and `inventory`. Every 15 seconds, the `system`
 microservice calculates and publishes events that contain its current average system load. The `inventory` microservice
 subscribes to that information so that it can keep an updated list of all the systems and their current system loads.
 The current inventory of systems can be accessed via the `/systems` REST endpoint. 
-You will deploy the two Open Liberty microservices by using the Open Liberty Operator, and deploy Kafka using the Strimzi Operator.
-To learn more about Strimzi, visit their https://strimzi.io/[official website^].
-You can learn more about how the reactive Java services used in this guide work by checking out the
-https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reactive Java microservices^] guide.
 
 The following figure shows the application that you deploy, which consists of two microservices, `system` and `inventory`, connected by a message broker:
 
 image::reactive-messaging-system-inventory-rest.png[Reactive system inventory,align="center"]
 
+You will deploy the two Open Liberty microservices by using the Open Liberty Operator, and deploy Kafka using the Strimzi Operator. 
+The https://github.com/OpenLiberty/open-liberty-operator[Open Liberty Operator^] provides a method of packaging,
+deploying, and managing Open Liberty applications on Kubernetes-based clusters. The Open Liberty Operator watches Open
+Liberty resources and creates various Kubernetes resources, including `Deployments`, `Services`, and `Routes`, depending
+on the configurations. The Operator then continuously compares the current state of the resources and the desired state
+of application deployment and reconciles them when necessary.
+To learn more about the Strimzi Operator, visit their https://strimzi.io/[official website^].
+You can learn more about how the reactive Java services used in this guide work by checking out the
+https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reactive Java microservices^] guide.
 
 == Additional prerequisites
 
