@@ -498,8 +498,8 @@ inventory   inventory-guide.apps.lights.os.fyre.ibm.com         inventory   9085
 Visit the `inventory` application by going to the following URL: 
 `http://[HOST]/inventory/systems`
 
-Make sure to substitute the appropriate `HOST` value. For example, using the resulting output from the command above, `inventory-guide.apps.lights.os.fyre.ibm.com` is the `HOST`.
-The `HOST` is substituted in the URL, as shown in the following example:
+Make sure to substitute the appropriate `HOST` value. For example, using the output from the command above, `inventory-guide.apps.lights.os.fyre.ibm.com` is the `HOST`.
+The following example shows this value substituted for `HOST` in the URL:
 `\http://inventory-guide.apps.lights.os.fyre.ibm.com/inventory/systems`.
 
 Look a JSON response that is similar to the following example: 
