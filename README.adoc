@@ -77,7 +77,7 @@ as a cluster administrator by running the following command:
 oc version
 ```
 
-You should see output similar to the following:
+Look for output similar to the following example:
 
 [role='no_copy']
 ```
@@ -101,7 +101,7 @@ Ensure that you are working within the project `guide` by running the following 
 oc projects
 ```
 
-If you are working within the `project` guide, you'll see an asterisk (*) beside the project `guide` in the list of projects. 
+Look for an asterisk (*) beside the `guide` project in the list of projects to confirm that you are in the `guide` project. 
 
 // Getting Started block
 
