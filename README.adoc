@@ -334,7 +334,7 @@ following command to list the builds and track their status:
 oc get builds
 ```
 
-Look for the output similar to the following example:
+Look for the output that is similar to the following example:
 
 [role='no_copy']
 ```
