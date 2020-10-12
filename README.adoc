@@ -66,7 +66,7 @@ Before you can deploy your microservices, you must gain access to a cluster on O
 
 There are various OpenShift offerings. You can use the https://learn.openshift.com/playgrounds/openshift44[online playground^], which provides
 free access to an OpenShift cluster for 60 minutes. Alternatively, you can gain access to an OpenShift cluster that is hosted on
-https://www.openshift.com/products/openshift-ibm-cloud[IBM cloud^], or check out their other offerings
+https://www.openshift.com/products/openshift-ibm-cloud[IBM cloud^], or check out other offerings
 https://www.openshift.com/products[from Openshift^]. 
 
 After you get access to a cluster, make sure you are logged in to the cluster
