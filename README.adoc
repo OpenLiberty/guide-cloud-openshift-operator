@@ -30,12 +30,12 @@ Explore how to deploy an application to Red Hat OpenShift by using Kubernetes Op
 
 == What you'll learn 
 
-You will learn how to deploy an application to Red Hat OpenShift by using Kubernetes Operators.
+You will learn how to deploy an application to Red Hat OpenShift 4 by using Kubernetes Operators.
 
 https://www.openshift.com/[OpenShift^] is a Kubernetes-based platform with added functions. It streamlines the DevOps
 process by providing an intuitive development pipeline. It also provides integration with multiple tools to make the
 deployment and management of cloud applications easier.
-You can learn more about using OpenShift by checking out the https://openliberty.io/guides/cloud-openshift.html[Deploying microservices to OpenShift^] guide.
+You can learn more about Kubernetes by checking out the https://openliberty.io/guides/kubernetes-intro.html[Deploying microservices to Kubernetes^] guide.
 
 
 https://kubernetes.io/docs/concepts/extend-kubernetes/operator/#operators-in-kubernetes[Kubernetes operators] provide an easy way to automate the management and updating of applications by abstracting away some of the details of cloud application management.
