@@ -284,7 +284,7 @@ Create a build template to configure how to build your images.
 ----
 
 The [hotspot file=0]`build.yaml` template includes two objects. 
-The [hotspot=imageStream file=0]`imageStream` object kind provides an abstraction from the image in the image registry. 
+The [hotspot=imageStream file=0]`ImageStream` object `kind` provides an abstraction from the image in the image registry. 
 This allows you to reference and tag the image. 
 The image registry used is the integrated internal OpenShift Container Registry.
 
@@ -304,7 +304,7 @@ oc process -f build.yaml -p APP_NAME=system | oc create -f -
 oc process -f build.yaml -p APP_NAME=inventory | oc create -f -
 ```
 
-Next, run the following commands to view the newly created `imageStream` objects and build configurations for each microservice:
+Next, run the following commands to view the newly created `ImageStream` objects and build configurations for each microservice:
 
 [role='command']
 ```
@@ -365,7 +365,7 @@ oc logs build/system-buildconfig-1
 oc logs build/inventory-buildconfig-1
 ```
 
-Run the following command to view the `imageStream` objects:
+Run the following command to view the `ImageStream` objects:
 
 [role='command']
 ```
@@ -419,7 +419,7 @@ This parameter follows the `<project-name>/<image-stream-name>[:tag]` format.
 The parameter can also point to an image hosted on an external registry, such as Docker Hub. 
 The [hotspot=system file=1]`system` microservice is configured to use the [hotspot=sysImage file=1]`image` created from the earlier build. 
 
-One of the benefits of using `imageStream` objects is that the operator redeploys the application when it detects a new image is pushed into the `ImageStream`.
+One of the benefits of using `ImageStream` objects is that the operator redeploys the application when it detects a new image is pushed into the `ImageStream`.
 The [hotspot=systemEnv file=1]`env` parameter is used to specify environment variables that are passed to the container at runtime.
 You need to specify the bootstrap address required to communicate with the deployed Kafka cluster as an environment variable.
 
