@@ -30,21 +30,20 @@ Explore how to deploy an application to Red Hat OpenShift by using Kubernetes Op
 
 == What you'll learn 
 
-You will learn how to deploy an application to Red Hat OpenShift 4 by using Kubernetes Operators.
+You will learn how to deploy an application to Red Hat OpenShift 4 by using Kubernetes Operators. 
+You will install the operators, deploy applications, then scale up your application. 
 
 https://www.openshift.com/[OpenShift^] is a Kubernetes-based platform with added functions. It streamlines the DevOps
 process by providing an intuitive development pipeline. It also provides integration with multiple tools to make the
 deployment and management of cloud applications easier.
 You can learn more about Kubernetes by checking out the https://openliberty.io/guides/kubernetes-intro.html[Deploying microservices to Kubernetes^] guide.
 
-
 https://kubernetes.io/docs/concepts/extend-kubernetes/operator/#operators-in-kubernetes[Kubernetes operators] provide an easy way to automate the management and updating of applications by abstracting away some of the details of cloud application management.
 To learn more about operators, check out this https://www.openshift.com/learn/topics/operators[Operators tech topic article^]. 
 
 The application in this guide consists of two microservices, `system` and `inventory`. Every 15 seconds, the `system`
 microservice calculates and publishes events that contain its current average system load. The `inventory` microservice
-subscribes to that information so that it can keep an updated list of all the systems and their current system loads.
-The current inventory of systems can be accessed via the `/systems` REST endpoint. 
+subscribes to that information so that it can keep an updated list of all the system microservices and their current system loads.
 
 The following figure shows the application that you deploy, which consists of two microservices, `system` and `inventory`, connected by a message broker:
 
@@ -102,6 +101,15 @@ oc projects
 ```
 
 Look for an asterisk (*) beside the `guide` project in the list of projects to confirm that you are in the `guide` project. 
+The list will appear similar to the following example:
+
+[role='no_copy']
+```
+You have access to the following projects and can switch between them with 'oc project <projectname>':
+
+    default
+  * guide
+```
 
 // Getting Started block
 
@@ -124,7 +132,10 @@ The `finish` directory contains the finished project that you will build.
 
 == Installing the Operators
 
-To install the two Operators, navigate to the web console, then to *Operators > OperatorHub* on the sidebar.
+When you obtained your OpenShift cluster, you should have received login information for the OpenShift web console.
+The web console provides an interface to interact with your OpenShift cluster through your web browser.
+
+To install the two Operators, navigate to the web console then to *Operators > OperatorHub* on the sidebar.
 Search for and install the *Open Liberty Operator* and the *Strimzi Operator*.
 When installing the Operators, ensure they are installed into the `guide` namespace. 
 
@@ -151,6 +162,7 @@ deploying an Open Liberty-based application, including the application image, nu
 The Open Liberty Operator watches for changes to instances of the OpenLibertyApplication CRD and creates Kubernetes resources that are based on the configuration that is defined in the CRD instance.
 
 You can use the `OpenLibertyApplication` resource in the upcoming sections.
+It can also be used by using any of its shortnames such as `olapps`.
 
 Run the following command to view all the supported API resources that are available through the Strimzi Operator:
 
@@ -223,7 +235,7 @@ oc get kafka/kafka-cluster -o yaml
 
 In the `status` section under `conditions` you can see a report similar to the following example, if the cluster is ready:
 
-[role='command']
+[role='no_copy']
 ```
 - lastTransitionTime: 2020-09-02T19:27:00+0000
   status: "True"
@@ -246,13 +258,13 @@ deploy.yaml
 include::finish/deploy.yaml[]
 ----
 
-To deploy the Open Liberty `system` and `inventory` applications, you must first package the applications, then create and
-run an OpenShift build to convert the packaged application into runnable container images.
+To deploy the Open Liberty `system` and `inventory` microservices, you must first package the microservices, then create and
+run an OpenShift build to convert the packaged microservices into runnable container images.
 
 === Packaging the applications
 
 Ensure that you are in the `start` directory and run the following commands to package the `system` and `inventory`
-applications:
+microservices:
 
 [role='command']
 ```
@@ -271,7 +283,7 @@ Create a build template to configure how to build your images.
 ----
 
 The [hotspot file=0]`build.yaml` template includes two objects. 
-The [hotspot=imageStream file=0]`image stream` object provides an abstraction from the image in the image registry. 
+The [hotspot=imageStream file=0]`imageStream` object kind provides an abstraction from the image in the image registry. 
 This allows you to reference and tag the image. 
 The image registry used is the integrated internal OpenShift Container Registry.
 
@@ -283,7 +295,7 @@ a [hotspot=docker file=0]`Docker` strategy build, which invokes the `docker buil
 from the build input. The template is parameterized with the [hotspot=appname file=0]`APP_NAME` parameter so that you can use the same
 template to create the objects for the `system` and `inventory` applications separately.
 
-Run the following commands to create the objects for the `system` and `inventory` applications:
+Run the following commands to create the objects for the `system` and `inventory` microservices:
 
 [role='command']
 ```
@@ -291,7 +303,7 @@ oc process -f build.yaml -p APP_NAME=system | oc create -f -
 oc process -f build.yaml -p APP_NAME=inventory | oc create -f -
 ```
 
-Next, run the following commands to view the newly created image streams and build configurations for each application:
+Next, run the following commands to view the newly created `imageStream` objects and build configurations for each microservice:
 
 [role='command']
 ```
@@ -352,7 +364,7 @@ oc logs build/system-buildconfig-1
 oc logs build/inventory-buildconfig-1
 ```
 
-Run the following command to view the image streams:
+Run the following command to view the `imageStream` objects:
 
 [role='command']
 ```
@@ -404,9 +416,9 @@ the Open Liberty Operator.
 The `applicationImage` parameter defines what container image is deployed as part of the `OpenLibertyApplication` CRD. 
 This parameter follows the `<project-name>/<image-stream-name>[:tag]` format.
 The parameter can also point to an image hosted on an external registry, such as Docker Hub. 
-The [hotspot=system file=1]`system` application is configured to use the [hotspot=sysImage file=1]`image` created from the earlier build. 
+The [hotspot=system file=1]`system` microservice is configured to use the [hotspot=sysImage file=1]`image` created from the earlier build. 
 
-One of the benefits of using `ImageStream` is that the operator redeploys the application when it detects a new image is pushed into the `ImageStream`.
+One of the benefits of using `imageStream` objects is that the operator redeploys the application when it detects a new image is pushed into the `ImageStream`.
 The [hotspot=systemEnv file=1]`env` parameter is used to specify environment variables that are passed to the container at runtime.
 You need to specify the bootstrap address required to communicate with the deployed Kafka cluster as an environment variable.
 
@@ -418,14 +430,21 @@ bootstrap address by running the following command:
 oc get kafka kafka-cluster -o=jsonpath='{.status.listeners[?(@.type=="plain")].bootstrapServers}{"\n"}'
 ```
 
-The [hotspot=inventory file=1]`inventory` application is configured similarly to the [hotspot=system file=1]`system`
-application. Additionally, the `inventory` application includes the [hotspot=service file=1]`service` and
-[hotspot=expose file=1]`expose` parameters. The [hotspot=servicePort file=1]`service.port` parameter specifies which port
-is exposed by the container, allowing the application to be accessed from outside the container. To access the application
-from outside of the cluster, it must be exposed by setting the [hotspot=expose file=1]`expose` parameter to `true`.
-Exposing the application lets the Operator automatically create and configure routes for external access to your application.
+You will see output similar to the following example:
 
-Run the following command to deploy the `system` and `inventory` applications with the previously explained configurations:
+[role='no_copy']
+```
+kafka-cluster-kafka-bootstrap.guide.svc:9092
+```
+
+The [hotspot=inventory file=1]`inventory` microservice is configured similarly to the [hotspot=system file=1]`system`
+microservice. Additionally, the `inventory` microservice includes the [hotspot=service file=1]`service` and
+[hotspot=expose file=1]`expose` parameters. The [hotspot=servicePort file=1]`service.port` parameter specifies which port
+is exposed by the container, allowing the microservice to be accessed from outside the container. To access the microservice
+from outside of the cluster, it must be exposed by setting the [hotspot=expose file=1]`expose` parameter to `true`.
+Exposing the microservice lets the Operator automatically create and configure routes for external access to your microservice.
+
+Run the following command to deploy the `system` and `inventory` microservices with the previously explained configurations:
 
 [role='command']
 ```
@@ -439,7 +458,7 @@ Next, run the following command to view your newly created `OpenLibertyApplicati
 oc get OpenLibertyApplications
 ```
 
-You can also replace `OpenLibertyApplications` with the shortname `olapps`.
+You can also replace `OpenLibertyApplications` with its shortname `olapps`.
 
 Look for output that is similar to the following example:
 
@@ -451,7 +470,7 @@ system      guide/system-imagestream:1.0-SNAPSHOT                True         10
 ```
 
 A `RECONCILED` state value of `True` indicates that the operator was able to successfully process the `OpenLibertyApplications` instances. 
-Run the following commands to view details of your applications:
+Run the following commands to view details of your microservices:
 
 [role='command']
 ```
@@ -477,9 +496,9 @@ Kind:         OpenLibertyApplication
 
 Look for a similar output for `olapps/inventory`.
 
-== Accessing the inventory application
+== Accessing the inventory microservice
 
-To access the exposed `inventory` application, run the following command and make note of the `HOST`:
+To access the exposed `inventory` microservice, run the following command and make note of the `HOST`:
 
 [role='command']
 ```
@@ -495,7 +514,7 @@ inventory   inventory-guide.apps.lights.os.fyre.ibm.com         inventory   9085
 ```
 
 
-Visit the `inventory` application by going to the following URL: 
+Visit the `inventory` microservice by going to the following URL: 
 `http://[HOST]/inventory/systems`
 
 Make sure to substitute the appropriate `HOST` value. For example, using the output from the command above, `inventory-guide.apps.lights.os.fyre.ibm.com` is the `HOST`.
@@ -515,7 +534,7 @@ Look a JSON response that is similar to the following example:
 ```
 This sample output was formatted for readability. Your output might not be formatted.
 
-== Scaling up the system application
+== Scaling up the system microservices
 
 //File 0
 deploy.yaml
@@ -524,9 +543,9 @@ deploy.yaml
 include::finish/deploy.yaml[]
 ----
 
-The `inventory` application displays the `hostname` and `systemLoad` of all `system` applications that are publishing
+The `inventory` microservice displays the `hostname` and `systemLoad` of all `system` microservices that are publishing
 messages to the Kafka broker. Since only one `system` pod is running, there is only one element in the `inventory`.
-Scaling applications up is easy with Operators. Simply update the `deploy.yaml` file with the `replica: n` parameter,
+Scaling up microservices is easy with Operators. Simply update the `deploy.yaml` file with the `replica: n` parameter,
 where `n` is the number of instances that you want.
 
 [role="code_command hotspot file=0", subs="quotes"]
@@ -562,7 +581,7 @@ Wait a few minutes, then run the following command to see the newly scaled up `s
 oc get pods
 ```
 
-Revisit the `inventory` application and you now see three elements:
+Revisit the `inventory` microservice and you will now see three instances of the `system` microservice listed in the `inventory` endpoint:
 
 [role='no_copy']
 ```
