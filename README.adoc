@@ -160,9 +160,9 @@ CRDs define a `kind` of object that can be used.
 The Open Liberty Operator uses the `OpenLibertyApplication` `kind`. 
 The `OpenLibertyApplication` CRD defines a set of configurations for
 deploying an Open Liberty-based application, including the application image, number of instances, and storage settings.
-The Open Liberty Operator watches for changes to instances of the `OpenLibertyApplication` `kind` and creates Kubernetes resources that are based on the configuration that is defined in the CRD.
+The Open Liberty Operator watches for changes to instances of the `OpenLibertyApplication` object `kind` and creates Kubernetes resources that are based on the configuration that is defined in the CRD.
 
-You can use the `OpenLibertyApplication` resource in the upcoming sections.
+You will be using the `OpenLibertyApplication` object `kind` in the upcoming sections.
 It can also be used by using any of its `shortnames` such as `olapps`.
 
 Run the following command to view all CRDs used by the Strimzi Operator:
