@@ -33,7 +33,9 @@ metadata:
   labels:
     name: inventory
 spec:
+  # tag::invImage[]
   applicationImage: guide/inventory-imagestream:1.0-SNAPSHOT
+  # end::invImage[]
   # tag::service[]
   service:
     # tag::servicePort[]
