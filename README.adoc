@@ -414,7 +414,7 @@ The [hotspot file=1]`deploy.yaml` file is configured to deploy two [hotspot=olap
 resources, [hotspot=system file=1]`system` and [hotspot=inventory file=1]`inventory`, which are controlled by
 the Open Liberty Operator.
 
-The `applicationImage` parameter defines what container image is deployed as part of the `OpenLibertyApplication` CRD. 
+The [hotspot=sysImage hotspot=invImage file=1]`applicationImage` parameter defines what container image is deployed as part of the `OpenLibertyApplication` CRD. 
 This parameter follows the `<project-name>/<image-stream-name>[:tag]` format.
 The parameter can also point to an image hosted on an external registry, such as Docker Hub. 
 The [hotspot=system file=1]`system` microservice is configured to use the [hotspot=sysImage file=1]`image` created from the earlier build. 
