@@ -31,7 +31,7 @@ Explore how to deploy an application to Red Hat OpenShift by using Kubernetes Op
 == What you'll learn 
 
 You will learn how to deploy an application to Red Hat OpenShift 4 by using Kubernetes Operators. 
-You will install the operators, deploy applications, then scale up your application. 
+You will install two operators and use them to deploy and scale sample microservices. 
 
 https://www.openshift.com/[OpenShift^] is a Kubernetes-based platform with added functions. It streamlines the DevOps
 process by providing an intuitive development pipeline. It also provides integration with multiple tools to make the
@@ -100,8 +100,7 @@ Ensure that you are working within the project `guide` by running the following 
 oc projects
 ```
 
-Look for an asterisk (*) beside the `guide` project in the list of projects to confirm that you are in the `guide` project. 
-The list will appear similar to the following example:
+Look for an asterisk (*) with the `guide` project in the list of projects to confirm that you are in the `guide` project as shown in the following example:
 
 [role='no_copy']
 ```
@@ -132,12 +131,12 @@ The `finish` directory contains the finished project that you will build.
 
 == Installing the Operators
 
-When you obtained your OpenShift cluster, you should have received login information for the OpenShift web console.
+When you obtained your OpenShift cluster, you received login information for the https://docs.openshift.com/container-platform/4.5/web_console/web-console.html[OpenShift web console^].
 The web console provides an interface to interact with your OpenShift cluster through your web browser.
 
-To install the two Operators, navigate to the web console then to *Operators > OperatorHub* on the sidebar.
+To install the two Operators, navigate to the web console and select *Operators > OperatorHub* from the sidebar menu.
 Search for and install the *Open Liberty Operator* and the *Strimzi Operator*.
-When installing the Operators, ensure they are installed into the `guide` namespace. 
+Make sure you install the Operators into the `guide` namespace. 
 
 Run the following command to view all the supported API resources that are available through the Open Liberty Operator:
 
@@ -156,23 +155,22 @@ openlibertydumps          oldump,oldumps     openliberty.io   true         OpenL
 openlibertytraces         oltrace,oltraces   openliberty.io   true         OpenLibertyTrace
 ```
 
-CRDs define a `kind` of object that can be used. 
-The Open Liberty Operator uses the `OpenLibertyApplication` `kind`. 
+Each CRD defines a kind of object that can be used, which is specified in the previous example by the `KIND` value.
+The `SHORTNAME` value specifies alternative names that you can substitute in the configuration to refer to an object kind. 
+For example, you can refer to the `OpenLibertyApplication` kind by one of its specified shortnames such as `olapps`. 
+
 The `OpenLibertyApplication` CRD defines a set of configurations for
 deploying an Open Liberty-based application, including the application image, number of instances, and storage settings.
-The Open Liberty Operator watches for changes to instances of the `OpenLibertyApplication` object `kind` and creates Kubernetes resources that are based on the configuration that is defined in the CRD.
+The Open Liberty Operator watches for changes to instances of the `OpenLibertyApplication` object kind and creates Kubernetes resources that are based on the configuration that is defined in the CRD.
 
-You will be using the `OpenLibertyApplication` object `kind` in the upcoming sections.
-It can also be used by using any of its `shortnames` such as `olapps`.
-
-Run the following command to view all CRDs used by the Strimzi Operator:
+Run the following command to all CRDs that the Strimzi Operator uses:
 
 [role='command']
 ```
 oc api-resources --api-group=kafka.strimzi.io
 ```
 
-Look for the following output, which shows the CRDs that are used by the Strimzi Operator:
+Look for the following output, which lists the CRDs that the Strimzi Operator uses, along with object kinds and shortnames.
 
 [role='no_copy']
 ```
@@ -284,7 +282,7 @@ Create a build template to configure how to build your images.
 ----
 
 The [hotspot file=0]`build.yaml` template includes two objects. 
-The [hotspot=imageStream file=0]`ImageStream` object `kind` provides an abstraction from the image in the image registry. 
+The [hotspot=imageStream file=0]`ImageStream` object kind provides an abstraction from the image in the image registry. 
 This allows you to reference and tag the image. 
 The image registry used is the integrated internal OpenShift Container Registry.
 
@@ -304,7 +302,7 @@ oc process -f build.yaml -p APP_NAME=system | oc create -f -
 oc process -f build.yaml -p APP_NAME=inventory | oc create -f -
 ```
 
-Next, run the following commands to view the newly created `ImageStream` objects and build configurations for each microservice:
+Next, run the following commands to view the newly created `ImageStream` objects and the build configurations for each microservice:
 
 [role='command']
 ```
@@ -419,7 +417,7 @@ This parameter follows the `<project-name>/<image-stream-name>[:tag]` format.
 The parameter can also point to an image hosted on an external registry, such as Docker Hub. 
 The [hotspot=system file=1]`system` microservice is configured to use the [hotspot=sysImage file=1]`image` created from the earlier build. 
 
-One of the benefits of using `ImageStream` objects is that the operator redeploys the application when it detects a new image is pushed into the `ImageStream`.
+One of the benefits of using `ImageStream` objects is that the operator redeploys the application when it detects a new image is pushed.
 The [hotspot=systemEnv file=1]`env` parameter is used to specify environment variables that are passed to the container at runtime.
 You need to specify the bootstrap address required to communicate with the deployed Kafka cluster as an environment variable.
 
@@ -443,7 +441,7 @@ microservice. Additionally, the `inventory` microservice includes the [hotspot=s
 [hotspot=expose file=1]`expose` parameters. The [hotspot=servicePort file=1]`service.port` parameter specifies which port
 is exposed by the container, allowing the microservice to be accessed from outside the container. To access the microservice
 from outside of the cluster, it must be exposed by setting the [hotspot=expose file=1]`expose` parameter to `true`.
-Exposing the microservice lets the Operator automatically create and configure routes for external access to your microservice.
+After you expose the microservice, the Operator automatically creates and configures routes for external access to your microservice.
 
 Run the following command to deploy the `system` and `inventory` microservices with the previously explained configurations:
 
@@ -459,7 +457,7 @@ Next, run the following command to view your newly created `OpenLibertyApplicati
 oc get OpenLibertyApplications
 ```
 
-You can also replace `OpenLibertyApplications` with its shortname `olapps`.
+You can also replace `OpenLibertyApplications` with the shortname `olapps`.
 
 Look for output that is similar to the following example:
 
@@ -582,7 +580,7 @@ Wait a few minutes, then run the following command to see the newly scaled up `s
 oc get pods
 ```
 
-Revisit the `inventory` microservice and you will now see three instances of the `system` microservice listed in the `inventory` endpoint:
+Revisit the `inventory` microservice and you can now see three instances of the `system` microservice listed in the `inventory` endpoint:
 
 [role='no_copy']
 ```
