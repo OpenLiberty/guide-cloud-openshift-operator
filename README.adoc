@@ -62,6 +62,7 @@ https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reac
 == Additional prerequisites
 
 Before you can deploy your microservices, you must gain access to a cluster on OpenShift and have an OpenShift client installed. 
+For client installation instructions, refer to https://docs.openshift.com/container-platform/4.5/cli_reference/openshift_cli/getting-started-cli.html[the official OpenShift Online documentation^].
 
 There are various OpenShift offerings. You can use the https://learn.openshift.com/playgrounds/openshift44[online playground^], which provides
 free access to an OpenShift cluster for 60 minutes. Alternatively, you can gain access to an OpenShift cluster that is hosted on
@@ -100,7 +101,7 @@ Ensure that you are working within the project `guide` by running the following 
 oc projects
 ```
 
-Look for an asterisk (*) with the `guide` project in the list of projects to confirm that you are in the `guide` project as shown in the following example:
+Look for an asterisk (*) with the `guide` project in the list of projects to confirm that you are in the `guide` project, as shown in the following example:
 
 [role='no_copy']
 ```
@@ -157,9 +158,9 @@ openlibertytraces         oltrace,oltraces   openliberty.io   true         OpenL
 
 Each CRD defines a kind of object that can be used, which is specified in the previous example by the `KIND` value.
 The `SHORTNAME` value specifies alternative names that you can substitute in the configuration to refer to an object kind. 
-For example, you can refer to the `OpenLibertyApplication` kind by one of its specified shortnames such as `olapps`. 
+For example, you can refer to the `OpenLibertyApplication` object kind by one of its specified shortnames, such as `olapps`. 
 
-The `OpenLibertyApplication` CRD defines a set of configurations for
+The `openlibertyapplications` CRD defines a set of configurations for
 deploying an Open Liberty-based application, including the application image, number of instances, and storage settings.
 The Open Liberty Operator watches for changes to instances of the `OpenLibertyApplication` object kind and creates Kubernetes resources that are based on the configuration that is defined in the CRD.
 
@@ -232,7 +233,7 @@ Run the following command to view the details of the deployment:
 oc get kafka/kafka-cluster -o yaml
 ```
 
-In the `status` section under `conditions` you can see a report similar to the following example, if the cluster is ready:
+In the `status` section under `conditions` you can see a report similar to the following example when the cluster is ready:
 
 [role='no_copy']
 ```
@@ -282,7 +283,7 @@ Create a build template to configure how to build your images.
 ----
 
 The [hotspot file=0]`build.yaml` template includes two objects. 
-The [hotspot=imageStream file=0]`ImageStream` object kind provides an abstraction from the image in the image registry. 
+The [hotspot=imageStream file=0]`ImageStream` object provides an abstraction from the image in the image registry. 
 This allows you to reference and tag the image. 
 The image registry used is the integrated internal OpenShift Container Registry.
 
@@ -520,7 +521,7 @@ Make sure to substitute the appropriate `HOST` value. For example, using the out
 The following example shows this value substituted for `HOST` in the URL:
 `\http://inventory-guide.apps.lights.os.fyre.ibm.com/inventory/systems`.
 
-Look a JSON response that is similar to the following example: 
+Look for a JSON response that is similar to the following example: 
 
 [role='no_copy']
 ```
@@ -562,7 +563,7 @@ Run the following command to update the `system` resource:
 oc apply -f deploy.yaml
 ```
 
-You see the following output:
+Look for the following output:
 
 [role='no_copy']
 ```
