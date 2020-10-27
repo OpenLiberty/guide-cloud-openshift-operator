@@ -9,7 +9,7 @@
 :projectid: cloud-openshift-operator
 :page-layout: guide-multipane
 :page-duration: 30 minutes
-:page-releasedate: 2020-07-11
+:page-releasedate: 2020-10-27
 :page-description: Explore how to deploy an application to Red Hat OpenShift by using Kubernetes Operators.
 :page-tags: ['Kubernetes', 'Docker', 'Cloud'] 
 :page-permalink: /guides/{projectid}
@@ -20,7 +20,6 @@
 :page-seo-title: Deploying an application to Red Hat OpenShift by using Kubernetes Operators
 :page-seo-description: A getting started guide with examples on how to deploy an application on a Red Hat OpenShift cluster by using Kubernetes Operators.
 :guide-author: Open Liberty
-
 = Deploying an application to OpenShift by using Kubernetes Operators
 
 [.hidden]
@@ -31,7 +30,7 @@ Explore how to deploy an application to Red Hat OpenShift by using Kubernetes Op
 == What you'll learn 
 
 You will learn how to deploy an application to Red Hat OpenShift 4 by using Kubernetes Operators. 
-You will install two operators and use them to deploy and scale sample microservices. 
+You will install two operators into an OpenShift cluster and use them to deploy and scale sample microservices. 
 
 https://www.openshift.com/[OpenShift^] is a Kubernetes-based platform with added functions. It streamlines the DevOps
 process by providing an intuitive development pipeline. It also provides integration with multiple tools to make the
@@ -51,10 +50,10 @@ image::reactive-messaging-system-inventory-rest.png[Reactive system inventory,al
 
 You will deploy the two Open Liberty microservices by using the Open Liberty Operator, and deploy Kafka using the Strimzi Operator. 
 The https://github.com/OpenLiberty/open-liberty-operator[Open Liberty Operator^] provides a method of packaging,
-deploying, and managing Open Liberty applications on Kubernetes-based clusters. The Open Liberty Operator watches Open
-Liberty resources and creates various Kubernetes resources, including `Deployments`, `Services`, and `Routes`, depending
-on the configurations. The Operator then continuously compares the current state of the resources and the desired state
-of application deployment and reconciles them when necessary.
+deploying, and managing Open Liberty applications on Kubernetes-based clusters. 
+The Open Liberty Operator watches Open Liberty resources and creates various Kubernetes resources, including `Deployments`, `Services`, and `Routes`, depending on the configurations. 
+The Operator then continuously compares the current state of the resources, the desired state
+of application deployment, and reconciles them when necessary.
 To learn more about the Strimzi Operator, visit their https://strimzi.io/[official website^].
 You can learn more about how the reactive Java services used in this guide work by checking out the
 https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reactive Java microservices^] guide.
@@ -122,6 +121,7 @@ into your cluster and use the projects that are provided inside:
 ----
 git clone https://github.com/openliberty/guide-{projectid}.git
 cd guide-{projectid}
+cd start
 ----
 
 The `start` directory contains the starting project that you will build upon.
@@ -422,8 +422,8 @@ One of the benefits of using `ImageStream` objects is that the operator redeploy
 The [hotspot=systemEnv file=1]`env` parameter is used to specify environment variables that are passed to the container at runtime.
 You need to specify the bootstrap address required to communicate with the deployed Kafka cluster as an environment variable.
 
-Update the [hotspot=bootstrap hotspot=bootstrapInv file=1]`value` of the bootstrap address variable to the required values. You can find the
-bootstrap address by running the following command:
+Update the [hotspot=bootstrap hotspot=bootstrapInv file=1]`value` of the bootstrap address variable to the
+bootstrap address found by running the following command:
 
 [role='command']
 ```
@@ -574,13 +574,14 @@ openlibertyapplication.openliberty.io/inventory unchanged
 Notice that only the `system` resource was updated because there was a change in its specification. The `inventory`
 resource was left unchanged.
 
-Wait a few minutes, then run the following command to see the newly scaled up `system` pods:
+Run the following command to see the newly scaled up `system` pods:
 
 [role='command']
 ```
 oc get pods
 ```
 
+When you see a status of `Running` on all of the `system` pods, your application is ready. 
 Revisit the `inventory` microservice and you can now see three instances of the `system` microservice listed in the `inventory` endpoint:
 
 [role='no_copy']

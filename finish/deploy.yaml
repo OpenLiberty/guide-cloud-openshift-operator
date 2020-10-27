@@ -22,7 +22,7 @@ spec:
       value: "message,trace,accessLog,ffdc,audit"
     - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
       # tag::bootstrap[]
-      value: [kafka-bootstrap-address]
+      value: "[kafka-bootstrap-address]"
       # end::bootstrap[]
   # end::systemEnv[]
 # end::system[]
@@ -56,6 +56,6 @@ spec:
       value: "message,trace,accessLog,ffdc,audit"
     - name: MP_MESSAGING_CONNECTOR_LIBERTY_KAFKA_BOOTSTRAP_SERVERS
       # tag::bootstrapInv[]
-      value: [kafka-bootstrap-address]
+      value: "[kafka-bootstrap-address]"
       # end::bootstrapInv[]
 # end::inventory[]
