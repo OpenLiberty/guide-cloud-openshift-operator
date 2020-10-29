@@ -65,8 +65,8 @@ For client installation instructions, refer to https://docs.openshift.com/contai
 
 There are various OpenShift offerings. You can use the https://learn.openshift.com/playgrounds/openshift44[online playground^], which provides
 free access to an OpenShift cluster for 60 minutes. Alternatively, you can gain access to an OpenShift cluster that is hosted on
-https://www.openshift.com/products/openshift-ibm-cloud[IBM cloud^], or check out other offerings
-https://www.openshift.com/products[from Openshift^]. 
+https://www.openshift.com/products/openshift-ibm-cloud[IBM Cloud^], or check out other offerings
+https://www.openshift.com/products[from OpenShift^]. 
 
 After you get access to a cluster, make sure you are logged in to the cluster
 as a cluster administrator by running the following command:
@@ -242,7 +242,7 @@ In the `status` section under `conditions` you can see a report similar to the f
   type: Ready
 ```
 
-== Deploying the system and inventory applications to OpenShift
+== Deploying the system and inventory microservices to OpenShift
 
 //File 0
 build.yaml
@@ -258,10 +258,10 @@ deploy.yaml
 include::finish/deploy.yaml[]
 ----
 
-To deploy the Open Liberty `system` and `inventory` microservices, you must first package the microservices, then create and
-run an OpenShift build to convert the packaged microservices into runnable container images.
+To deploy the `system` and `inventory` microservices, you must first package the microservices, then create and
+run an OpenShift build to produce runnable container images of the packaged microservices.
 
-=== Packaging the applications
+=== Packaging the microservices
 
 Ensure that you are in the `start` directory and run the following commands to package the `system` and `inventory`
 microservices:
@@ -274,7 +274,7 @@ mvn clean package
 
 === Building and pushing the images
 
-Create a build template to configure how to build your images.
+Create a build template to configure how to build your container images.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
@@ -290,10 +290,10 @@ The image registry used is the integrated internal OpenShift Container Registry.
 The [hotspot=buildConfig file=0]`build configuration` object defines a single
 build definition and any triggers that kickstart the build. The [hotspot=source file=0]`source` spec defines the build input. In this case,
 the build inputs are your [hotspot=binary file=0]`binary` (local) files, which are streamed to OpenShift for the build.
-The uploaded files need to include the packaged `WAR` application files, which is why you needed to run the Maven commands. The template specifies
-a [hotspot=docker file=0]`Docker` strategy build, which invokes the `docker build` command, and creates a runnable application image
+The uploaded files need to include the packaged `WAR` application binaries, which is why you needed to run the Maven commands. The template specifies
+a [hotspot=docker file=0]`Docker` strategy build, which invokes the `docker build` command, and creates a runnable container image of the microservice
 from the build input. The template is parameterized with the [hotspot=appname file=0]`APP_NAME` parameter so that you can use the same
-template to create the objects for the `system` and `inventory` applications separately.
+template to create the objects for the `system` and `inventory` microservices separately.
 
 Run the following commands to create the objects for the `system` and `inventory` microservices:
 
