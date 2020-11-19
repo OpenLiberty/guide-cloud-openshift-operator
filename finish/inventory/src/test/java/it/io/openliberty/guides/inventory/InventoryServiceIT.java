@@ -63,7 +63,7 @@ public class InventoryServiceIT {
     public void testCpuUsage() throws InterruptedException {
         SystemLoad sl = new SystemLoad("localhost", 1.1);
         // tag::systemLoadTopic[]
-        cpuProducer.send(new ProducerRecord<String, SystemLoad>("systemLoadTopic", sl));
+        cpuProducer.send(new ProducerRecord<String, SystemLoad>("system.load", sl));
         // end::systemLoadTopic[]
         Thread.sleep(5000);
         Response response = inventoryResource.getSystems();
