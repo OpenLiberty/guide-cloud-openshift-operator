@@ -53,6 +53,5 @@ public class SystemServiceIT {
             assertNotNull(sl.hostId);
             assertNotNull(sl.loadAverage);
         }
-        cpuConsumer.commitAsync();
     }
 }

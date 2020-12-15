@@ -70,7 +70,6 @@ public class SystemServiceIT {
             assertNotNull(sl.loadAverage);
             // end::assert[]
         }
-        cpuConsumer.commitAsync();
     }
     // end::testCpuStatus[]
 }
