@@ -19,7 +19,7 @@ cat system/Dockerfile inventory/Dockerfile
 
 docker pull $DOCKER_USERNAME"/olguides:"$BUILD
 
-sudo ../scripts/testApp.sh
+# sudo ../scripts/testApp.sh
 
 echo "Test latest OpenLiberty Docker image"
 
