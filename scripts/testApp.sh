@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 # Package the system/ and inventory/ apps
-mvn -q install
+mvn -q -pl models install
 mvn -q clean package
 
 # Verifies that the system/inventory apps are functional
