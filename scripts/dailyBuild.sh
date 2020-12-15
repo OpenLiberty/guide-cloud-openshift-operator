@@ -30,8 +30,9 @@ docker pull "openliberty/daily:latest"
 
 IMAGEBUILDLEVEL=$(docker inspect --format "{{ index .Config.Labels \"org.opencontainers.image.revision\"}}" openliberty/daily:latest)
 
-if [[ "$IMAGEBUILDLEVEL" == "$BUILD" ]] then
+if [ $IMAGEBUILDLEVEL == $BUILD ] 
+then
     sudo ../scripts/testApp.sh
 else
-    echo "Image does not match build level"
+    echo "Image does not match input build level for testing"
 fi
