@@ -15,7 +15,6 @@ package it.io.openliberty.guides.system;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
 import java.time.Duration;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -47,7 +46,8 @@ public class SystemServiceIT {
                          // tag::systemLoadTopic[]
                          topics = "system.load",
                          // end::systemLoadTopic[]
-                         properties = ConsumerConfig.AUTO_OFFSET_RESET_CONFIG + "=earliest")
+                         properties = ConsumerConfig.AUTO_OFFSET_RESET_CONFIG
+                                      + "=earliest")
     // end::KafkaConsumerConfig[]
     public static KafkaConsumer<String, SystemLoad> cpuConsumer;
     // end::KafkaConsumer2[]

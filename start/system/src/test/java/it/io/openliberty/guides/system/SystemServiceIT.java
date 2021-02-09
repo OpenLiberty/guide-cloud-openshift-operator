@@ -15,7 +15,6 @@ package it.io.openliberty.guides.system;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.IOException;
 import java.time.Duration;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
