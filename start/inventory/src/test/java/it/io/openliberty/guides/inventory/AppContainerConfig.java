@@ -23,11 +23,11 @@ import org.testcontainers.junit.jupiter.Container;
 public class AppContainerConfig implements SharedContainerConfiguration {
 
     private static Network network = Network.newNetwork();
-    
+
     @Container
     public static KafkaContainer kafka = new KafkaContainer()
                     .withNetwork(network);
-    
+
     @Container
     public static ApplicationContainer inventory = new ApplicationContainer()
                     .withAppContextRoot("/")
