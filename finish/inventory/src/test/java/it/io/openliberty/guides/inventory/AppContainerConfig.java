@@ -12,6 +12,8 @@
 // end::copyright[]
 package it.io.openliberty.guides.inventory;
 
+import java.time.Duration;
+
 import org.microshed.testing.SharedContainerConfiguration;
 import org.microshed.testing.testcontainers.ApplicationContainer;
 import org.testcontainers.containers.KafkaContainer;
