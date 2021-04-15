@@ -1,6 +1,6 @@
 // tag::copyright[]
 /*******************************************************************************
- * Copyright (c) 2020 IBM Corporation and others.
+ * Copyright (c) 2020, 2021 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -63,12 +63,12 @@ public class InventoryServiceIT {
     public void testCpuUsage() throws InterruptedException {
         SystemLoad sl = new SystemLoad("localhost", 1.1);
         // tag::systemLoadTopic[]
-        cpuProducer.send(new ProducerRecord<String, SystemLoad>("systemLoadTopic", sl));
+        cpuProducer.send(new ProducerRecord<String, SystemLoad>("system.load", sl));
         // end::systemLoadTopic[]
         Thread.sleep(5000);
         Response response = inventoryResource.getSystems();
         List<Properties> systems =
-                response.readEntity(new GenericType<List<Properties>>() {});
+                response.readEntity(new GenericType<List<Properties>>() { });
         // tag::assert[]
         Assertions.assertEquals(200, response.getStatus(),
                 "Response should be 200");
