@@ -5,7 +5,7 @@ while getopts t:d:b:u: flag; do
     d) DRIVER="${OPTARG}" ;;
     b) BUILD="${OPTARG}" ;;
     u) DOCKER_USERNAME="${OPTARG}" ;;
-    *) echo "Invalid option";;
+    *) echo "Invalid option" ;;
     esac
 done
 
@@ -17,6 +17,6 @@ cat inventory/pom.xml system/pom.xml
 sed -i "s;FROM openliberty/open-liberty:full-java8-openj9-ubi;FROM $DOCKER_USERNAME/olguides:$BUILD;g" inventory/Dockerfile system/Dockerfile
 cat inventory/Dockerfile system/Dockerfile
 
-docker pull $DOCKER_USERNAME"/olguides:"$BUILD
+docker pull "$DOCKER_USERNAME/olguides:$BUILD"
 
 sudo ../scripts/testApp.sh
