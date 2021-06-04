@@ -139,7 +139,7 @@ https://docs.openshift.com/container-platform/4.5/web_console/web-console.html[O
 The web console provides an interface to interact with your OpenShift cluster through your web browser.
 
 To install the two Operators, navigate to the web console and select *Operators > OperatorHub* from the sidebar menu.
-Search for and install the *Open Liberty Operator* and the *Strimzi Operator*.
+Search for and install the *Open Liberty Operator* and *Strimzi Operator* with the latest version but not the stable version.
 Make sure you install the Operators into the `guide` namespace. 
 
 Run the following command to view all the supported API resources that are available through the Open Liberty Operator:
