@@ -10,7 +10,7 @@
 :page-layout: guide-multipane
 :page-duration: 30 minutes
 :page-releasedate: 2020-10-30
-:page-description: Explore how to deploy microservices to Red Hat OpenShift by using Kubernetes Operators.
+:page-description: Explore how to deploy microservices to Red Hat OpenShift by using Kubernetes Operators like the Open Liberty Operator.
 :page-tags: ['Kubernetes', 'Docker', 'Cloud'] 
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['cloud-openshift', 'okd']
@@ -18,7 +18,7 @@
 :imagesdir: /img/guide/{projectid}
 :source-highlighter: prettify
 :page-seo-title: Deploying microservices to Red Hat OpenShift by using Kubernetes Operators
-:page-seo-description: A getting started tutorial with examples on how to deploy cloud-native Java applications and microservices to Red Hat OpenShift cluster by using Kubernetes Operators.
+:page-seo-description: A getting started tutorial with examples on how to deploy cloud-native Java applications and microservices to Red Hat OpenShift cluster by using Kubernetes Operators like the Open Liberty Operator.
 :guide-author: Open Liberty
 = Deploying microservices to OpenShift by using Kubernetes Operators
 
@@ -29,7 +29,7 @@ Explore how to deploy microservices to Red Hat OpenShift by using Kubernetes Ope
 
 == What you'll learn 
 
-You will learn how to deploy a cloud-native application with 2 microservices to Red Hat OpenShift 4 by using Kubernetes Operators. 
+You will learn how to deploy a cloud-native application with 2 microservices to Red Hat OpenShift 4 by using Kubernetes Operators like the Open Liberty Operator. 
 You will install two operators into an OpenShift cluster and use them to deploy and scale sample microservices. 
 
 https://www.openshift.com/[OpenShift^] is a Kubernetes-based platform with added functions. It streamlines the DevOps
