@@ -37,7 +37,8 @@ process by providing an intuitive development pipeline. It also provides integra
 deployment and management of cloud applications easier.
 You can learn more about Kubernetes by checking out the https://openliberty.io/guides/kubernetes-intro.html[Deploying microservices to Kubernetes^] guide.
 
-https://kubernetes.io/docs/concepts/extend-kubernetes/operator/#operators-in-kubernetes[Kubernetes operators] provide an easy way to automate the management and updating of applications by abstracting away some of the details of cloud application management.
+https://kubernetes.io/docs/concepts/extend-kubernetes/operator/#operators-in-kubernetes[Kubernetes operators]
+provide an easy way to automate the management and updating of applications by abstracting away some of the details of cloud application management.
 To learn more about operators, check out this https://www.openshift.com/learn/topics/operators[Operators tech topic article^]. 
 
 The application in this guide consists of two microservices, `system` and `inventory`. Every 15 seconds, the `system`
@@ -51,7 +52,8 @@ image::reactive-messaging-system-inventory-rest.png[Reactive system inventory,al
 You will deploy the two Open Liberty microservices by using the Open Liberty Operator, and deploy Kafka using the Strimzi Operator. 
 The https://github.com/OpenLiberty/open-liberty-operator[Open Liberty Operator^] provides a method of packaging,
 deploying, and managing Open Liberty applications on Kubernetes-based clusters. 
-The Open Liberty Operator watches Open Liberty resources and creates various Kubernetes resources, including `Deployments`, `Services`, and `Routes`, depending on the configurations. 
+The Open Liberty Operator watches Open Liberty resources and creates various Kubernetes resources,
+including `Deployments`, `Services`, and `Routes`, depending on the configurations. 
 The Operator then continuously compares the current state of the resources, the desired state
 of application deployment, and reconciles them when necessary.
 To learn more about the Strimzi Operator, visit their https://strimzi.io/[official website^].
@@ -85,8 +87,8 @@ Server Version: 4.3.13
 Kubernetes Version: v1.16.2
 ```
 
-Before you install any resources, you need to create a project on your OpenShift cluster. Create a project named `guide` by
-running the following command:
+Before you install any resources, you need to create a project on your OpenShift cluster.
+Create a project named `guide` by running the following command:
 
 [role='command']
 ```
@@ -132,11 +134,12 @@ The `finish` directory contains the finished project that you will build.
 
 == Installing the Operators
 
-When you obtained your OpenShift cluster, you received login information for the https://docs.openshift.com/container-platform/4.5/web_console/web-console.html[OpenShift web console^].
+When you obtained your OpenShift cluster, you received login information for the
+https://docs.openshift.com/container-platform/4.5/web_console/web-console.html[OpenShift web console^].
 The web console provides an interface to interact with your OpenShift cluster through your web browser.
 
 To install the two Operators, navigate to the web console and select *Operators > OperatorHub* from the sidebar menu.
-Search for and install the *Open Liberty Operator* and the *Strimzi Operator*.
+Search for and install the *Open Liberty Operator* and the *Strimzi Operator*. For the Strimzi Operator, install the latest version, not the stable version.
 Make sure you install the Operators into the `guide` namespace. 
 
 Run the following command to view all the supported API resources that are available through the Open Liberty Operator:
@@ -287,7 +290,7 @@ The [hotspot=imageStream file=0]`ImageStream` object provides an abstraction fro
 This allows you to reference and tag the image. 
 The image registry used is the integrated internal OpenShift Container Registry.
 
-The [hotspot=buildConfig file=0]`build configuration` object defines a single
+The [hotspot=buildConfig file=0]`BuildConfig` object defines a single
 build definition and any triggers that kickstart the build. The [hotspot=source file=0]`source` spec defines the build input. In this case,
 the build inputs are your [hotspot=binary file=0]`binary` (local) files, which are streamed to OpenShift for the build.
 The uploaded files need to include the packaged `WAR` application binaries, which is why you needed to run the Maven commands. The template specifies
@@ -422,7 +425,7 @@ One of the benefits of using `ImageStream` objects is that the operator redeploy
 The [hotspot=systemEnv file=1]`env` parameter is used to specify environment variables that are passed to the container at runtime.
 You need to specify the bootstrap address required to communicate with the deployed Kafka cluster as an environment variable.
 
-Update the [hotspot=bootstrap hotspot=bootstrapInv file=1]`value` of the bootstrap address variable to the
+Update the [hotspot=bootstrap hotspot=bootstrapInv file=1]`[kafka-bootstrap-address]` of the bootstrap address variable to the
 bootstrap address found by running the following command:
 
 [role='command']
@@ -437,11 +440,14 @@ You will see output similar to the following example:
 kafka-cluster-kafka-bootstrap.guide.svc:9092
 ```
 
-The [hotspot=inventory file=1]`inventory` microservice is configured similarly to the [hotspot=system file=1]`system`
-microservice. Additionally, the `inventory` microservice includes the [hotspot=service file=1]`service` and
-[hotspot=expose file=1]`expose` parameters. The [hotspot=servicePort file=1]`service.port` parameter specifies which port
-is exposed by the container, allowing the microservice to be accessed from outside the container. To access the microservice
-from outside of the cluster, it must be exposed by setting the [hotspot=expose file=1]`expose` parameter to `true`.
+The [hotspot=inventory file=1]`inventory` microservice is configured
+similarly to the [hotspot=system file=1]`system` microservice.
+Additionally, the `inventory` microservice includes the [hotspot=service file=1]`service`
+and [hotspot=expose file=1]`expose` parameters.
+The [hotspot=servicePort file=1]`service.port` parameter specifies which port is exposed by the container,
+allowing the microservice to be accessed from outside the container.
+To access the microservice from outside of the cluster,
+it must be exposed by setting the [hotspot=expose file=1]`expose` parameter to `true`.
 After you expose the microservice, the Operator automatically creates and configures routes for external access to your microservice.
 
 Run the following command to deploy the `system` and `inventory` microservices with the previously explained configurations:
@@ -517,7 +523,8 @@ inventory   inventory-guide.apps.lights.os.fyre.ibm.com         inventory   9085
 Visit the `inventory` microservice by going to the following URL: 
 `http://[HOST]/inventory/systems`
 
-Make sure to substitute the appropriate `HOST` value. For example, using the output from the command above, `inventory-guide.apps.lights.os.fyre.ibm.com` is the `HOST`.
+Make sure to substitute the appropriate `HOST` value.
+For example, using the output from the command above, `inventory-guide.apps.lights.os.fyre.ibm.com` is the `HOST`.
 The following example shows this value substituted for `HOST` in the URL:
 `\http://inventory-guide.apps.lights.os.fyre.ibm.com/inventory/systems`.
 
