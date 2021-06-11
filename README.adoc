@@ -425,7 +425,7 @@ One of the benefits of using `ImageStream` objects is that the operator redeploy
 The [hotspot=systemEnv file=1]`env` parameter is used to specify environment variables that are passed to the container at runtime.
 You need to specify the bootstrap address required to communicate with the deployed Kafka cluster as an environment variable.
 
-Update the [hotspot=bootstrap hotspot=bootstrapInv file=1]`[kafka-bootstrap-address]` of the bootstrap address variable to the
+Update the [hotspot=bootstrap hotspot=bootstrapInv file=1]`[kafka-bootstrap-address]` of variable to the
 bootstrap address found by running the following command:
 
 [role='command']
