@@ -14,7 +14,7 @@
 :page-tags: ['Kubernetes', 'Docker', 'Cloud'] 
 :page-permalink: /guides/{projectid}
 :page-related-guides: ['cloud-openshift', 'okd']
-:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/master
+:common-includes: https://raw.githubusercontent.com/OpenLiberty/guides-common/prod
 :imagesdir: /img/guide/{projectid}
 :source-highlighter: prettify
 :page-seo-title: Deploying microservices to Red Hat OpenShift by using Kubernetes Operators
@@ -218,7 +218,7 @@ Ensure that you are in the `start` directory.
 ----
 
 The provided Kafka cluster configuration is based on the
-https://github.com/strimzi/strimzi-kafka-operator/blob/master/examples/kafka/kafka-ephemeral-single.yaml[Strimzi Kafka ephemeral single example^].
+https://github.com/strimzi/strimzi-kafka-operator/blob/main/examples/kafka/kafka-ephemeral-single.yaml[Strimzi Kafka ephemeral single example^].
 For more information about the Kafka configuration file, check out the
 https://strimzi.io/docs/operators/master/using.html#assembly-deployment-configuration-kafka-str[official Strimzi documentation^]
 
