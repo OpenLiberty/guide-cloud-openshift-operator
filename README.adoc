@@ -254,13 +254,6 @@ build.yaml
 include::finish/build.yaml[]
 ----
 
-//File 1
-deploy.yaml
-[source, yaml, linenums, role='code_column hide_tags=replicas']
-----
-include::finish/deploy.yaml[]
-----
-
 To deploy the `system` and `inventory` microservices, you must first package the microservices, then create and
 run an OpenShift build to produce runnable container images of the packaged microservices.
 
@@ -403,6 +396,12 @@ Look for similar output for `inventory-imagestream`.
 Now you're ready to deploy the images.
 
 === Deploying the images
+//File 1
+deploy.yaml
+[source, yaml, linenums, role='code_column hide_tags=replicas']
+----
+include::finish/deploy.yaml[]
+----
 
 You can configure the specifics of the Open Liberty Operator-controlled deployment with a YAML configuration file.
 
