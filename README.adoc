@@ -396,7 +396,7 @@ Look for similar output for `inventory-imagestream`.
 Now you're ready to deploy the images.
 
 === Deploying the images
-//File 1
+//File 0
 deploy.yaml
 [source, yaml, linenums, role='code_column hide_tags=replicas']
 ----
@@ -405,26 +405,26 @@ include::finish/deploy.yaml[]
 
 You can configure the specifics of the Open Liberty Operator-controlled deployment with a YAML configuration file.
 
-[role="code_command hotspot file=1", subs="quotes"]
+[role="code_command hotspot file=0", subs="quotes"]
 ----
 #Create the `deploy.yaml` configuration file.#
 `deploy.yaml`
 ----
 
-The [hotspot file=1]`deploy.yaml` file is configured to deploy two [hotspot=olapp1 hotspot=olapp2 file=1]`OpenLibertyApplication`
-resources, [hotspot=system file=1]`system` and [hotspot=inventory file=1]`inventory`, which are controlled by
+The [hotspot file=0]`deploy.yaml` file is configured to deploy two [hotspot=olapp1 hotspot=olapp2 file=0]`OpenLibertyApplication`
+resources, [hotspot=system file=0]`system` and [hotspot=inventory file=0]`inventory`, which are controlled by
 the Open Liberty Operator.
 
-The [hotspot=sysImage hotspot=invImage file=1]`applicationImage` parameter defines what container image is deployed as part of the `OpenLibertyApplication` CRD. 
+The [hotspot=sysImage hotspot=invImage file=0]`applicationImage` parameter defines what container image is deployed as part of the `OpenLibertyApplication` CRD. 
 This parameter follows the `<project-name>/<image-stream-name>[:tag]` format.
 The parameter can also point to an image hosted on an external registry, such as Docker Hub. 
-The [hotspot=system file=1]`system` microservice is configured to use the [hotspot=sysImage file=1]`image` created from the earlier build. 
+The [hotspot=system file=0]`system` microservice is configured to use the [hotspot=sysImage file=0]`image` created from the earlier build. 
 
 One of the benefits of using `ImageStream` objects is that the operator redeploys the application when it detects a new image is pushed.
-The [hotspot=systemEnv file=1]`env` parameter is used to specify environment variables that are passed to the container at runtime.
+The [hotspot=systemEnv file=0]`env` parameter is used to specify environment variables that are passed to the container at runtime.
 You need to specify the bootstrap address required to communicate with the deployed Kafka cluster as an environment variable.
 
-Update the [hotspot=bootstrap hotspot=bootstrapInv file=1]`[kafka-bootstrap-address]` variable to the
+Update the [hotspot=bootstrap hotspot=bootstrapInv file=0]`[kafka-bootstrap-address]` variable to the
 bootstrap address found by running the following command:
 
 [role='command']
@@ -439,14 +439,14 @@ You will see output similar to the following example:
 kafka-cluster-kafka-bootstrap.guide.svc:9092
 ```
 
-The [hotspot=inventory file=1]`inventory` microservice is configured
-similarly to the [hotspot=system file=1]`system` microservice.
-Additionally, the `inventory` microservice includes the [hotspot=service file=1]`service`
-and [hotspot=expose file=1]`expose` parameters.
-The [hotspot=servicePort file=1]`service.port` parameter specifies which port is exposed by the container,
+The [hotspot=inventory file=0]`inventory` microservice is configured
+similarly to the [hotspot=system file=0]`system` microservice.
+Additionally, the `inventory` microservice includes the [hotspot=service file=0]`service`
+and [hotspot=expose file=0]`expose` parameters.
+The [hotspot=servicePort file=0]`service.port` parameter specifies which port is exposed by the container,
 allowing the microservice to be accessed from outside the container.
 To access the microservice from outside of the cluster,
-it must be exposed by setting the [hotspot=expose file=1]`expose` parameter to `true`.
+it must be exposed by setting the [hotspot=expose file=0]`expose` parameter to `true`.
 After you expose the microservice, the Operator automatically creates and configures routes for external access to your microservice.
 
 Run the following command to deploy the `system` and `inventory` microservices with the previously explained configurations:
