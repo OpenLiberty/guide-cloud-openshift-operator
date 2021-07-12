@@ -195,6 +195,20 @@ You can also confirm the installation of the operators from the web console.
 Navigate to the OperatorHub.
 From the categories on the left, you can filter to see only installed operators. 
 
+== Optional: Adding a private Docker credential
+
+Docker limits Anonymous and Free Docker Hub users to 100-200 image container image pull requests per 6 hours. 
+To avoid running into any errors as a result of the limits, 
+you can add a private credential for a Docker account with a Pro or Team subscription. 
+
+To add a private credential, navigate to the web console and select *Workloads > Secrets* from the sidebar menu. 
+Ensure that the selected project is `openshift-config`. 
+Search for *pull-secret* and on it click the *three vertical dots menu* then *edit secret*. 
+Scroll down and click `Add credentials`. 
+Enter `docker.io` as the *Registry Server Address*, 
+`Docker Username` as the *Username*, 
+`Docker Password` as the *Password* and click *Save*. 
+
 == Deploying the Kafka cluster to OpenShift
 
 //File 0
