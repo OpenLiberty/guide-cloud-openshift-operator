@@ -197,17 +197,19 @@ From the categories on the left, you can filter to see only installed operators.
 
 == Optional: Adding a private Docker credential
 
-Docker limits Anonymous and Free Docker Hub users to 100-200 image container image pull requests per 6 hours. 
+Docker link:https://www.docker.com/increase-rate-limits[limits container image pull requests] for free DockerHub subscriptions.
 To avoid running into any errors as a result of the limits, 
 you can add a private credential for a Docker account with a Pro or Team subscription. 
 
-To add a private credential, navigate to the web console and select *Workloads > Secrets* from the sidebar menu. 
+To add a private credential, navigate to the OpenShift web console and select *Workloads > Secrets* from the sidebar menu. 
 Ensure that the selected project is `openshift-config`. 
-Search for *pull-secret* and on it click the *three vertical dots menu* then *edit secret*. 
-Scroll down and click `Add credentials`. 
-Enter `docker.io` as the *Registry Server Address*, 
-`Docker Username` as the *Username*, 
-`Docker Password` as the *Password* and click *Save*. 
+Search for *pull-secret* and on it click the *three vertical dots* menu then *Edit Secret*. 
+Scroll down and click *Add credentials*.  
+Enter `docker.io` to the *Registry Server Address* field, 
+your docker user id to the *Username* field, 
+and your docker password to the *Password* field.
+Click the *Save* button to save the credential. 
+
 
 == Deploying the Kafka cluster to OpenShift
 
