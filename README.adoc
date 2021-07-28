@@ -198,16 +198,16 @@ From the categories on the left, you can filter to see only installed operators.
 == Adding a private Docker credential
 
 Docker limits container image pull requests for free DockerHub subscriptions. 
-Read the link:https://www.docker.com/increase-rate-limits[Understanding Docker Hub Rate Limiting] document for more details.
-If you have a Docker account with a Pro or Team subscription, you can add a private credential to avoid running into any errors as a result of the limits.
+For more information, see link:https://www.docker.com/increase-rate-limits[Understanding Docker Hub Rate Limiting].
+If you have a Docker account with a Pro or Team subscription, you can add a private credential to avoid any errors as a result of the limits.
 
 To add a private credential, navigate to the OpenShift web console and select *Workloads > Secrets* from the sidebar menu. 
 Ensure that the selected project is `openshift-config`. 
-Search for `pull-secret` and on it click the *three vertical dots* menu then *Edit Secret*. 
+Search for `pull-secret` and click the *three vertical dots* menu; then *Edit Secret*. 
 Scroll down and click *Add credentials*.  
 Enter `docker.io` to the *Registry Server Address* field, 
-your docker user id to the *Username* field, 
-and your docker password to the *Password* field.
+your Docker user ID to the *Username* field, 
+and your Docker password to the *Password* field.
 Click the *Save* button to save the credential. 
 
 
