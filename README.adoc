@@ -195,15 +195,15 @@ You can also confirm the installation of the operators from the web console.
 Navigate to the OperatorHub.
 From the categories on the left, you can filter to see only installed operators. 
 
-== Optional: Adding a private Docker credential
+== Adding a private Docker credential
 
-Docker link:https://www.docker.com/increase-rate-limits[limits container image pull requests] for free DockerHub subscriptions.
-To avoid running into any errors as a result of the limits, 
-you can add a private credential for a Docker account with a Pro or Team subscription. 
+Docker limits container image pull requests for free DockerHub subscriptions. 
+Read the link:https://www.docker.com/increase-rate-limits[Understanding Docker Hub Rate Limiting] document for more details.
+If you have a Docker account with a Pro or Team subscription, you can add a private credential to avoid running into any errors as a result of the limits.
 
 To add a private credential, navigate to the OpenShift web console and select *Workloads > Secrets* from the sidebar menu. 
 Ensure that the selected project is `openshift-config`. 
-Search for *pull-secret* and on it click the *three vertical dots* menu then *Edit Secret*. 
+Search for `pull-secret` and on it click the *three vertical dots* menu then *Edit Secret*. 
 Scroll down and click *Add credentials*.  
 Enter `docker.io` to the *Registry Server Address* field, 
 your docker user id to the *Username* field, 
