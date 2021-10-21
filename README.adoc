@@ -229,7 +229,7 @@ Ensure that you are in the `start` directory.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
-#Create the `kafka.yaml` configuration file.#
+#Create the `kafka.yaml` configuration file in the `start` directory.#
 `kafka.yaml`
 ----
 
@@ -290,7 +290,7 @@ Create a build template to configure how to build your container images.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
-#Create the `build.yaml` template file.#
+#Create the `build.yaml` template file in the `start` directory.#
 `build.yaml`
 ----
 
@@ -423,7 +423,7 @@ You can configure the specifics of the Open Liberty Operator-controlled deployme
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
-#Create the `deploy.yaml` configuration file.#
+#Create the `deploy.yaml` configuration file in the `start` directory.#
 `deploy.yaml`
 ----
 
@@ -572,7 +572,7 @@ where `n` is the number of instances that you want.
 
 [role="code_command hotspot file=0", subs="quotes"]
 ----
-#Update the `deploy.yaml` configuration file.#
+#Update the `deploy.yaml` configuration file in the `start` directory.#
 `deploy.yaml`
 ----
 [role="edit_command_text"]
