@@ -569,7 +569,7 @@ include::finish/deploy.yaml[]
 ----
 
 The `inventory` microservice displays the `hostname` and `systemLoad` of all `system` microservices that are publishing
-messages to the Kafka broker. Because only one `system` pod is running, only one element displays in the `inventory`.
+messages to the Kafka broker. Because only one `system` pod is running, only one element displays in the `inventory` microservice.
 Scaling up microservices is easy with Operators. Simply update the `deploy.yaml` file with the `replica: n` parameter,
 where `n` is the number of instances that you want.
 
