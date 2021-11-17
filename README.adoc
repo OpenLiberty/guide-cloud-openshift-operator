@@ -378,8 +378,8 @@ oc logs build/inventory-buildconfig-1
 
 === Checking the images
 
-During the build process, the image associated with the `ImageStream` object that you created earlier
-was pushed to the image registry and tagged. Run the following command to view the newly updated `ImageStream` objects:
+During the build process, the images associated with the `ImageStream` objects that you created earlier
+were pushed to the image registry and tagged. Run the following command to view the newly updated `ImageStream` objects:
 
 [role='command']
 ```
