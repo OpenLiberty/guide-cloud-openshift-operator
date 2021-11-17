@@ -376,7 +376,10 @@ oc logs build/system-buildconfig-1
 oc logs build/inventory-buildconfig-1
 ```
 
-Run the following command to view the `ImageStream` objects:
+=== Checking the images
+
+During the build process, the image associated with the `ImageStream` object that you created earlier
+was pushed to the image registry and tagged. Run the following command to view the newly updated `ImageStream` objects:
 
 [role='command']
 ```
