@@ -65,8 +65,8 @@ https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reac
 Before you can deploy your microservices, you must gain access to a cluster on OpenShift and have an OpenShift client installed. 
 For client installation instructions, refer to https://docs.openshift.com/container-platform/4.5/cli_reference/openshift_cli/getting-started-cli.html[the official OpenShift Online documentation^].
 
-There are various OpenShift offerings. You can use the https://learn.openshift.com/playgrounds[online playground^], which provides
-free access to an OpenShift cluster for 60 minutes. Alternatively, you can gain access to an OpenShift cluster that is hosted on
+There are various OpenShift offerings. You can use the https://developers.redhat.com/developer-sandbox[developer sandbox^], which provides
+free access to an OpenShift cluster for 30 days. Alternatively, you can gain access to an OpenShift cluster that is hosted on
 https://www.openshift.com/products/openshift-ibm-cloud[IBM Cloud^], or check out other offerings
 https://www.openshift.com/products[from OpenShift^]. 
 
