@@ -152,10 +152,10 @@ Look for the following output, which shows the https://kubernetes.io/docs/concep
 
 [role='no_copy']
 ```
-NAME                      SHORTNAMES         APIGROUP         NAMESPACED   KIND
-openlibertyapplications   olapp,olapps       openliberty.io   true         OpenLibertyApplication
-openlibertydumps          oldump,oldumps     openliberty.io   true         OpenLibertyDump
-openlibertytraces         oltrace,oltraces   openliberty.io   true         OpenLibertyTrace
+NAME                      SHORTNAMES         APIGROUP              NAMESPACED   KIND
+openlibertyapplications   olapp,olapps       apps.openliberty.io   true         OpenLibertyApplication
+openlibertydumps          oldump,oldumps     apps.openliberty.io   true         OpenLibertyDump
+openlibertytraces         oltrace,oltraces   apps.openliberty.io   true         OpenLibertyTrace
 ```
 
 Each CRD defines a kind of object that can be used, which is specified in the previous example by the `KIND` value.
