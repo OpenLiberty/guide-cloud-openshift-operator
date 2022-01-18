@@ -1,4 +1,4 @@
-// Copyright (c) 2020, 2021 IBM Corporation and others.
+// Copyright (c) 2020, 2022 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -65,8 +65,7 @@ https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reac
 Before you can deploy your microservices, you must gain access to a cluster on OpenShift and have an OpenShift client installed. 
 For client installation instructions, refer to https://docs.openshift.com/container-platform/4.5/cli_reference/openshift_cli/getting-started-cli.html[the official OpenShift Online documentation^].
 
-There are various OpenShift offerings. You can use the https://learn.openshift.com/playgrounds[online playground^], which provides
-free access to an OpenShift cluster for 60 minutes. Alternatively, you can gain access to an OpenShift cluster that is hosted on
+There are various OpenShift offerings. You can gain access to an OpenShift cluster that is hosted on
 https://www.openshift.com/products/openshift-ibm-cloud[IBM Cloud^], or check out other offerings
 https://www.openshift.com/products[from OpenShift^]. 
 
@@ -146,17 +145,17 @@ Run the following command to view all the supported API resources that are avail
 
 [role='command']
 ```
-oc api-resources --api-group=openliberty.io
+oc api-resources --api-group=apps.openliberty.io
 ```
 
 Look for the following output, which shows the https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/[custom resource definitions^] (CRDs) that can be used by the Open Liberty Operator:
 
 [role='no_copy']
 ```
-NAME                      SHORTNAMES         APIGROUP         NAMESPACED   KIND
-openlibertyapplications   olapp,olapps       openliberty.io   true         OpenLibertyApplication
-openlibertydumps          oldump,oldumps     openliberty.io   true         OpenLibertyDump
-openlibertytraces         oltrace,oltraces   openliberty.io   true         OpenLibertyTrace
+NAME                      SHORTNAMES         APIGROUP              NAMESPACED   KIND
+openlibertyapplications   olapp,olapps       apps.openliberty.io   true         OpenLibertyApplication
+openlibertydumps          oldump,oldumps     apps.openliberty.io   true         OpenLibertyDump
+openlibertytraces         oltrace,oltraces   apps.openliberty.io   true         OpenLibertyTrace
 ```
 
 Each CRD defines a kind of object that can be used, which is specified in the previous example by the `KIND` value.
