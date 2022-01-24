@@ -510,8 +510,8 @@ Namespace:    guide
 Labels:       app.kubernetes.io/part-of=system
               name=system
 Annotations:  kubectl.kubernetes.io/last-applied-configuration:
-                {"apiVersion":"openliberty.io/v1beta1","kind":"OpenLibertyApplication","metadata":{"annotations":{},"labels":{"name":"system"},"name":"sys...
-API Version:  openliberty.io/v1beta1
+                {"apiVersion":"apps.openliberty.io/v1beta2","kind":"OpenLibertyApplication","metadata":{"annotations":{},"labels":{"name":"system"},"name":"sys...
+API Version:  apps.openliberty.io/v1beta2
 Kind:         OpenLibertyApplication
 
 ...
@@ -591,8 +591,8 @@ Look for the following output:
 
 [role='no_copy']
 ```
-openlibertyapplication.openliberty.io/system configured
-openlibertyapplication.openliberty.io/inventory unchanged
+openlibertyapplications.apps.openliberty.io/system configured
+openlibertyapplications.apps.openliberty.io/inventory unchanged
 ```
 
 Notice that only the `system` resource was updated because there was a change in its specification. The `inventory`
