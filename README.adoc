@@ -18,7 +18,7 @@
 :imagesdir: /img/guide/{projectid}
 :source-highlighter: prettify
 :page-seo-title: Deploying microservices to Red Hat OpenShift 4 using Kubernetes Operators
-:page-seo-description: A getting started tutorial with examples on how to deploy cloud-native Java applications and microservices to Red Hat OpenShift cluster using Kubernetes Operators like the Open Liberty Operator.
+:page-seo-description: A getting started tutorial with examples on how to deploy cloud-native Java applications and microservices to Red Hat OpenShift cluster by using Kubernetes Operators like the Open Liberty Operator.
 :guide-author: Open Liberty
 = Deploying microservices to OpenShift 4 using Kubernetes Operators
 
