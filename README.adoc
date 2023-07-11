@@ -63,7 +63,7 @@ https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reac
 == Additional prerequisites
 
 Before you can deploy your microservices, you must gain access to a cluster on OpenShift and have an OpenShift client installed. 
-For client installation instructions, refer to https://docs.openshift.com/container-platform/4.5/cli_reference/openshift_cli/getting-started-cli.html[the official OpenShift Online documentation^].
+For client installation instructions, refer to https://docs.openshift.com/container-platform/4.13/cli_reference/openshift_cli/getting-started-cli.html[the official OpenShift Online documentation^].
 
 There are various OpenShift offerings. You can gain access to an OpenShift cluster that is hosted on
 https://www.openshift.com/products/openshift-ibm-cloud[IBM Cloud^], or check out other offerings
@@ -110,6 +110,13 @@ You have access to the following projects and can switch between them with 'oc p
     default
   * guide
 ```
+
+If your cluster does not install the https://cert-manager.io[cert-manager^] yet, install it by running the following command that refers to the official https://cert-manager.io/docs/installation[cert-manager installation] documentation:
+[role='command']
+```
+oc apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.12.0/cert-manager.yaml
+```
+
 
 // Getting Started block
 
