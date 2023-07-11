@@ -1,4 +1,4 @@
-// Copyright (c) 2020, 2022 IBM Corporation and others.
+// Copyright (c) 2020, 2023 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -81,9 +81,9 @@ Look for output similar to the following example:
 
 [role='no_copy']
 ```
-Client Version: 4.3.13
-Server Version: 4.3.13
-Kubernetes Version: v1.16.2
+Client Version: 4.13.0
+Server Version: 4.13.0
+Kubernetes Version: v1.26.3
 ```
 
 Before you install any resources, you need to create a project on your OpenShift cluster.
