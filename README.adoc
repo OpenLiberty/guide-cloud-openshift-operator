@@ -111,7 +111,7 @@ You have access to the following projects and can switch between them with 'oc p
   * guide
 ```
 
-If your cluster does not install the https://cert-manager.io[cert-manager^] yet, install it by running the following command that refers to the official https://cert-manager.io/docs/installation[cert-manager installation] documentation:
+If your cluster has not installed the https://cert-manager.io[cert-manager^] yet, install it by running the following command that refers to the official https://cert-manager.io/docs/installation[cert-manager installation] documentation:
 [role='command']
 ```
 oc apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.12.0/cert-manager.yaml
