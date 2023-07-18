@@ -1,4 +1,4 @@
-// Copyright (c) 2020, 2022 IBM Corporation and others.
+// Copyright (c) 2020, 2023 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -63,7 +63,7 @@ https://openliberty.io/guides/microprofile-reactive-messaging.html[Creating reac
 == Additional prerequisites
 
 Before you can deploy your microservices, you must gain access to a cluster on OpenShift and have an OpenShift client installed. 
-For client installation instructions, refer to https://docs.openshift.com/container-platform/4.5/cli_reference/openshift_cli/getting-started-cli.html[the official OpenShift Online documentation^].
+For client installation instructions, refer to https://docs.openshift.com/container-platform/4.13/cli_reference/openshift_cli/getting-started-cli.html[the official OpenShift Online documentation^].
 
 There are various OpenShift offerings. You can gain access to an OpenShift cluster that is hosted on
 https://www.openshift.com/products/openshift-ibm-cloud[IBM Cloud^], or check out other offerings
@@ -81,9 +81,9 @@ Look for output similar to the following example:
 
 [role='no_copy']
 ```
-Client Version: 4.3.13
-Server Version: 4.3.13
-Kubernetes Version: v1.16.2
+Client Version: 4.13.0
+Server Version: 4.13.0
+Kubernetes Version: v1.26.3
 ```
 
 Before you install any resources, you need to create a project on your OpenShift cluster.
@@ -110,6 +110,13 @@ You have access to the following projects and can switch between them with 'oc p
     default
   * guide
 ```
+
+If the https://cert-manager.io[cert-manager^]  is not installed on your cluster yet, install it by running the following command:
+[role='command']
+```
+oc apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.12.0/cert-manager.yaml
+```
+For more information, see the https://cert-manager.io/docs/installation[cert-manager installation] documentation.
 
 // Getting Started block
 
@@ -533,7 +540,7 @@ Look for an output that is similar to the following example:
 [role='no_copy']
 ```
 NAME        HOST/PORT                                    PATH   SERVICES    PORT       TERMINATION   WILDCARD
-inventory   inventory-guide.apps.lights.os.fyre.ibm.com         inventory   9085-tcp                 None
+inventory   inventory-guide.apps.lights.os.fyre.ibm.com         inventory   9448-tcp                 None
 ```
 
 
