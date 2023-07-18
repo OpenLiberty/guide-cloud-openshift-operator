@@ -116,7 +116,7 @@ If the https://cert-manager.io[cert-manager^]  is not installed on your cluster 
 ```
 oc apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.12.0/cert-manager.yaml
 ```
-
+For more information, see the https://cert-manager.io/docs/installation[cert-manager installation] documentation.
 
 // Getting Started block
 
