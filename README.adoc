@@ -517,8 +517,8 @@ Namespace:    guide
 Labels:       app.kubernetes.io/part-of=system
               name=system
 Annotations:  kubectl.kubernetes.io/last-applied-configuration:
-                {"apiVersion":"apps.openliberty.io/v1beta2","kind":"OpenLibertyApplication","metadata":{"annotations":{},"labels":{"name":"system"},"name":"sys...
-API Version:  apps.openliberty.io/v1beta2
+                {"apiVersion":"apps.openliberty.io/v1","kind":"OpenLibertyApplication","metadata":{"annotations":{},"labels":{"name":"system"},"name":"sys...
+API Version:  apps.openliberty.io/v1
 Kind:         OpenLibertyApplication
 
 ...
