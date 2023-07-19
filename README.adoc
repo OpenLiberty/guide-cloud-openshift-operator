@@ -141,7 +141,7 @@ The `finish` directory contains the finished project that you will build.
 == Installing the Operators
 
 When you obtained your OpenShift cluster, you received login information for the
-https://docs.openshift.com/container-platform/4.5/web_console/web-console.html[OpenShift web console^].
+https://docs.openshift.com/container-platform/4.13/web_console/web-console.html[OpenShift web console^].
 The web console provides an interface to interact with your OpenShift cluster through your web browser.
 
 To install the two Operators, navigate to the web console and select *Operators > OperatorHub* from the sidebar menu.
