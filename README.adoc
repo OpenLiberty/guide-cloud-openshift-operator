@@ -1,4 +1,4 @@
-// Copyright (c) 2020, 2023 IBM Corporation and others.
+// Copyright (c) 2020, 2024 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -10,6 +10,7 @@
 :page-layout: guide-multipane
 :page-duration: 30 minutes
 :page-releasedate: 2020-10-30
+:page-majorupdateddate: 2024-04-30
 :page-description: Explore how to deploy microservices to Red Hat OpenShift 4 using Kubernetes Operators like the Open Liberty Operator.
 :page-tags: ['Kubernetes', 'Docker', 'Cloud'] 
 :page-permalink: /guides/{projectid}
