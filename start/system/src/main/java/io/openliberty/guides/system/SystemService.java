@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 @ApplicationScoped
 public class SystemService {
 
-    private static final OperatingSystemMXBean OS_MEAN = 
+    private static final OperatingSystemMXBean OS_MEAN =
             ManagementFactory.getOperatingSystemMXBean();
     private static String hostname = null;
 

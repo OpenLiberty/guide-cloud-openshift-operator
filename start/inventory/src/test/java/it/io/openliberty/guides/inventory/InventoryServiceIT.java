@@ -140,7 +140,7 @@ public class InventoryServiceIT {
         producerProps.put(
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
                 StringSerializer.class.getName());
- 
+
         producerProps.put(
             ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                 SystemLoadSerializer.class.getName());

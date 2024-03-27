@@ -33,7 +33,7 @@ public class SystemReadinessCheck implements HealthCheck {
 
     private static Logger logger = Logger.getLogger(
         SystemReadinessCheck.class.getName());
-    
+
     @Inject
     @ConfigProperty(name = "mp.messaging.connector.liberty-kafka.bootstrap.servers")
     String kafkaServer;
