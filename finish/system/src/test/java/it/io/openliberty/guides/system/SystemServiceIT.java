@@ -26,6 +26,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.Network;
@@ -152,7 +153,7 @@ public class SystemServiceIT {
     public void testCpuStatus() {
         // tag::poll[]
         ConsumerRecords<String, SystemLoad> records =
-                cpuConsumer.poll(Duration.ofMillis(30 * 1000));
+            consumer.poll(Duration.ofMillis(30 * 1000));
         // end::poll[]
         System.out.println("Polled " + records.count() + " records from Kafka:");
         assertTrue(records.count() > 0, "No records processed");
@@ -165,7 +166,7 @@ public class SystemServiceIT {
             assertNotNull(sl.loadAverage);
             // end::assert[]
         }
-        cpuConsumer.commitAsync();
+        consumer.commitAsync();
     }
     // end::testCpuStatus[]
 }
