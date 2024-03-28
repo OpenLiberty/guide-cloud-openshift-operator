@@ -24,6 +24,10 @@ spec:
       inter.broker.protocol.version: "3.7"
     storage:
       type: ephemeral
+  zookeeper:
+    replicas: 3
+    storage:
+      type: ephemeral
   entityOperator:
     topicOperator: {}
     userOperator: {}

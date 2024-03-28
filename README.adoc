@@ -546,12 +546,12 @@ inventory   inventory-guide.apps.lights.os.fyre.ibm.com         inventory   9448
 
 
 Visit the `inventory` microservice by going to the following URL: 
-`http://[HOST]/inventory/systems`
+`https://[HOST]/inventory/systems`
 
 Make sure to substitute the appropriate `HOST` value.
 For example, using the output from the command above, `inventory-guide.apps.lights.os.fyre.ibm.com` is the `HOST`.
 The following example shows this value substituted for `HOST` in the URL:
-`\http://inventory-guide.apps.lights.os.fyre.ibm.com/inventory/systems`.
+`\https://inventory-guide.apps.lights.os.fyre.ibm.com/inventory/systems`.
 
 Look for a JSON response that is similar to the following example: 
 
