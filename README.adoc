@@ -263,7 +263,7 @@ In the `status` section under `conditions` you can see a report similar to the f
 
 [role='no_copy']
 ```
-- lastTransitionTime: 2020-09-02T19:27:00+0000
+- lastTransitionTime: 2024-03-28T19:27:00+0000
   status: "True"
   type: Ready
 ```
