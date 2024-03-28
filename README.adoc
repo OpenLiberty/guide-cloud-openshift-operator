@@ -82,9 +82,9 @@ Look for output similar to the following example:
 
 [role='no_copy']
 ```
-Client Version: 4.13.0
-Server Version: 4.13.0
-Kubernetes Version: v1.26.3
+Client Version: 4.14.0
+Server Version: 4.14.0
+Kubernetes Version: v1.27.11
 ```
 
 Before you install any resources, you need to create a project on your OpenShift cluster.
@@ -115,7 +115,7 @@ You have access to the following projects and can switch between them with 'oc p
 If the https://cert-manager.io[cert-manager^]  is not installed on your cluster yet, install it by running the following command:
 [role='command']
 ```
-oc apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.12.0/cert-manager.yaml
+oc apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.4/cert-manager.yaml
 ```
 For more information, see the https://cert-manager.io/docs/installation[cert-manager installation] documentation.
 
