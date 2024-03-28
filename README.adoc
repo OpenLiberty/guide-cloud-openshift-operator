@@ -455,7 +455,7 @@ bootstrap address found by running the following command:
 
 [role='command']
 ```
-oc get kafka kafka-cluster -o=jsonpath='{.status.listeners[?(@.type=="plain")].bootstrapServers}{"\n"}'
+oc describe kafka kafka-cluster | grep -B1 "Name:\s*plain" | grep "Bootstrap Servers:" | awk '{print $3}'
 ```
 
 You will see output similar to the following example:
