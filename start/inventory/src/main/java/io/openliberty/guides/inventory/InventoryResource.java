@@ -30,7 +30,6 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import io.openliberty.guides.models.SystemLoad;
 
-
 @ApplicationScoped
 @Path("/inventory")
 public class InventoryResource {
@@ -45,10 +44,9 @@ public class InventoryResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSystems() {
         List<Properties> systems = new ArrayList<>(manager.getSystems().values());
-        return Response
-                .status(Response.Status.OK)
-                .entity(systems)
-                .build();
+        return Response.status(Response.Status.OK)
+                       .entity(systems)
+                       .build();
     }
 
     @GET
@@ -57,24 +55,21 @@ public class InventoryResource {
     public Response getSystem(@PathParam("hostId") String hostId) {
         Optional<Properties> system = manager.getSystem(hostId);
         if (system.isPresent()) {
-            return Response
-                    .status(Response.Status.OK)
-                    .entity(system)
-                    .build();
+            return Response.status(Response.Status.OK)
+                           .entity(system)
+                           .build();
         }
-        return Response
-                .status(Response.Status.NOT_FOUND)
-                .entity("hostId does not exist.")
-                .build();
+        return Response.status(Response.Status.NOT_FOUND)
+                       .entity("hostId does not exist.")
+                       .build();
     }
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public Response resetSystems() {
         manager.resetSystems();
-        return Response
-                .status(Response.Status.OK)
-                .build();
+        return Response.status(Response.Status.OK)
+                       .build();
     }
 
     @Incoming("systemLoad")

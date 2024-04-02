@@ -27,7 +27,8 @@ import java.util.concurrent.TimeUnit;
 public class SystemService {
 
     private static final OperatingSystemMXBean OS_MEAN =
-            ManagementFactory.getOperatingSystemMXBean();
+        ManagementFactory.getOperatingSystemMXBean();
+
     private static String hostname = null;
 
     private static String getHostname() {
@@ -44,8 +45,8 @@ public class SystemService {
     @Outgoing("systemLoad")
     public Publisher<SystemLoad> sendSystemLoad() {
         return Flowable.interval(15, TimeUnit.SECONDS)
-                .map((interval -> new SystemLoad(getHostname(),
-                    OS_MEAN.getSystemLoadAverage())));
+                       .map((interval -> new SystemLoad(getHostname(),
+                             OS_MEAN.getSystemLoadAverage())));
     }
 
 }

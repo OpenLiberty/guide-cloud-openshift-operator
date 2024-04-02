@@ -89,12 +89,12 @@ public class SystemServiceIT {
         if (isServiceRunning("localhost", 9083)) {
             System.out.println("Testing with mvn liberty:devc");
         } else {
+            System.out.println("Testing with mvn verify");
             kafkaContainer.start();
             systemContainer.withEnv(
                 "mp.messaging.connector.liberty-kafka.bootstrap.servers",
                 "kafka:19092");
             systemContainer.start();
-            System.out.println("Testing with mvn verify");
         }
     }
 
@@ -104,28 +104,28 @@ public class SystemServiceIT {
         // tag::KafkaConsumerConfig[]
         if (isServiceRunning("localhost", 9083)) {
             consumerProps.put(
-            ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
                 "localhost:9094");
         } else {
             consumerProps.put(
-            ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
                 kafkaContainer.getBootstrapServers());
         }
 
         consumerProps.put(
             ConsumerConfig.GROUP_ID_CONFIG,
-                "system-load-status");
+            "system-load-status");
         consumerProps.put(
             ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
-                StringDeserializer.class.getName());
+            StringDeserializer.class.getName());
         // tag::valueDeserializer[]
         consumerProps.put(
             ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-                SystemLoadDeserializer.class.getName());
+            SystemLoadDeserializer.class.getName());
         // end::valueDeserializer[]
         consumerProps.put(
             ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
-                "earliest");
+            "earliest");
         // tag::KafkaConsumer2[]
         consumer = new KafkaConsumer<String, SystemLoad>(consumerProps);
         // end::KafkaConsumer2[]
@@ -134,7 +134,6 @@ public class SystemServiceIT {
         // end::systemLoadTopic[]
         // end::KafkaConsumerConfig[]
     }
-
 
     @AfterAll
     public static void stopContainers() {
