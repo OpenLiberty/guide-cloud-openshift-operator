@@ -10,7 +10,7 @@
 :page-layout: guide-multipane
 :page-duration: 30 minutes
 :page-releasedate: 2020-10-30
-:page-majorupdateddate: 2024-04-30
+:page-majorupdateddate: 2024-04-04
 :page-description: Explore how to deploy microservices to Red Hat OpenShift 4 using Kubernetes Operators like the Open Liberty Operator.
 :page-tags: ['kubernetes', 'docker', 'cloud'] 
 :page-permalink: /guides/{projectid}
