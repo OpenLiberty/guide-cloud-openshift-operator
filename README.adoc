@@ -1,4 +1,4 @@
-// Copyright (c) 2020, 2024 IBM Corporation and others.
+// Copyright (c) 2020, 2025 IBM Corporation and others.
 // Licensed under Creative Commons Attribution-NoDerivatives
 // 4.0 International (CC BY-ND 4.0)
 //   https://creativecommons.org/licenses/by-nd/4.0/
@@ -115,7 +115,7 @@ You have access to the following projects and can switch between them with 'oc p
 If the https://cert-manager.io[cert-manager^]  is not installed on your cluster yet, install it by running the following command:
 [role='command']
 ```
-oc apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.2/cert-manager.yaml
+oc apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.3/cert-manager.yaml
 ```
 For more information, see the https://cert-manager.io/docs/installation[cert-manager installation] documentation.
 
@@ -201,21 +201,6 @@ kafkausers           ku           kafka.strimzi.io   true         KafkaUser
 You can also confirm the installation of the operators from the web console.
 Navigate to the OperatorHub.
 From the categories on the left, you can filter to see only installed operators. 
-
-== Adding a private Docker credential
-
-Docker limits container image pull requests for free DockerHub subscriptions. 
-For more information, see link:https://www.docker.com/increase-rate-limits[Understanding Docker Hub Rate Limiting].
-If you have a Docker account with a Pro or Team subscription, you can add a private credential to avoid any errors as a result of the limits.
-
-To add a private credential, navigate to the OpenShift web console and select *Workloads > Secrets* from the sidebar menu. 
-Ensure that the selected project is `openshift-config`. 
-Search for `pull-secret` and click the *three vertical dots* menu; then *Edit Secret*. 
-Scroll down and click *Add credentials*.  
-Enter `docker.io` to the *Registry Server Address* field, 
-your Docker user ID to the *Username* field, 
-and your Docker password to the *Password* field.
-Click the *Save* button to save the credential. 
 
 
 == Deploying the Kafka cluster to OpenShift
