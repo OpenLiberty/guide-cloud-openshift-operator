@@ -270,11 +270,35 @@ run an OpenShift build to produce runnable container images of the packaged micr
 Ensure that you are in the `start` directory and run the following commands to package the `system` and `inventory`
 microservices:
 
-[role='command']
+include::{common-includes}/os-tabs.adoc[]
+
+[.tab_content.windows_section]
+--
+Open command prompt as an administrator and run the following command.
+
+[role=command]
 ```
-mvn -pl models clean install
-mvn clean package
+mvnw.cmd -pl models clean install
+mvnw.cmd clean package```
+--
+
+[.tab_content.mac_section]
+--
+[role=command]
 ```
+./mvnw -pl models clean install
+./mvnw clean package
+```
+--
+
+[.tab_content.linux_section]
+--
+[role=command]
+```
+./mvnw -pl models clean install
+./mvnw clean package
+```
+--
 
 === Building and pushing the images
 
