@@ -22,6 +22,7 @@ import java.util.Properties;
 
 // tag::KafkaProducer[]
 import org.apache.kafka.clients.producer.KafkaProducer;
+// end::KafkaProducer[]
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -36,7 +37,6 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.GenericContainer;
-// end::KafkaProducer[]
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
