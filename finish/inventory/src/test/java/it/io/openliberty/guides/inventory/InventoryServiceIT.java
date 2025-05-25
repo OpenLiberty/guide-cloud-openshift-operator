@@ -23,6 +23,7 @@ import java.util.Properties;
 // tag::KafkaProducer[]
 import org.apache.kafka.clients.producer.KafkaProducer;
 // end::KafkaProducer[]
+
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
