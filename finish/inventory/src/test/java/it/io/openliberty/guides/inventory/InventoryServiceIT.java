@@ -41,6 +41,7 @@ import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.images.builder.ImageFromDockerfile;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.kafka.ConfluentKafkaContainer;
 
 import io.openliberty.guides.models.SystemLoad;
 import io.openliberty.guides.models.SystemLoad.SystemLoadSerializer;
@@ -70,7 +71,7 @@ public class InventoryServiceIT {
 
     private static ConfluentKafkaContainer confluentKafkaContainer =
         new ConfluentKafkaContainer("confluentinc/cp-kafka:latest")
-            .withListener(() -> "kafka:19092")
+            .withListener("kafka:19092")
             .withNetwork(network);
 
     private static GenericContainer<?> inventoryContainer =
@@ -133,7 +134,7 @@ public class InventoryServiceIT {
         } else {
             producerProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                kafkaContainer.getBootstrapServers());
+                confluentKafkaContainer.getBootstrapServers());
         }
 
         producerProps.put(
