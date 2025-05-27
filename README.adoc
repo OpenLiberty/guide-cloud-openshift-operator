@@ -279,7 +279,8 @@ Open command prompt as an administrator and run the following command.
 [role=command]
 ```
 mvnw.cmd -pl models clean install
-mvnw.cmd clean package```
+mvnw.cmd clean package
+```
 --
 
 [.tab_content.mac_section]
