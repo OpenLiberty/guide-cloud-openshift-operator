@@ -29,7 +29,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.testcontainers.kafka.ConfluentKafkaContainer;
+import org.testcontainers.kafka.KafkaContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.images.builder.ImageFromDockerfile;
@@ -58,8 +58,8 @@ public class SystemServiceIT {
         new ImageFromDockerfile("system:1.0-SNAPSHOT")
             .withDockerfile(Paths.get("./Dockerfile"));
 
-    private static ConfluentKafkaContainer confluentKafkaContainer =
-        new ConfluentKafkaContainer("confluentinc/cp-kafka:latest")
+    private static KafkaContainer kafkaContainer =
+        new KafkaContainer("apache/kafka:latest")
             .withListener("kafka:19092")
             .withNetwork(network);
 
@@ -70,7 +70,7 @@ public class SystemServiceIT {
             .waitingFor(Wait.forHttp("/health/ready").forPort(9083))
             .withStartupTimeout(Duration.ofMinutes(2))
             .withLogConsumer(new Slf4jLogConsumer(logger))
-            .dependsOn(confluentKafkaContainer);
+            .dependsOn(kafkaContainer);
 
     private static boolean isServiceRunning(String host, int port) {
         try {
@@ -88,7 +88,7 @@ public class SystemServiceIT {
             System.out.println("Testing with mvn liberty:devc");
         } else {
             System.out.println("Testing with mvn verify");
-            confluentKafkaContainer.start();
+            kafkaContainer.start();
             systemContainer.withEnv(
                 "mp.messaging.connector.liberty-kafka.bootstrap.servers",
                 "kafka:19092");
@@ -106,7 +106,7 @@ public class SystemServiceIT {
         } else {
             consumerProps.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                confluentKafkaContainer.getBootstrapServers());
+                kafkaContainer.getBootstrapServers());
         }
 
         consumerProps.put(
@@ -128,7 +128,7 @@ public class SystemServiceIT {
     @AfterAll
     public static void stopContainers() {
         systemContainer.stop();
-        confluentKafkaContainer.stop();
+        kafkaContainer.stop();
         network.close();
     }
 
